@@ -129,6 +129,7 @@ struct MenuPanelView: View {
         .onChange(of: focusedSection) { _, section in
             if let section { selectedSection = section }
         }
+        .vorssaintNoFocusChrome()
     }
 
     private var monitorNeeds: SystemMonitorPanelNeeds {
@@ -333,10 +334,13 @@ struct MenuPanelView: View {
                 }
                 .buttonStyle(.plain)
                 .focused($focusedSection, equals: id)
-                .foregroundStyle(isActive ? Color.accentColor : Color.secondary.opacity(0.86))
-                .background(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(isActive ? navigationActiveFill : Color.clear)
+                .praxisNoFocusRing()
+                .foregroundStyle(isActive ? Color.primary : Color.secondary.opacity(0.86))
+                .praxisHoverTint(
+                    cornerRadius: 8,
+                    hoverOpacity: 0.10,
+                    selected: isActive,
+                    selectedOpacity: colorScheme == .light ? 0.08 : 0.14
                 )
                 .help(id.title(l10n.s))
             }
@@ -350,10 +354,7 @@ struct MenuPanelView: View {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .strokeBorder(PanelSurface.border(for: colorScheme), lineWidth: 0.7)
         )
-    }
-
-    private var navigationActiveFill: Color {
-        colorScheme == .light ? Color.accentColor.opacity(0.13) : Color.accentColor.opacity(0.20)
+        .praxisNoFocusRing()
     }
 
     private func metricNavigationHeader(_ kind: MetricDetailKind) -> some View {
@@ -444,6 +445,8 @@ struct MenuPanelView: View {
                 .contentShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
         }
         .buttonStyle(.plain)
+        .praxisNoFocusRing()
+        .praxisHoverTint(cornerRadius: 7, hoverOpacity: 0.10)
         .foregroundStyle(.secondary)
     }
 }
@@ -1939,8 +1942,11 @@ struct UtilityActionButton: View {
                         .panelCard()
                 }
                 .buttonStyle(.plain)
+                .praxisNoFocusRing()
             }
         }
+        .praxisNoFocusRing()
+        .praxisHoverTint(cornerRadius: 10, hoverOpacity: 0.06)
     }
 
     private var mainButton: some View {

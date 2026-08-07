@@ -158,6 +158,7 @@ struct CommandBarView: View {
         .onAppear { focusSearch() }
         .onChange(of: service.presentationID) { _, _ in focusSearch() }
         .onChange(of: service.mode) { _, _ in focusSearch() }
+        .vorssaintNoFocusChrome()
     }
 
     private func focusSearch() {

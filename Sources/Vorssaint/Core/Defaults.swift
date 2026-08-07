@@ -400,6 +400,8 @@ enum DefaultsKey {
     static let panelSystemOrder = "panelSystemOrder"
     static let panelNetworkOrder = "panelNetworkOrder"
     static let panelDiskOrder = "panelDiskOrder"
+    /// When false, per-disk eject controls are hidden in the panel disk selector.
+    static let panelDiskShowEjectButtons = "panelDiskShowEjectButtons"
     static let panelPowerOrder = "panelPowerOrder"
     static let panelNavigationEnabled = "panelNavigationEnabled" // legacy: the panel always navigates by sections since 3.1.8
     static let updateLastInstallFailure = "updateLastInstallFailure" // last installer step that failed (fail-copy etc.)
@@ -1132,6 +1134,7 @@ enum Defaults {
         DefaultsKey.monitorShowSystem: true,
         DefaultsKey.monitorShowNetwork: true,
         DefaultsKey.monitorShowDisk: true,
+        DefaultsKey.panelDiskShowEjectButtons: true,
         DefaultsKey.monitorShowPower: true,
         DefaultsKey.monitorShowMixer: true,
         DefaultsKey.panelShowFanControl: true,

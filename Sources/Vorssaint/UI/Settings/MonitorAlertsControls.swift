@@ -32,14 +32,14 @@ struct MonitorAlertsControls: View {
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             if AppFeature.monitorCPU.isAvailable {
-                Toggle(text.cpu, isOn: $alertCPU)
+                PraxisSettingsToggle(label: text.cpu, isOn: $alertCPU)
                 if alertCPU {
                     Stepper("\(text.cpuThreshold) \(alertCPUThreshold)%",
                             value: $alertCPUThreshold,
                             in: 50...100,
                             step: 5)
                 }
-                Toggle(text.cpuTemperature, isOn: $alertCPUTemperature)
+                PraxisSettingsToggle(label: text.cpuTemperature, isOn: $alertCPUTemperature)
                 if alertCPUTemperature {
                     Stepper("\(text.cpuTemperatureThreshold) \(alertCPUTemperatureThreshold) °C",
                             value: $alertCPUTemperatureThreshold,
@@ -48,10 +48,10 @@ struct MonitorAlertsControls: View {
                 }
             }
             if AppFeature.monitorMemory.isAvailable {
-                Toggle(text.memory, isOn: $alertMemory)
+                PraxisSettingsToggle(label: text.memory, isOn: $alertMemory)
             }
             if AppFeature.monitorDisk.isAvailable {
-                Toggle(text.disk, isOn: $alertDisk)
+                PraxisSettingsToggle(label: text.disk, isOn: $alertDisk)
                 if alertDisk {
                     Stepper("\(text.diskThreshold) \(alertDiskFreePercent)%",
                             value: $alertDiskFreePercent,
@@ -60,14 +60,14 @@ struct MonitorAlertsControls: View {
                 }
             }
             if AppFeature.monitorPower.isAvailable, PowerSampler.hasInternalBattery {
-                Toggle(text.batteryTemperature, isOn: $alertBatteryTemperature)
+                PraxisSettingsToggle(label: text.batteryTemperature, isOn: $alertBatteryTemperature)
                 if alertBatteryTemperature {
                     Stepper("\(text.batteryTemperatureThreshold) \(alertBatteryTemperatureThreshold) °C",
                             value: $alertBatteryTemperatureThreshold,
                             in: 30...50,
                             step: 5)
                 }
-                Toggle(text.battery, isOn: $alertBattery)
+                PraxisSettingsToggle(label: text.battery, isOn: $alertBattery)
                 if alertBattery {
                     Stepper("\(text.batteryThreshold) \(alertBatteryPercent)%",
                             value: $alertBatteryPercent,

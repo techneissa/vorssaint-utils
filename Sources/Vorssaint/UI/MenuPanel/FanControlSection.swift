@@ -216,42 +216,27 @@ struct FanControlCardContent: View {
         if error == .noFans || error == .unsupportedHardware || error == .alreadyControlled {
             EmptyView()
         } else if accessState == .notRegistered, !snapshot.fans.isEmpty {
-            Button(strings.allowControl, action: authorize)
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
-                .frame(maxWidth: .infinity)
+            PraxisButton(strings.allowControl, role: .primary, size: .small, fillWidth: true, action: authorize)
         } else if accessState == .requiresApproval, !snapshot.fans.isEmpty {
-            Button(strings.openSettings, action: authorize)
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
-                .frame(maxWidth: .infinity)
+            PraxisButton(strings.openSettings, role: .primary, size: .small, fillWidth: true, action: authorize)
         } else if accessState == .enabled, controlsCanAppear {
             switch mode {
             case .system:
                 if snapshot.isCooling {
-                    Button(strings.returnToSystem, action: stopCooling)
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.small)
+                    PraxisButton(strings.returnToSystem, role: .primary, size: .small, fillWidth: true, action: stopCooling)
                         .disabled(isWorking)
-                        .frame(maxWidth: .infinity)
                 }
             case .manual:
-                Button(strings.applyManual) {
+                PraxisButton(strings.applyManual, role: .primary, size: .small, fillWidth: true) {
                     coolingLevel = selectedCoolingLevel
                     applyConfiguration(.manual(level: selectedCoolingLevel))
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
                 .disabled(isWorking)
-                .frame(maxWidth: .infinity)
             case .curve:
-                Button(strings.applyCurve) {
+                PraxisButton(strings.applyCurve, role: .primary, size: .small, fillWidth: true) {
                     applyConfiguration(.curve(curves))
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
                 .disabled(isWorking || !curveCanRun)
-                .frame(maxWidth: .infinity)
             }
         }
     }

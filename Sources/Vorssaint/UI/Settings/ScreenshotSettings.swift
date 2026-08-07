@@ -67,7 +67,7 @@ struct ScreenshotCaptureSettings: View {
                 Text(strings.panelCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Toggle(strings.fullScreenShortcutTitle, isOn: $fullScreenShortcutEnabled)
+                PraxisSettingsToggle(label: strings.fullScreenShortcutTitle, isOn: $fullScreenShortcutEnabled)
                     .onChange(of: fullScreenShortcutEnabled) { _, _ in
                         ScreenshotService.shared.syncWithPreferences()
                     }
@@ -80,7 +80,7 @@ struct ScreenshotCaptureSettings: View {
                         .font(.caption)
                         .foregroundStyle(.orange)
                 }
-                Toggle(strings.editLastCapture, isOn: $lastCaptureShortcutEnabled)
+                PraxisSettingsToggle(label: strings.editLastCapture, isOn: $lastCaptureShortcutEnabled)
                     .onChange(of: lastCaptureShortcutEnabled) { _, _ in
                         ScreenshotService.shared.syncWithPreferences()
                     }
@@ -116,7 +116,7 @@ struct ScreenshotCaptureSettings: View {
             .settingsSectionAnchor(.screenshot)
 
             Section {
-                Toggle(strings.freezeToggle, isOn: $freeze)
+                PraxisSettingsToggle(label: strings.freezeToggle, isOn: $freeze)
                 Text(strings.freezeCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -131,11 +131,11 @@ struct ScreenshotCaptureSettings: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                Toggle(strings.pointerToggle, isOn: $includePointer)
-                Toggle(strings.lastRegionToggle, isOn: $showLastRegion)
+                PraxisSettingsToggle(label: strings.pointerToggle, isOn: $includePointer)
+                PraxisSettingsToggle(label: strings.lastRegionToggle, isOn: $showLastRegion)
                 DisclosureGroup {
-                    Toggle(strings.loupeStartsOnToggle, isOn: $loupeStartsOn)
-                    Toggle(strings.loupeRememberZoomToggle, isOn: $rememberLoupeZoom)
+                    PraxisSettingsToggle(label: strings.loupeStartsOnToggle, isOn: $loupeStartsOn)
+                    PraxisSettingsToggle(label: strings.loupeRememberZoomToggle, isOn: $rememberLoupeZoom)
                     if !rememberLoupeZoom {
                         Picker(strings.loupeDefaultZoomLabel, selection: $loupeDefaultZoom) {
                             ForEach(ScreenshotSupport.captureLoupeDefaultZooms, id: \.self) { zoom in
@@ -162,14 +162,14 @@ struct ScreenshotCaptureSettings: View {
             }
 
             Section {
-                Toggle(strings.autoCopyToggle, isOn: $copyToClipboard)
+                PraxisSettingsToggle(label: strings.autoCopyToggle, isOn: $copyToClipboard)
                 Text(strings.autoCopyCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 folderRow
                 subfolderRow
                 fileNameRow
-                Toggle(strings.downscaleToggle, isOn: $downscale)
+                PraxisSettingsToggle(label: strings.downscaleToggle, isOn: $downscale)
                 Text(strings.downscaleCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)

@@ -19,7 +19,7 @@ struct ShelfSettings: View {
     var body: some View {
         Form {
             Section {
-                Toggle(l10n.s.shelfEnable, isOn: $enabled)
+                PraxisSettingsToggle(label: l10n.s.shelfEnable, isOn: $enabled)
                     .onChange(of: enabled) { _, _ in
                         ShelfService.shared.syncWithPreferences()
                     }
@@ -39,7 +39,7 @@ struct ShelfSettings: View {
 
             if enabled {
                 Section {
-                    Toggle(l10n.s.shelfShortcutToggle, isOn: $shortcutEnabled)
+                    PraxisSettingsToggle(label: l10n.s.shelfShortcutToggle, isOn: $shortcutEnabled)
                         .onChange(of: shortcutEnabled) { _, _ in
                             ShelfService.shared.syncHotkey()
                         }
@@ -52,7 +52,7 @@ struct ShelfSettings: View {
                             .foregroundStyle(.orange)
                     }
                     VStack(alignment: .leading, spacing: 3) {
-                        Toggle(l10n.s.shelfShakeToggle, isOn: $shake)
+                        PraxisSettingsToggle(label: l10n.s.shelfShakeToggle, isOn: $shake)
                             .onChange(of: shake) { _, _ in
                                 ShelfService.shared.syncDragMonitor()
                             }
@@ -61,7 +61,7 @@ struct ShelfSettings: View {
                             .foregroundStyle(.secondary)
                     }
                     VStack(alignment: .leading, spacing: 3) {
-                        Toggle(l10n.s.shelfDropZoneToggle, isOn: $dropZone)
+                        PraxisSettingsToggle(label: l10n.s.shelfDropZoneToggle, isOn: $dropZone)
                             .onChange(of: dropZone) { _, _ in
                                 ShelfService.shared.syncDragMonitor()
                             }
@@ -87,13 +87,13 @@ struct ShelfSettings: View {
 
                 Section(l10n.s.shelfBehaviorTitle) {
                     VStack(alignment: .leading, spacing: 3) {
-                        Toggle(l10n.s.shelfCloseAfterDrop, isOn: $closeAfterDrop)
+                        PraxisSettingsToggle(label: l10n.s.shelfCloseAfterDrop, isOn: $closeAfterDrop)
                         Text(l10n.s.shelfCloseAfterDropCaption)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                     VStack(alignment: .leading, spacing: 3) {
-                        Toggle(l10n.s.shelfRemoveAfterDrop, isOn: $removeAfterDrop)
+                        PraxisSettingsToggle(label: l10n.s.shelfRemoveAfterDrop, isOn: $removeAfterDrop)
                         Text(l10n.s.shelfRemoveAfterDropCaption)
                             .font(.caption)
                             .foregroundStyle(.secondary)

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Vendored from PraxisUI (focus helpers only).
+// Vendored from PraxisUI (focus helpers) + fork-wide focus chrome kill.
 
 import SwiftUI
 
@@ -12,5 +12,11 @@ extension View {
         } else {
             self
         }
+    }
+
+    /// Apply at panel/window roots so nested controls don't show the system
+    /// accent focus outline (the blue rounded border around clicked buttons).
+    func vorssaintNoFocusChrome() -> some View {
+        praxisNoFocusRing()
     }
 }

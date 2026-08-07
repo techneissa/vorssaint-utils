@@ -22,7 +22,7 @@ struct KeyboardDebounceSettings: View {
     var body: some View {
         Form {
             Section(l10n.s.keyDebounceName) {
-                Toggle(l10n.s.keyDebounceEnable, isOn: $enabled)
+                PraxisSettingsToggle(label: l10n.s.keyDebounceEnable, isOn: $enabled)
                     .onChange(of: enabled) { _, value in
                         KeyboardDebounceService.shared.syncWithPreferences()
                         guard value, !permissions.accessibility else { return }

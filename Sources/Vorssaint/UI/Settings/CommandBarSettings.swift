@@ -76,14 +76,14 @@ struct CommandBarSettings: View {
                 // No callback: the bar reads this on every open, and opening
                 // Settings has already hidden it, so the two can never be on
                 // screen with a stale value between them.
-                Toggle(text.compactModeToggle, isOn: $compactMode)
+                PraxisSettingsToggle(label: text.compactModeToggle, isOn: $compactMode)
                 Text(text.compactModeCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 // Not the shared "Global shortcut" label the other feature
                 // pages use: this page already has an "open the bar" button at
                 // the top, so the toggle has to say which of the two it arms.
-                Toggle(text.shortcutToggle, isOn: $shortcutEnabled)
+                PraxisSettingsToggle(label: text.shortcutToggle, isOn: $shortcutEnabled)
                     .onChange(of: shortcutEnabled) { _, _ in
                         CommandBarService.shared.syncWithPreferences()
                     }
@@ -112,10 +112,10 @@ struct CommandBarSettings: View {
 
             Section {
                 ForEach(CommandBarSource.allCases) { source in
-                    Toggle(isOn: binding(for: source)) {
-                        Label(title(for: source), systemImage: source.symbolName)
-                    }
-                    .disabled(source.isAlwaysOn)
+                    PraxisSettingsToggle(label: title(for: source),
+                                         icon: source.symbolName,
+                                         isOn: binding(for: source))
+                        .disabled(source.isAlwaysOn)
                 }
             } header: {
                 Text(text.sourcesTitle)

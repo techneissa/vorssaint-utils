@@ -32,7 +32,7 @@ struct CutPasteSettings: View {
         Form {
             if AppFeature.finderCutPaste.isAvailable {
                 Section {
-                    Toggle(l10n.s.cutPasteEnable, isOn: $enabled)
+                    PraxisSettingsToggle(label: l10n.s.cutPasteEnable, isOn: $enabled)
                         .onChange(of: enabled) { _, _ in
                             FinderCutPaste.shared.syncWithPreferences()
                         }
@@ -67,7 +67,7 @@ struct CutPasteSettings: View {
 
             if AppFeature.finderRename.isAvailable {
                 Section {
-                    Toggle(renameText.enableLabel, isOn: $renameEnabled)
+                    PraxisSettingsToggle(label: renameText.enableLabel, isOn: $renameEnabled)
                         .onChange(of: renameEnabled) { _, _ in
                             FinderRenameService.shared.syncWithPreferences()
                         }

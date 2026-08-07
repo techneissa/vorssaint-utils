@@ -28,7 +28,7 @@ struct URLCleanerSettings: View {
     var body: some View {
         Form {
             Section {
-                Toggle(l10n.s.urlCleanerEnable, isOn: $enabled)
+                PraxisSettingsToggle(label: l10n.s.urlCleanerEnable, isOn: $enabled)
                     .onChange(of: enabled) { _, _ in
                         URLCleanerService.shared.syncWithPreferences()
                     }
@@ -119,11 +119,10 @@ struct URLCleanerSettings: View {
                     .disabled(!canClearInput)
                 }
                 HStack {
-                    Button(l10n.s.urlCleanerPasteButton) { paste() }
-                    Button(l10n.s.urlCleanerCleanButton) { clean() }
-                        .buttonStyle(.borderedProminent)
+                    PraxisButton(l10n.s.urlCleanerPasteButton, icon: "doc.on.clipboard", role: .secondary, size: .mini) { paste() }
+                    PraxisButton(l10n.s.urlCleanerCleanButton, icon: "wand.and.stars", role: .primary, size: .mini) { clean() }
                         .disabled(input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                    Button(l10n.s.urlCleanerCopyButton) { copy() }
+                    PraxisButton(l10n.s.urlCleanerCopyButton, icon: "doc.on.doc", role: .secondary, size: .mini) { copy() }
                         .disabled(output.isEmpty)
                 }
                 if output.isEmpty {

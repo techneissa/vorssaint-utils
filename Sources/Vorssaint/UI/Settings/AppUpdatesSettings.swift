@@ -40,7 +40,7 @@ struct AppUpdatesSettings: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
-                Toggle(text.notifyToggle, isOn: $notify)
+                PraxisSettingsToggle(label: text.notifyToggle, isOn: $notify)
                     .disabled(AppUpdatesSupport.CheckFrequency.sanitized(frequencyRaw) == .off)
                     .onChange(of: notify) { _, value in
                         guard value else { return }
@@ -49,12 +49,12 @@ struct AppUpdatesSettings: View {
             }
 
             Section(text.sourcesTitle) {
-                Toggle(text.includeHomebrewToggle, isOn: $includeHomebrewApps)
+                PraxisSettingsToggle(label: text.includeHomebrewToggle, isOn: $includeHomebrewApps)
                     .disabled(includeHomebrewApps && enabledSourceCount == 1)
                     .onChange(of: includeHomebrewApps) { _, _ in
                         updates.sourceSelectionDidChange()
                     }
-                Toggle(text.includeStoreToggle, isOn: $includeAppStore)
+                PraxisSettingsToggle(label: text.includeStoreToggle, isOn: $includeAppStore)
                     .disabled(includeAppStore && enabledSourceCount == 1)
                     .onChange(of: includeAppStore) { _, _ in
                         updates.sourceSelectionDidChange()
@@ -62,7 +62,7 @@ struct AppUpdatesSettings: View {
                 Text(text.includeStoreCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Toggle(text.includeOnlineToggle, isOn: $includeOnlineCatalog)
+                PraxisSettingsToggle(label: text.includeOnlineToggle, isOn: $includeOnlineCatalog)
                     .disabled(includeOnlineCatalog && enabledSourceCount == 1)
                     .onChange(of: includeOnlineCatalog) { _, _ in
                         updates.sourceSelectionDidChange()
@@ -73,7 +73,7 @@ struct AppUpdatesSettings: View {
             }
 
             Section {
-                Toggle(text.showInPanel, isOn: $showInPanel)
+                PraxisSettingsToggle(label: text.showInPanel, isOn: $showInPanel)
             }
         }
         .formStyle(.grouped)

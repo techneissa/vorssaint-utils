@@ -78,13 +78,13 @@ struct ScreenRecordingCaptureSettings: View {
                 }
                 .pickerStyle(.segmented)
                 VStack(alignment: .leading, spacing: 4) {
-                    Toggle(strings.systemAudioToggle, isOn: $systemAudio)
+                    PraxisSettingsToggle(label: strings.systemAudioToggle, isOn: $systemAudio)
                     Text(strings.systemAudioCaption)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
                 VStack(alignment: .leading, spacing: 4) {
-                    Toggle(strings.microphoneToggle, isOn: $microphone)
+                    PraxisSettingsToggle(label: strings.microphoneToggle, isOn: $microphone)
                         .onChange(of: microphone) { _, enabled in
                             if enabled, permissions.microphone == .undetermined {
                                 permissions.requestMicrophone()
@@ -98,7 +98,7 @@ struct ScreenRecordingCaptureSettings: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 4) {
-                    Toggle(strings.openEditorToggle, isOn: $opensEditor)
+                    PraxisSettingsToggle(label: strings.openEditorToggle, isOn: $opensEditor)
                     Text(strings.openEditorCaption)
                         .font(.caption)
                         .foregroundStyle(.secondary)

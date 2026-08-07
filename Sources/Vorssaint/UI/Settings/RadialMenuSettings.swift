@@ -61,7 +61,7 @@ struct RadialMenuSettings: View {
     var body: some View {
         Form {
             Section {
-                Toggle(text.enableLabel, isOn: $enabled)
+                PraxisSettingsToggle(label: text.enableLabel, isOn: $enabled)
                 Text(text.hubDescription)
                     .font(.caption)
                     .foregroundStyle(.secondary)

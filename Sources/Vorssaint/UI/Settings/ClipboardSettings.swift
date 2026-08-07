@@ -32,7 +32,7 @@ struct ClipboardSettings: View {
         Form {
             if AppFeature.clipboardHistory.isAvailable {
                 Section {
-                    Toggle(text.enable, isOn: $enabled)
+                    PraxisSettingsToggle(label: text.enable, isOn: $enabled)
                         .onChange(of: enabled) { _, _ in
                             ClipboardHistoryService.shared.syncWithPreferences()
                         }
@@ -53,12 +53,12 @@ struct ClipboardSettings: View {
                 clipboardShortcutSection
 
                 Section {
-                    Toggle(text.includeImagesFiles, isOn: $includeImagesFiles)
+                    PraxisSettingsToggle(label: text.includeImagesFiles, isOn: $includeImagesFiles)
                         .disabled(!enabled)
                     Text(text.includeImagesFilesCaption)
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Toggle(text.skipSensitive, isOn: $skipSensitive)
+                    PraxisSettingsToggle(label: text.skipSensitive, isOn: $skipSensitive)
                         .disabled(!enabled)
                     Text(text.skipSensitiveCaption)
                         .font(.caption)
@@ -78,7 +78,7 @@ struct ClipboardSettings: View {
                 // and still opens the saved items. Sitting among the disabled
                 // rows it read as one that had been missed.
                 Section {
-                    Toggle(text.showInPanel, isOn: $showInPanel)
+                    PraxisSettingsToggle(label: text.showInPanel, isOn: $showInPanel)
                 }
 
                 clipboardAutoClearSection
@@ -86,7 +86,7 @@ struct ClipboardSettings: View {
 
             if AppFeature.finderCutPaste.isAvailable {
                 Section {
-                    Toggle(text.pasteImageAsFile, isOn: $pasteImageAsFile)
+                    PraxisSettingsToggle(label: text.pasteImageAsFile, isOn: $pasteImageAsFile)
                         .onChange(of: pasteImageAsFile) { _, _ in
                             FinderCutPaste.shared.syncWithPreferences()
                         }
@@ -101,7 +101,7 @@ struct ClipboardSettings: View {
 
             if AppFeature.pastePlain.isAvailable {
                 Section {
-                    Toggle(l10n.s.pastePlainName, isOn: $pastePlainEnabled)
+                    PraxisSettingsToggle(label: l10n.s.pastePlainName, isOn: $pastePlainEnabled)
                         .onChange(of: pastePlainEnabled) { _, _ in
                             PastePlainService.shared.syncWithPreferences()
                         }
@@ -153,7 +153,7 @@ struct ClipboardSettings: View {
     @ViewBuilder
     private var clipboardShortcutSection: some View {
         Section(text.shortcut) {
-            Toggle(text.shortcut, isOn: $shortcutEnabled)
+            PraxisSettingsToggle(label: text.shortcut, isOn: $shortcutEnabled)
                 .onChange(of: shortcutEnabled) { _, _ in
                     ClipboardHistoryService.shared.syncHotkey()
                 }

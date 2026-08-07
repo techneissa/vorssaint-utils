@@ -53,9 +53,7 @@ struct PanelClipboardView: View {
 
     private var controls: some View {
         VStack(alignment: .leading, spacing: 7) {
-            Toggle(text.enable, isOn: $enabled)
-                .toggleStyle(.checkbox)
-                .font(.system(size: 11.5, weight: .medium))
+            TextToggleButton(title: text.enable, isOn: $enabled, help: text.caption)
                 .onChange(of: enabled) { _, _ in
                     ClipboardHistoryService.shared.syncWithPreferences()
                 }

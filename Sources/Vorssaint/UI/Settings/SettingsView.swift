@@ -158,7 +158,7 @@ struct GeneralSettings: View {
     var body: some View {
         Form {
             Section {
-                Toggle(l10n.s.launchAtLogin, isOn: $launchAtLogin)
+                PraxisSettingsToggle(label: l10n.s.launchAtLogin, isOn: $launchAtLogin)
                     .onChange(of: launchAtLogin) { _, enabled in
                         do {
                             try LaunchAtLogin.setEnabled(enabled)
@@ -205,7 +205,7 @@ struct GeneralSettings: View {
             }
             if AppFeature.keepAwake.isAvailable {
                 Section(l10n.s.globalHotkeySection) {
-                    Toggle(l10n.s.hotkeyToggle, isOn: $hotkeyEnabled)
+                    PraxisSettingsToggle(label: l10n.s.hotkeyToggle, isOn: $hotkeyEnabled)
                         .onChange(of: hotkeyEnabled) { _, enabled in
                             HotkeyManager.shared.setEnabled(enabled)
                         }
@@ -224,7 +224,7 @@ struct GeneralSettings: View {
             }
             if AppFeature.musicBlock.isAvailable {
                 Section(l10n.s.musicBlockSection) {
-                    Toggle(l10n.s.musicBlockTitle, isOn: $musicBlockEnabled)
+                    PraxisSettingsToggle(label: l10n.s.musicBlockTitle, isOn: $musicBlockEnabled)
                         .onChange(of: musicBlockEnabled) { _, _ in
                             MusicLaunchBlocker.shared.syncWithPreferences()
                         }
@@ -292,7 +292,7 @@ struct UpdatesView: View {
 
     var body: some View {
         Section(l10n.s.updatesSection) {
-            Toggle(l10n.s.autoCheckToggle, isOn: $autoCheck)
+            PraxisSettingsToggle(label: l10n.s.autoCheckToggle, isOn: $autoCheck)
                 .onChange(of: autoCheck) { _, value in
                     UpdateService.shared.autoCheckEnabled = value
                 }
@@ -610,7 +610,11 @@ struct MouseSettings: View {
         Form {
             if AppFeature.scrollInverter.isAvailable {
                 Section(l10n.s.scrollSection) {
-                    Toggle(l10n.s.invertMouseScroll, isOn: $inverterEnabled)
+                    PraxisSettingsToggle(
+                        label: l10n.s.invertMouseScroll,
+                        note: l10n.s.invertMouseScrollCaption,
+                        isOn: $inverterEnabled
+                    )
                         .onChange(of: inverterEnabled) { _, _ in
                             ScrollInverter.shared.syncWithPreferences()
                         }
@@ -623,9 +627,6 @@ struct MouseSettings: View {
                                 .foregroundStyle(.green)
                         }
                     }
-                    Text(l10n.s.invertMouseScrollCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                     Text(l10n.s.scrollTrackpadNote)
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -636,13 +637,14 @@ struct MouseSettings: View {
             }
             if AppFeature.smoothScroll.isAvailable {
                 Section(l10n.s.smoothScrollName) {
-                    Toggle(l10n.s.smoothScrollName, isOn: $smoothScrollEnabled)
+                    PraxisSettingsToggle(
+                        label: l10n.s.smoothScrollName,
+                        note: l10n.s.smoothScrollCaption,
+                        isOn: $smoothScrollEnabled
+                    )
                         .onChange(of: smoothScrollEnabled) { _, _ in
                             SmoothScrollService.shared.syncWithPreferences()
                         }
-                    Text(l10n.s.smoothScrollCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                     if smoothScrollEnabled {
                         HStack {
                             Slider(value: smoothScrollStepBinding,
@@ -683,13 +685,14 @@ struct MouseSettings: View {
             }
             if AppFeature.middleClick.isAvailable {
                 Section(l10n.s.middleClickSection) {
-                    Toggle(l10n.s.middleClickEnable, isOn: $middleClickEnabled)
+                    PraxisSettingsToggle(
+                        label: l10n.s.middleClickEnable,
+                        note: l10n.s.middleClickEnableCaption,
+                        isOn: $middleClickEnabled
+                    )
                         .onChange(of: middleClickEnabled) { _, _ in
                             MiddleClickService.shared.syncWithPreferences()
                         }
-                    Text(l10n.s.middleClickEnableCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                     if middleClickEnabled {
                         Picker(l10n.s.middleClickTapPicker, selection: $middleClickTapFingers) {
                             Text(l10n.s.middleClickTapOff).tag(0)
@@ -770,13 +773,14 @@ struct SwitcherSettings: View {
         Form {
             if AppFeature.switcher.isAvailable {
                 Section(l10n.s.switcherSection) {
-                    Toggle(l10n.s.switcherEnable, isOn: $switcherEnabled)
+                    PraxisSettingsToggle(
+                        label: l10n.s.switcherEnable,
+                        note: l10n.s.switcherEnableCaption,
+                        isOn: $switcherEnabled
+                    )
                         .onChange(of: switcherEnabled) { _, _ in
                             AppSwitcher.shared.syncWithPreferences()
                         }
-                    Text(l10n.s.switcherEnableCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                     ShortcutPreferenceRow(role: .switcher,
                                           isEnabled: switcherEnabled,
                                           label: l10n.s.switcherShortcutHintApps) {
@@ -795,14 +799,15 @@ struct SwitcherSettings: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
-                    Toggle(l10n.s.switcherSimpleMode, isOn: $switcherSimpleMode)
+                    PraxisSettingsToggle(
+                        label: l10n.s.switcherSimpleMode,
+                        note: l10n.s.switcherSimpleModeCaption,
+                        isOn: $switcherSimpleMode
+                    )
                         .disabled(!switcherEnabled)
                         .onChange(of: switcherSimpleMode) { _, _ in
                             AppSwitcher.shared.syncWithPreferences()
                         }
-                    Text(l10n.s.switcherSimpleModeCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
 
                     Toggle(l10n.s.switcherIconRowMode, isOn: $switcherIconRowMode)
                         .disabled(!switcherEnabled || switcherSimpleMode)
@@ -1246,13 +1251,7 @@ private struct SettingsToggleWithCaption: View {
     @Binding var isOn: Bool
 
     var body: some View {
-        Toggle(isOn: $isOn) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                SettingsCaptionText(caption)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
+        PraxisSettingsToggle(label: title, note: caption, isOn: $isOn)
     }
 }
 

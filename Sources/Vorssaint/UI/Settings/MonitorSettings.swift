@@ -50,7 +50,7 @@ struct MonitorSettings: View {
                 if appearance == .bars {
                     MenuBarUsageBarSettings(strings: appearanceStrings)
                 } else {
-                    Toggle(l10n.s.monitorCombineTemperatures, isOn: $combineTemperatures)
+                    PraxisSettingsToggle(label: l10n.s.monitorCombineTemperatures, isOn: $combineTemperatures)
                     Text(l10n.s.monitorCombineTemperaturesCaption)
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -60,11 +60,11 @@ struct MonitorSettings: View {
                     Text(l10n.s.menuBarSpacingCompact).tag("compact")
                 }
                 .pickerStyle(.segmented)
-                Toggle(l10n.s.menuBarHideIconToggle, isOn: $hideIconWithMetrics)
+                PraxisSettingsToggle(label: l10n.s.menuBarHideIconToggle, isOn: $hideIconWithMetrics)
                 Text(l10n.s.menuBarHideIconCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Toggle(l10n.s.monitorSeparateMenuBarMetrics, isOn: $separateMetrics)
+                PraxisSettingsToggle(label: l10n.s.monitorSeparateMenuBarMetrics, isOn: $separateMetrics)
                 if appearance.allowsCombinedTemperatures {
                     Text(l10n.s.monitorSeparateMenuBarMetricsCaption)
                         .font(.caption)
@@ -95,30 +95,30 @@ struct MonitorSettings: View {
                     .foregroundStyle(.secondary)
             }
             Section(l10n.s.fanControlBetaSection) {
-                Toggle(l10n.s.fanControlBetaShow, isOn: $showFanControlBeta)
+                PraxisSettingsToggle(label: l10n.s.fanControlBetaShow, isOn: $showFanControlBeta)
                 Text(l10n.s.fanControlBetaCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             Section(l10n.s.monitorGraphsSection) {
                 if AppFeature.monitorCPU.isAvailable {
-                    Toggle(l10n.s.monitorShowCPU, isOn: $graphCPU)
+                    PraxisSettingsToggle(label: l10n.s.monitorShowCPU, isOn: $graphCPU)
                 }
                 if AppFeature.monitorGPU.isAvailable {
-                    Toggle(l10n.s.monitorShowGPU, isOn: $graphGPU)
+                    PraxisSettingsToggle(label: l10n.s.monitorShowGPU, isOn: $graphGPU)
                 }
                 if AppFeature.monitorMemory.isAvailable {
-                    Toggle(l10n.s.monitorShowMemory, isOn: $graphMemory)
+                    PraxisSettingsToggle(label: l10n.s.monitorShowMemory, isOn: $graphMemory)
                 }
                 if AppFeature.monitorNetwork.isAvailable {
-                    Toggle(l10n.s.monitorShowNetwork, isOn: $graphNetwork)
+                    PraxisSettingsToggle(label: l10n.s.monitorShowNetwork, isOn: $graphNetwork)
                 }
                 if AppFeature.monitorDisk.isAvailable {
-                    Toggle(l10n.s.diskSection, isOn: $graphDisk)
+                    PraxisSettingsToggle(label: l10n.s.diskSection, isOn: $graphDisk)
                 }
                 if AppFeature.monitorPower.isAvailable {
-                    Toggle(l10n.s.monitorShowPowerLabel, isOn: $graphPower)
-                    Toggle(l10n.s.batteryLabel, isOn: $graphBattery)
+                    PraxisSettingsToggle(label: l10n.s.monitorShowPowerLabel, isOn: $graphPower)
+                    PraxisSettingsToggle(label: l10n.s.batteryLabel, isOn: $graphBattery)
                 }
                 Text(l10n.s.monitorGraphsCaption)
                     .font(.caption)

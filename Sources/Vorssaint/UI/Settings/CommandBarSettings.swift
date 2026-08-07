@@ -53,7 +53,7 @@ struct CommandBarSettings: View {
                             .background(Capsule().fill(Color.primary.opacity(0.06)))
                     }
                 }
-                Toggle(l10n.s.quickToolShortcutToggle, isOn: $shortcutEnabled)
+                PraxisSettingsToggle(label: l10n.s.quickToolShortcutToggle, isOn: $shortcutEnabled)
                     .onChange(of: shortcutEnabled) { _, _ in
                         CommandBarService.shared.syncWithPreferences()
                     }
@@ -71,10 +71,10 @@ struct CommandBarSettings: View {
 
             Section {
                 ForEach(CommandBarSource.allCases) { source in
-                    Toggle(isOn: binding(for: source)) {
-                        Label(title(for: source), systemImage: source.symbolName)
-                    }
-                    .disabled(source.isAlwaysOn)
+                    PraxisSettingsToggle(label: title(for: source),
+                                         icon: source.symbolName,
+                                         isOn: binding(for: source))
+                        .disabled(source.isAlwaysOn)
                 }
             } header: {
                 Text(text.sourcesTitle)

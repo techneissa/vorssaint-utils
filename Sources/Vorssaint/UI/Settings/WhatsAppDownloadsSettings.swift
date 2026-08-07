@@ -145,7 +145,7 @@ struct WhatsAppDownloadsSettings: View {
 
     private var automationSection: some View {
         Section {
-            Toggle(text.automatic, isOn: automaticBinding)
+            PraxisSettingsToggle(label: text.automatic, isOn: automaticBinding)
             Text(text.automaticCaption)
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -161,7 +161,7 @@ struct WhatsAppDownloadsSettings: View {
             Text(text.retentionCaption)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Toggle(l10n.s.cleanerScheduleNotifyToggle, isOn: $notify)
+            PraxisSettingsToggle(label: l10n.s.cleanerScheduleNotifyToggle, isOn: $notify)
                 .onChange(of: notify) { _, enabled in
                     if enabled { Notifier.requestPermission() }
                 }
@@ -220,7 +220,7 @@ struct WhatsAppDownloadsSettings: View {
             Text(organizerText.description)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Toggle(organizerText.enabled, isOn: $organizerEnabled)
+            PraxisSettingsToggle(label: organizerText.enabled, isOn: $organizerEnabled)
                 .onChange(of: organizerEnabled) { _, enabled in
                     if enabled {
                         manager.scan()

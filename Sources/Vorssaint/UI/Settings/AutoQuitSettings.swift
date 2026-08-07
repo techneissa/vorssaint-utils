@@ -13,7 +13,7 @@ struct AutoQuitSettings: View {
     var body: some View {
         Form {
             Section {
-                Toggle(l10n.s.autoQuitEnable, isOn: $enabled)
+                PraxisSettingsToggle(label: l10n.s.autoQuitEnable, isOn: $enabled)
                     .onChange(of: enabled) { _, _ in
                         AutoQuitService.shared.syncWithPreferences()
                     }

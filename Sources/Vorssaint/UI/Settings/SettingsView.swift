@@ -43,6 +43,7 @@ struct SettingsView: View {
         .frame(minWidth: 772, maxWidth: .infinity, minHeight: 528, maxHeight: .infinity)
         .onAppear { ensureVisiblePage() }
         .onChange(of: features.revision) { _, _ in ensureVisiblePage() }
+        .vorssaintNoFocusChrome()
     }
 
     /// macOS 27 backs the pinned sidebar search field with a hard top scroll
@@ -186,14 +187,6 @@ struct GeneralSettings: View {
                 }
                 .pickerStyle(.segmented)
             }
-            Section(l10n.s.menuBarSection) {
-                Button(l10n.s.showMenuBarIcon) {
-                    appDelegate()?.reshowStatusItem()
-                }
-                Text(l10n.s.showMenuBarIconCaption)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
             // The panel hosts more than monitoring, so its layout editor lives
             // here with the app-wide options rather than on the Monitor page
             // (which the hub can hide entirely).
@@ -234,7 +227,9 @@ struct GeneralSettings: View {
                             Spacer()
                             Text(musicBlockReplacementName)
                                 .foregroundStyle(.secondary)
-                            Button(l10n.s.musicBlockChooseApp) { chooseMusicReplacement() }
+                            PraxisButton(l10n.s.musicBlockChooseApp, role: .secondary, size: .mini) {
+                                chooseMusicReplacement()
+                            }
                             if !musicBlockReplacementPath.isEmpty {
                                 Button {
                                     musicBlockReplacementPath = ""
@@ -300,16 +295,15 @@ struct UpdatesView: View {
             statusRow
 
             HStack {
-                Button(l10n.s.checkNowButton) {
+                PraxisButton(l10n.s.checkNowButton, icon: "arrow.clockwise", role: .secondary) {
                     updates.check(manual: true)
                 }
                 .disabled(isBusy)
 
                 if case .available = updates.state {
-                    Button(l10n.s.updateInstallButton) {
+                    PraxisButton(l10n.s.updateInstallButton, icon: "arrow.down.circle", role: .primary) {
                         appDelegate()?.showUpdatePreview()
                     }
-                    .buttonStyle(.borderedProminent)
                 }
             }
 
@@ -411,7 +405,7 @@ struct EnergySettings: View {
                     // The countdown is a Keep Awake session readout, so it sits
                     // with the session options. Under the General page's menu
                     // bar section the label gave no clue which time it meant.
-                    Toggle(l10n.s.showCountdown, isOn: $showCountdown)
+                    PraxisSettingsToggle(label: l10n.s.showCountdown, isOn: $showCountdown)
                 }
                 Section(automationStrings.automationSection) {
                     SettingsCaptionText(automationStrings.automationCaption)
@@ -445,7 +439,7 @@ struct EnergySettings: View {
                     }
                 }
                 Section(l10n.s.clamshellSection) {
-                    Toggle(l10n.s.clamshellTitle, isOn: $awake.clamshellPreferred)
+                    PraxisSettingsToggle(label: l10n.s.clamshellTitle, isOn: $awake.clamshellPreferred)
                         .disabled(awake.clamshellSetupInProgress)
                     if awake.clamshellSetupInProgress {
                         Text(l10n.s.configuring)
@@ -507,7 +501,7 @@ struct EnergySettings: View {
             if AppFeature.extraBrightness.isAvailable {
                 Section(l10n.s.extraBrightnessName) {
                     if extraBrightness.supported {
-                        Toggle(l10n.s.extraBrightnessName, isOn: $extraBrightnessEnabled)
+                        PraxisSettingsToggle(label: l10n.s.extraBrightnessName, isOn: $extraBrightnessEnabled)
                             .onChange(of: extraBrightnessEnabled) { _, _ in
                                 ExtraBrightnessService.shared.syncWithPreferences()
                             }
@@ -663,7 +657,7 @@ struct MouseSettings: View {
             }
             if AppFeature.mouseNavigation.isAvailable {
                 Section(l10n.s.mouseNavigationSection) {
-                    Toggle(l10n.s.mouseNavigationEnable, isOn: $mouseNavigationEnabled)
+                    PraxisSettingsToggle(label: l10n.s.mouseNavigationEnable, isOn: $mouseNavigationEnabled)
                         .onChange(of: mouseNavigationEnabled) { _, _ in
                             MouseNavigationService.shared.syncWithPreferences()
                         }
@@ -809,7 +803,7 @@ struct SwitcherSettings: View {
                             AppSwitcher.shared.syncWithPreferences()
                         }
 
-                    Toggle(l10n.s.switcherIconRowMode, isOn: $switcherIconRowMode)
+                    PraxisSettingsToggle(label: l10n.s.switcherIconRowMode, isOn: $switcherIconRowMode)
                         .disabled(!switcherEnabled || switcherSimpleMode)
                         .onChange(of: switcherIconRowMode) { _, _ in
                             AppSwitcher.shared.syncWithPreferences()
@@ -818,13 +812,13 @@ struct SwitcherSettings: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
-                    Toggle(l10n.s.switcherMergeTabs, isOn: $switcherMergeTabs)
+                    PraxisSettingsToggle(label: l10n.s.switcherMergeTabs, isOn: $switcherMergeTabs)
                         .disabled(!switcherEnabled)
                     Text(l10n.s.switcherMergeTabsCaption)
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
-                    Toggle(l10n.s.switcherCurrentSpaceOnly, isOn: $switcherCurrentSpaceOnly)
+                    PraxisSettingsToggle(label: l10n.s.switcherCurrentSpaceOnly, isOn: $switcherCurrentSpaceOnly)
                         .disabled(!switcherEnabled)
                     Text(l10n.s.switcherCurrentSpaceOnlyCaption)
                         .font(.caption)
@@ -844,7 +838,7 @@ struct SwitcherSettings: View {
             if AppFeature.dockPreview.isAvailable || AppFeature.dockClick.isAvailable {
                 Section {
                     if AppFeature.dockPreview.isAvailable {
-                        Toggle(l10n.s.dockPreviewEnable, isOn: $dockPreviewEnabled)
+                        PraxisSettingsToggle(label: l10n.s.dockPreviewEnable, isOn: $dockPreviewEnabled)
                             .onChange(of: dockPreviewEnabled) { _, _ in
                                 DockPreviewService.shared.syncWithPreferences()
                             }
@@ -866,14 +860,14 @@ struct SwitcherSettings: View {
                         }
                     }
                     if AppFeature.dockClick.isAvailable {
-                        Toggle(l10n.s.dockClickMinimize, isOn: $dockClickMinimize)
+                        PraxisSettingsToggle(label: l10n.s.dockClickMinimize, isOn: $dockClickMinimize)
                             .onChange(of: dockClickMinimize) { _, _ in
                                 DockClickService.shared.syncWithPreferences()
                             }
                         Text(l10n.s.dockClickMinimizeCaption)
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        Toggle(l10n.s.dockClickCycleWindows, isOn: $dockClickCycleWindows)
+                        PraxisSettingsToggle(label: l10n.s.dockClickCycleWindows, isOn: $dockClickCycleWindows)
                             .onChange(of: dockClickCycleWindows) { _, _ in
                                 DockClickService.shared.syncWithPreferences()
                             }
@@ -986,7 +980,7 @@ struct AboutSettings: View {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
             HStack(spacing: 12) {
-                Button(l10n.s.reviewIntro) {
+                PraxisButton(l10n.s.reviewIntro, icon: "sparkles", role: .secondary) {
                     appDelegate()?.showOnboarding()
                 }
                 Link(l10n.s.viewOnGitHub, destination: AppInfo.repositoryURL)
@@ -1289,14 +1283,14 @@ struct PermissionRow: View {
             }
             if !granted {
                 HStack(spacing: 8) {
-                    Button(l10n.s.permissionRequest) {
+                    PraxisButton(l10n.s.permissionRequest, icon: "hand.raised", role: .secondary, size: .mini) {
                         if kind == .accessibility {
                             permissions.requestAccessibility()
                         } else {
                             permissions.requestScreenRecording()
                         }
                     }
-                    Button(l10n.s.permissionOpenSettings) {
+                    PraxisButton(l10n.s.permissionOpenSettings, icon: "gearshape", role: .ghost, size: .mini) {
                         if kind == .accessibility {
                             permissions.openAccessibilitySettings()
                         } else {
@@ -1304,7 +1298,6 @@ struct PermissionRow: View {
                         }
                     }
                 }
-                .controlSize(.small)
             }
         }
     }

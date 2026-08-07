@@ -47,52 +47,52 @@ struct MonitorPanelConfig: View {
             block(.system, title: l10n.s.systemSection, master: $showSystem) {
                 if AppFeature.monitorCPU.isAvailable || AppFeature.monitorGPU.isAvailable
                     || AppFeature.monitorPower.isAvailable {
-                    Toggle(l10n.s.temperatures, isOn: $sysTemps)
+                    PraxisSettingsToggle(label: l10n.s.temperatures, isOn: $sysTemps)
                 }
                 if AppFeature.monitorCPU.isAvailable {
-                    Toggle(l10n.s.cpuLabel, isOn: $sysCPU)
+                    PraxisSettingsToggle(label: l10n.s.cpuLabel, isOn: $sysCPU)
                 }
                 if AppFeature.monitorGPU.isAvailable {
-                    Toggle(l10n.s.gpuLabel, isOn: $sysGPU)
+                    PraxisSettingsToggle(label: l10n.s.gpuLabel, isOn: $sysGPU)
                 }
                 if AppFeature.monitorPower.isAvailable {
-                    Toggle(l10n.s.batteryLabel, isOn: $sysBattery)
+                    PraxisSettingsToggle(label: l10n.s.batteryLabel, isOn: $sysBattery)
                 }
                 if AppFeature.monitorMemory.isAvailable {
-                    Toggle(l10n.s.memorySection, isOn: $sysMemory)
+                    PraxisSettingsToggle(label: l10n.s.memorySection, isOn: $sysMemory)
                 }
-                Toggle(l10n.s.monitorItemUptime, isOn: $sysUptime)
+                PraxisSettingsToggle(label: l10n.s.monitorItemUptime, isOn: $sysUptime)
             }
         }
         if AppFeature.monitorNetwork.isAvailable {
             block(.network, title: l10n.s.networkSection, master: $showNetwork) {
-                Toggle(l10n.s.monitorItemNetSpeed, isOn: $netSpeed)
-                Toggle(l10n.s.networkApps, isOn: $netApps)
-                Toggle(l10n.s.monitorItemNetTotals, isOn: $netTotals)
-                Toggle(l10n.s.monitorItemNetTest, isOn: $netTest)
+                PraxisSettingsToggle(label: l10n.s.monitorItemNetSpeed, isOn: $netSpeed)
+                PraxisSettingsToggle(label: l10n.s.networkApps, isOn: $netApps)
+                PraxisSettingsToggle(label: l10n.s.monitorItemNetTotals, isOn: $netTotals)
+                PraxisSettingsToggle(label: l10n.s.monitorItemNetTest, isOn: $netTest)
             }
         }
         if AppFeature.monitorDisk.isAvailable {
             block(.disk, title: l10n.s.diskSection, master: $showDisk) {
-                Toggle(l10n.s.monitorItemDiskUsage, isOn: $diskUsage)
-                Toggle(l10n.s.monitorItemDiskActivity, isOn: $diskActivity)
-                Toggle(l10n.s.monitorItemDiskSMART, isOn: $diskSMART)
-                Toggle(l10n.s.monitorItemDiskProtection, isOn: $diskProtection)
-                Toggle(l10n.s.monitorItemDiskTools, isOn: $diskTools)
+                PraxisSettingsToggle(label: l10n.s.monitorItemDiskUsage, isOn: $diskUsage)
+                PraxisSettingsToggle(label: l10n.s.monitorItemDiskActivity, isOn: $diskActivity)
+                PraxisSettingsToggle(label: l10n.s.monitorItemDiskSMART, isOn: $diskSMART)
+                PraxisSettingsToggle(label: l10n.s.monitorItemDiskProtection, isOn: $diskProtection)
+                PraxisSettingsToggle(label: l10n.s.monitorItemDiskTools, isOn: $diskTools)
             }
         }
         if AppFeature.monitorPower.isAvailable {
             block(.power, title: l10n.s.powerSection, master: $showPower) {
-                Toggle(l10n.s.powerSystem, isOn: $pwrSystem)
-                Toggle(l10n.s.powerAdapter, isOn: $pwrAdapter)
-                Toggle(l10n.s.powerBattery, isOn: $pwrBattery)
-                Toggle(FeatureStrings.batteryTime(l10n.language).title, isOn: $pwrTimeRemaining)
-                Toggle(l10n.s.powerHealth, isOn: $pwrHealth)
+                PraxisSettingsToggle(label: l10n.s.powerSystem, isOn: $pwrSystem)
+                PraxisSettingsToggle(label: l10n.s.powerAdapter, isOn: $pwrAdapter)
+                PraxisSettingsToggle(label: l10n.s.powerBattery, isOn: $pwrBattery)
+                PraxisSettingsToggle(label: FeatureStrings.batteryTime(l10n.language).title, isOn: $pwrTimeRemaining)
+                PraxisSettingsToggle(label: l10n.s.powerHealth, isOn: $pwrHealth)
             }
         }
         // The mixer is a per-app list, so it has no sub-items — just show/hide.
         if AppFeature.mixer.isAvailable {
-            Toggle(l10n.s.mixerSection, isOn: $showMixer)
+            PraxisSettingsToggle(label: l10n.s.mixerSection, isOn: $showMixer)
         }
     }
 
@@ -104,7 +104,7 @@ struct MonitorPanelConfig: View {
                                       master: Binding<Bool>,
                                       @ViewBuilder _ items: @escaping () -> Content) -> some View {
         DisclosureGroup(isExpanded: expansionBinding(for: id)) {
-            Toggle(l10n.s.monitorShowInPanel, isOn: master)
+            PraxisSettingsToggle(label: l10n.s.monitorShowInPanel, isOn: master)
             items()
                 .disabled(!master.wrappedValue)
         } label: {

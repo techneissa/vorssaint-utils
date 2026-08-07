@@ -58,7 +58,7 @@ struct ScreenshotSettings: View {
                 Text(strings.panelCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Toggle(l10n.s.quickToolShortcutToggle, isOn: $shortcutEnabled)
+                PraxisSettingsToggle(label: l10n.s.quickToolShortcutToggle, isOn: $shortcutEnabled)
                     .onChange(of: shortcutEnabled) { _, _ in
                         ScreenshotService.shared.syncWithPreferences()
                     }
@@ -71,7 +71,7 @@ struct ScreenshotSettings: View {
                         .font(.caption)
                         .foregroundStyle(.orange)
                 }
-                Toggle(strings.fullScreenShortcutTitle, isOn: $fullScreenShortcutEnabled)
+                PraxisSettingsToggle(label: strings.fullScreenShortcutTitle, isOn: $fullScreenShortcutEnabled)
                     .onChange(of: fullScreenShortcutEnabled) { _, _ in
                         ScreenshotService.shared.syncWithPreferences()
                     }
@@ -84,7 +84,7 @@ struct ScreenshotSettings: View {
                         .font(.caption)
                         .foregroundStyle(.orange)
                 }
-                Toggle(strings.editLastCapture, isOn: $lastCaptureShortcutEnabled)
+                PraxisSettingsToggle(label: strings.editLastCapture, isOn: $lastCaptureShortcutEnabled)
                     .onChange(of: lastCaptureShortcutEnabled) { _, _ in
                         ScreenshotService.shared.syncWithPreferences()
                     }
@@ -106,7 +106,7 @@ struct ScreenshotSettings: View {
             }
 
             Section {
-                Toggle(strings.freezeToggle, isOn: $freeze)
+                PraxisSettingsToggle(label: strings.freezeToggle, isOn: $freeze)
                 Text(strings.freezeCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -120,20 +120,20 @@ struct ScreenshotSettings: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                Toggle(strings.pointerToggle, isOn: $includePointer)
-                Toggle(strings.lastRegionToggle, isOn: $showLastRegion)
+                PraxisSettingsToggle(label: strings.pointerToggle, isOn: $includePointer)
+                PraxisSettingsToggle(label: strings.lastRegionToggle, isOn: $showLastRegion)
                 defaultActionRow
             }
 
             Section {
-                Toggle(strings.autoCopyToggle, isOn: $copyToClipboard)
+                PraxisSettingsToggle(label: strings.autoCopyToggle, isOn: $copyToClipboard)
                 Text(strings.autoCopyCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 folderRow
                 subfolderRow
                 fileNameRow
-                Toggle(strings.downscaleToggle, isOn: $downscale)
+                PraxisSettingsToggle(label: strings.downscaleToggle, isOn: $downscale)
                 Text(strings.downscaleCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)

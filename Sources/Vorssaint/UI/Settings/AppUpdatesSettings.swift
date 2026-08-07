@@ -37,7 +37,7 @@ struct AppUpdatesSettings: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
-                Toggle(text.notifyToggle, isOn: $notify)
+                PraxisSettingsToggle(label: text.notifyToggle, isOn: $notify)
                     .disabled(AppUpdatesSupport.CheckFrequency.sanitized(frequencyRaw) == .off)
                     .onChange(of: notify) { _, value in
                         guard value else { return }
@@ -46,11 +46,11 @@ struct AppUpdatesSettings: View {
             }
 
             Section {
-                Toggle(text.includeStoreToggle, isOn: $includeAppStore)
+                PraxisSettingsToggle(label: text.includeStoreToggle, isOn: $includeAppStore)
                 Text(text.includeStoreCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Toggle(text.showInPanel, isOn: $showInPanel)
+                PraxisSettingsToggle(label: text.showInPanel, isOn: $showInPanel)
             }
         }
         .formStyle(.grouped)

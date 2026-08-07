@@ -30,7 +30,7 @@ struct MouseButtonShortcutsSection: View {
 
     var body: some View {
         Section(text.pageTitle) {
-            Toggle(text.enableLabel, isOn: $enabled)
+            PraxisSettingsToggle(label: text.enableLabel, isOn: $enabled)
                 .onChange(of: enabled) { _, on in
                     if !on { stopCapture() }
                     MouseButtonShortcutService.shared.syncWithPreferences()

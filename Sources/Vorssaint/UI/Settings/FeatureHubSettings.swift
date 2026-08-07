@@ -38,16 +38,15 @@ struct FeatureHubSettings: View {
                             .font(.caption)
                             .foregroundStyle(.tertiary)
                         Spacer(minLength: 8)
-                        Button(hub.installAllButton) {
+                        PraxisButton(hub.installAllButton, role: .secondary, size: .mini) {
                             FeatureRuntime.shared.setAllAvailable(true)
                         }
                         .disabled(features.availableCount == AppFeature.allCases.count)
-                        Button(hub.uninstallAllButton) {
+                        PraxisButton(hub.uninstallAllButton, role: .ghost, size: .mini) {
                             FeatureRuntime.shared.setAllAvailable(false)
                         }
                         .disabled(features.availableCount == 0)
                     }
-                    .controlSize(.small)
                 }
             }
             // The restart notice lives at the very top, never behind a
@@ -62,10 +61,9 @@ struct FeatureHubSettings: View {
                             .font(.callout)
                             .fixedSize(horizontal: false, vertical: true)
                         Spacer(minLength: 10)
-                        Button(hub.restartButton) {
+                        PraxisButton(hub.restartButton, icon: "arrow.clockwise", role: .primary) {
                             FeatureRuntime.shared.relaunchApp()
                         }
-                        .buttonStyle(.borderedProminent)
                     }
                     .padding(.vertical, 4)
                     .listRowBackground(Color.accentColor.opacity(0.12))
@@ -199,9 +197,7 @@ private struct PresetCard: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
             Spacer(minLength: 0)
-            Button(applyTitle, action: onApply)
-                .buttonStyle(.bordered)
-                .controlSize(.small)
+            PraxisButton(applyTitle, role: .secondary, size: .mini, action: onApply)
         }
         .padding(9)
         .frame(maxWidth: .infinity, minHeight: 96, alignment: .topLeading)
@@ -277,13 +273,9 @@ private struct FeatureHubRow: View {
                 ProgressView()
                     .controlSize(.small)
             } else if installed {
-                Button(hub.uninstallButton) { flip(to: false) }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
+                PraxisButton(hub.uninstallButton, role: .ghost, size: .mini) { flip(to: false) }
             } else {
-                Button(hub.installButton) { flip(to: true) }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.small)
+                PraxisButton(hub.installButton, role: .primary, size: .mini) { flip(to: true) }
             }
         }
         .padding(.vertical, 1)
@@ -323,6 +315,18 @@ struct PermissionsPortalSections: View {
     }
 
     var body: some View {
+        if AppInfo.isDeveloperBuild {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Developer build")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.orange)
+                Text("This is Vorssaint (Developer) — bundle ID com.vorssaint.utils.dev. macOS permissions granted to the regular Vorssaint app do not apply here. Enable each permission again for this app in System Settings (look for “Vorssaint (Developer)”).")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.vertical, 2)
+        }
         ForEach(visiblePermissions, id: \.self) { permission in
             PermissionPortalRow(permission: permission,
                                 hub: hub,
@@ -423,11 +427,10 @@ private struct PermissionPortalRow: View {
                 }
                 HStack(spacing: 8) {
                     if status != .granted, hasRequestFlow {
-                        Button(hub.requestButton) { request() }
+                        PraxisButton(hub.requestButton, role: .secondary, size: .mini) { request() }
                     }
-                    Button(hub.openSystemSettings) { openSystemSettings() }
+                    PraxisButton(hub.openSystemSettings, role: .ghost, size: .mini) { openSystemSettings() }
                 }
-                .controlSize(.small)
                 .padding(.top, 2)
             }
         }

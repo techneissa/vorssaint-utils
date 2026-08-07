@@ -17,6 +17,7 @@ struct DiskSection: View {
     @AppStorage(DefaultsKey.monitorDiskProtection) private var diskProtection = true
     @AppStorage(DefaultsKey.monitorDiskTools) private var diskTools = true
     @AppStorage(DefaultsKey.panelDiskOrder) private var diskOrderRaw = ""
+    @AppStorage(DefaultsKey.panelDiskShowEjectButtons) private var showEjectButtons = true
     @AppStorage(DefaultsKey.temperatureUnit) private var temperatureUnit = TemperatureUnit.celsius.rawValue
     @State private var draggingBlock: Block?
     @State private var selectedDiskID: String?
@@ -140,9 +141,26 @@ struct DiskSection: View {
     @ViewBuilder
     private var diskSelector: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(l10n.s.diskSelect)
-                .font(.system(size: 10, weight: .medium))
-                .foregroundStyle(.tertiary)
+            HStack(spacing: 6) {
+                Text(l10n.s.diskSelect)
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(.tertiary)
+                Spacer(minLength: 0)
+                Button {
+                    showEjectButtons.toggle()
+                } label: {
+                    Image(systemName: showEjectButtons ? "eye" : "eye.slash")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(showEjectButtons ? Color.secondary : Color.secondary.opacity(0.7))
+                        .frame(width: 22, height: 22)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .praxisNoFocusRing()
+                .praxisHoverTint(cornerRadius: 6, hoverOpacity: 0.1)
+                .help(showEjectButtons ? "Hide eject buttons" : "Show eject buttons")
+                .accessibilityLabel(showEjectButtons ? "Hide eject buttons" : "Show eject buttons")
+            }
             LazyVGrid(columns: diskSelectorColumns, alignment: .leading, spacing: 6) {
                 ForEach(disks) { disk in
                     diskSelectorButton(for: disk)
@@ -157,7 +175,9 @@ struct DiskSection: View {
     }
 
     private func diskSelectorButton(for disk: DiskDeviceReading) -> some View {
-        HStack(spacing: 0) {
+        let selected = disk.id == selectedDisk?.id
+        let showEject = showEjectButtons && disk.canEject
+        return HStack(spacing: 0) {
             Button {
                 selectedDiskID = disk.id
             } label: {
@@ -177,13 +197,14 @@ struct DiskSection: View {
                     Spacer(minLength: 0)
                 }
                 .padding(.leading, 8)
-                .padding(.trailing, disk.canEject ? 2 : 8)
+                .padding(.trailing, showEject ? 2 : 8)
                 .padding(.vertical, 6)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            if disk.canEject {
+            .praxisNoFocusRing()
+            if showEject {
                 DiskSelectorEjectButton(state: protection.state(for: disk),
                                         idleHelp: l10n.s.diskEject,
                                         busyHelp: l10n.s.diskEjecting,
@@ -194,12 +215,14 @@ struct DiskSection: View {
                 .padding(.trailing, 5)
             }
         }
-        .background(selectorBackground(for: disk))
+        .praxisHoverTint(
+            cornerRadius: 8,
+            idleOpacity: 0.06,
+            hoverOpacity: 0.11,
+            selected: selected,
+            selectedOpacity: 0.16
+        )
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-    }
-
-    private func selectorBackground(for disk: DiskDeviceReading) -> some ShapeStyle {
-        disk.id == selectedDisk?.id ? Color.accentColor.opacity(0.18) : Color.primary.opacity(0.06)
     }
 
     @ViewBuilder

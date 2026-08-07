@@ -125,6 +125,7 @@ struct MenuPanelView: View {
         .onChange(of: panelFocus.request) { _, request in
             applyFocus(request)
         }
+        .vorssaintNoFocusChrome()
     }
 
     private var monitorNeeds: SystemMonitorPanelNeeds {
@@ -324,10 +325,14 @@ struct MenuPanelView: View {
                         .contentShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(isActive ? Color.accentColor : Color.secondary.opacity(0.86))
-                .background(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(isActive ? navigationActiveFill : Color.clear)
+                .praxisNoFocusRing()
+                // Neutral selection — no system-accent blue outline/fill.
+                .foregroundStyle(isActive ? Color.primary : Color.secondary.opacity(0.86))
+                .praxisHoverTint(
+                    cornerRadius: 8,
+                    hoverOpacity: 0.10,
+                    selected: isActive,
+                    selectedOpacity: colorScheme == .light ? 0.08 : 0.14
                 )
                 .help(id.title(l10n.s))
             }
@@ -341,10 +346,12 @@ struct MenuPanelView: View {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .strokeBorder(PanelSurface.border(for: colorScheme), lineWidth: 0.7)
         )
+        .praxisNoFocusRing()
     }
 
     private var navigationActiveFill: Color {
-        colorScheme == .light ? Color.accentColor.opacity(0.13) : Color.accentColor.opacity(0.20)
+        // Kept for any remaining call sites; section tabs use praxisHoverTint.
+        colorScheme == .light ? Color.primary.opacity(0.08) : Color.primary.opacity(0.14)
     }
 
     private func metricNavigationHeader(_ kind: MetricDetailKind) -> some View {
@@ -432,6 +439,8 @@ struct MenuPanelView: View {
                 .contentShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
         }
         .buttonStyle(.plain)
+        .praxisNoFocusRing()
+        .praxisHoverTint(cornerRadius: 7, hoverOpacity: 0.10)
         .foregroundStyle(.secondary)
     }
 }
@@ -1732,8 +1741,11 @@ struct UtilityActionButton: View {
                         .panelCard()
                 }
                 .buttonStyle(.plain)
+                .praxisNoFocusRing()
             }
         }
+        .praxisNoFocusRing()
+        .praxisHoverTint(cornerRadius: 10, hoverOpacity: 0.06)
     }
 
     private func rowContent(showChevron: Bool) -> some View {

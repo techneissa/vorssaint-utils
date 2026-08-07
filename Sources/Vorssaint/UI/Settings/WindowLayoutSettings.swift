@@ -24,7 +24,7 @@ struct WindowLayoutSettings: View {
     var body: some View {
         Form {
             Section {
-                Toggle(text.showInPanel, isOn: $showInPanel)
+                PraxisSettingsToggle(label: text.showInPanel, isOn: $showInPanel)
                 Text(text.caption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -40,7 +40,7 @@ struct WindowLayoutSettings: View {
             }
 
             Section(text.gestureSection) {
-                Toggle(text.gestureEnable, isOn: $gestureEnabled)
+                PraxisSettingsToggle(label: text.gestureEnable, isOn: $gestureEnabled)
                     .onChange(of: gestureEnabled) { _, _ in
                         WindowLayoutService.shared.syncWithPreferences()
                     }
@@ -59,12 +59,12 @@ struct WindowLayoutSettings: View {
                     Text(text.gestureResizeHint)
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Toggle(text.gestureRaiseWindow, isOn: $gestureRaiseWindow)
+                    PraxisSettingsToggle(label: text.gestureRaiseWindow, isOn: $gestureRaiseWindow)
                 }
             }
 
             Section(text.shortcuts) {
-                Toggle(text.shortcuts, isOn: $shortcutsEnabled)
+                PraxisSettingsToggle(label: text.shortcuts, isOn: $shortcutsEnabled)
                     .onChange(of: shortcutsEnabled) { _, _ in
                         WindowLayoutService.shared.syncWithPreferences()
                     }
@@ -79,7 +79,7 @@ struct WindowLayoutSettings: View {
             }
 
             Section {
-                Toggle(l10n.s.dockClickCycleWindows, isOn: $dockClickCycleWindows)
+                PraxisSettingsToggle(label: l10n.s.dockClickCycleWindows, isOn: $dockClickCycleWindows)
                     .onChange(of: dockClickCycleWindows) { _, _ in
                         DockClickService.shared.syncWithPreferences()
                     }

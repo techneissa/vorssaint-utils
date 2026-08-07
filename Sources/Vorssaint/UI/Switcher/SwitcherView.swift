@@ -44,8 +44,10 @@ struct SwitcherView: View {
                                              simpleMode: simpleMode),
            !switcher.windows.isEmpty {
             iconRowPanel
+                .vorssaintNoFocusChrome()
         } else {
             standardPanel
+                .vorssaintNoFocusChrome()
         }
     }
 

@@ -24,7 +24,7 @@ struct TextSnippetsSettings: View {
     var body: some View {
         Form {
             Section {
-                Toggle(text.enable, isOn: $enabled)
+                PraxisSettingsToggle(label: text.enable, isOn: $enabled)
                     .onChange(of: enabled) { _, _ in
                         TextSnippetService.shared.syncWithPreferences()
                     }
@@ -37,7 +37,7 @@ struct TextSnippetsSettings: View {
             }
 
             Section {
-                Toggle(text.libraryToggle, isOn: $libraryEnabled)
+                PraxisSettingsToggle(label: text.libraryToggle, isOn: $libraryEnabled)
                     .onChange(of: libraryEnabled) { _, _ in
                         SnippetLibraryService.shared.syncWithPreferences()
                     }
@@ -231,7 +231,7 @@ private struct SnippetEditor: View {
                     Text(text.expansionDelimiter).tag(TextSnippet.Expansion.afterDelimiter)
                     Text(text.expansionImmediate).tag(TextSnippet.Expansion.immediate)
                 }
-                Toggle(text.ignoreCaseLabel, isOn: $snippet.ignoresCase)
+                PraxisSettingsToggle(label: text.ignoreCaseLabel, isOn: $snippet.ignoresCase)
                 HStack(spacing: 6) {
                     TextField(text.folderLabel, text: $snippet.folder, prompt: Text(text.folderPlaceholder))
                     if !folderSuggestions.isEmpty {
@@ -246,7 +246,7 @@ private struct SnippetEditor: View {
                         .fixedSize()
                     }
                 }
-                Toggle(text.showInLibraryLabel, isOn: $snippet.showsInLibrary)
+                PraxisSettingsToggle(label: text.showInLibraryLabel, isOn: $snippet.showsInLibrary)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(text.replacementLabel)
                     TextEditor(text: $snippet.replacement)

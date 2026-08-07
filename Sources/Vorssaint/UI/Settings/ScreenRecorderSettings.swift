@@ -42,7 +42,7 @@ struct ScreenRecorderSettings: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .monospacedDigit()
-                Toggle(l10n.s.quickToolShortcutToggle, isOn: $shortcutEnabled)
+                PraxisSettingsToggle(label: l10n.s.quickToolShortcutToggle, isOn: $shortcutEnabled)
                     .onChange(of: shortcutEnabled) { _, _ in
                         ScreenRecorderService.shared.syncWithPreferences()
                     }
@@ -77,13 +77,13 @@ struct ScreenRecorderSettings: View {
                 }
                 .pickerStyle(.segmented)
                 VStack(alignment: .leading, spacing: 4) {
-                    Toggle(strings.systemAudioToggle, isOn: $systemAudio)
+                    PraxisSettingsToggle(label: strings.systemAudioToggle, isOn: $systemAudio)
                     Text(strings.systemAudioCaption)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
                 VStack(alignment: .leading, spacing: 4) {
-                    Toggle(strings.openEditorToggle, isOn: $opensEditor)
+                    PraxisSettingsToggle(label: strings.openEditorToggle, isOn: $opensEditor)
                     Text(strings.openEditorCaption)
                         .font(.caption)
                         .foregroundStyle(.secondary)

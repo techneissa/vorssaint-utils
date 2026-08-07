@@ -2598,21 +2598,7 @@ struct KeepAwakeCard: View {
                                      isOn: Binding<Bool>,
                                      errorText: String? = nil) -> some View {
         VStack(alignment: .leading, spacing: 3) {
-            HStack(spacing: 7) {
-                Image(systemName: icon)
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(.secondary)
-                    .frame(width: 15)
-                Text(title)
-                    .font(.system(size: 11, weight: .medium))
-                    .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
-                Spacer(minLength: 8)
-                Toggle("", isOn: isOn)
-                    .toggleStyle(.switch)
-                    .controlSize(.mini)
-                    .labelsHidden()
-            }
+            PraxisSettingsToggle(label: title, icon: icon, compact: true, isOn: isOn)
             if let errorText {
                 Text(errorText)
                     .font(.system(size: 9.5))

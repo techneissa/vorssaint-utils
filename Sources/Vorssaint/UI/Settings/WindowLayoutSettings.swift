@@ -345,10 +345,8 @@ private struct WindowLayoutActionRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 8) {
-                Button {
+                PraxisButton(title, icon: symbol, role: .secondary, size: .mini) {
                     WindowLayoutService.shared.apply(action)
-                } label: {
-                    Label(title, systemImage: symbol)
                 }
                 .disabled(!applyEnabled)
                 Spacer()
@@ -379,7 +377,7 @@ private struct WindowLayoutActionRow: View {
                 .disabled(!shortcutEnabled || shortcut == nil)
                 .help(l10n.s.shortcutClear)
                 .accessibilityLabel(l10n.s.shortcutClear)
-                Button(l10n.s.shortcutReset) {
+                PraxisButton(l10n.s.shortcutReset, icon: "arrow.counterclockwise", role: .ghost, size: .mini) {
                     rawValue = action.defaultShortcut?.storageValue
                         ?? WindowLayoutAction.clearedShortcutStorageValue
                     errorText = nil

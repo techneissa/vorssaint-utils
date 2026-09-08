@@ -61,12 +61,14 @@ struct FullDiskAccessNote: View {
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             HStack(spacing: compact ? 7 : 8) {
-                Button(l10n.s.uninstallerFDAGrant) { permissions.requestFullDiskAccess() }
+                PraxisButton(l10n.s.uninstallerFDAGrant, role: .secondary, size: compact ? .mini : .small) {
+                    permissions.requestFullDiskAccess()
+                }
                 // Shown alongside because access only takes effect on relaunch.
-                Button(l10n.s.uninstallerFDARelaunch) { appDelegate()?.relaunchApp() }
+                PraxisButton(l10n.s.uninstallerFDARelaunch, role: .secondary, size: compact ? .mini : .small) {
+                    appDelegate()?.relaunchApp()
+                }
             }
-            .controlSize(.small)
-            .font(compact ? .system(size: 10.5) : nil)
         }
         .padding(compact ? 9 : 11)
         .background(

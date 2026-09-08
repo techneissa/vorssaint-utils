@@ -87,7 +87,7 @@ struct RadialMenuSettings: View {
                     Text(text.positionCenter).tag(false)
                 }
                 .pickerStyle(.segmented)
-                Button(text.tryButton) {
+                PraxisButton(text.tryButton, role: .secondary, size: .small) {
                     RadialMenuService.shared.presentPreview(for: selectedProfile)
                 }
             } header: {

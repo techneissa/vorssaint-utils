@@ -803,13 +803,12 @@ struct CleanerView: View {
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
             Spacer()
-            Button(l10n.s.uninstallerCancel) { cleaner.reset() }
-            Button(String(format: l10n.s.cleanerCleanSizeFormat,
-                          Self.byteString(cleaner.selectedSize))) {
+            PraxisButton(l10n.s.uninstallerCancel, role: .ghost, size: .regular) { cleaner.reset() }
+            PraxisButton(String(format: l10n.s.cleanerCleanSizeFormat,
+                                Self.byteString(cleaner.selectedSize)),
+                         icon: "sparkle", role: .primary, size: .regular) {
                 cleaner.cleanSelected(escalate: true)
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
             .disabled(cleaner.selectedCount == 0)
         }
         .padding(compact ? 12 : 16)

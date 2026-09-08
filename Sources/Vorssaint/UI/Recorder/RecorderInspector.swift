@@ -689,8 +689,10 @@ struct RecorderInspector: View {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            Button(model.canCreateAutomaticZooms
-                   ? strings.createAutomaticZooms : strings.addZoomButton) {
+            PraxisButton(model.canCreateAutomaticZooms
+                         ? strings.createAutomaticZooms : strings.addZoomButton,
+                         icon: "plus.magnifyingglass",
+                         role: .primary, size: .small) {
                 if model.canCreateAutomaticZooms {
                     model.regenerateZooms()
                 } else {

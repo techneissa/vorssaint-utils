@@ -184,7 +184,7 @@ struct ScreenshotCaptureSettings: View {
             }
 
             Section {
-                Toggle(strings.shareEnabledToggle, isOn: $sharingEnabled)
+            PraxisSettingsToggle(label: strings.shareEnabledToggle, isOn: $sharingEnabled)
                 if sharingEnabled {
                     Text(strings.shareCaption)
                         .font(.caption)

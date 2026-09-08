@@ -30,13 +30,11 @@ struct AdvancedSettings: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
                 HStack(spacing: 10) {
-                    Button {
+                    PraxisButton(backup.exportButton, icon: "square.and.arrow.up", role: .secondary) {
                         importFailed = false
                         exported = SettingsBackup.runExportPanel() == true
-                    } label: {
-                        Label(backup.exportButton, systemImage: "square.and.arrow.up")
                     }
-                    Button {
+                    PraxisButton(backup.importButton, icon: "square.and.arrow.down", role: .secondary) {
                         exported = false
                         importFailed = false
                         guard let url = SettingsBackup.runImportPanel() else { return }
@@ -46,8 +44,6 @@ struct AdvancedSettings: View {
                         } else {
                             importFailed = true
                         }
-                    } label: {
-                        Label(backup.importButton, systemImage: "square.and.arrow.down")
                     }
                 }
                 if exported {
@@ -68,10 +64,8 @@ struct AdvancedSettings: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                Button(role: .destructive) {
+                PraxisButton(l10n.s.advancedClearButton, icon: "lock.slash", role: .destructive) {
                     showClearConfirm = true
-                } label: {
-                    Label(l10n.s.advancedClearButton, systemImage: "lock.slash")
                 }
                 .disabled(working)
                 if cleared {
@@ -87,10 +81,8 @@ struct AdvancedSettings: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                Button(role: .destructive) {
+                PraxisButton(l10n.s.advancedUninstallButton, icon: "trash", role: .destructive) {
                     showUninstallConfirm = true
-                } label: {
-                    Label(l10n.s.advancedUninstallButton, systemImage: "trash")
                 }
                 .disabled(working)
             }

@@ -234,16 +234,10 @@ struct PanelHomebrewView: View {
                 .controlSize(.small)
                 .help(l10n.s.homebrewCheckPackages)
                 .disabled(homebrew.isBusy)
-                Button {
+                PraxisButton(l10n.s.homebrewUpdateHomebrew, icon: "arrow.triangle.2.circlepath", role: .secondary, size: .small,
+                             help: l10n.s.homebrewUpdateHomebrew) {
                     presentConfirmation(HomebrewPendingAction(action: .updateHomebrew))
-                } label: {
-                    Label(l10n.s.homebrewUpdateHomebrew, systemImage: "arrow.triangle.2.circlepath")
-                        .font(.system(size: 10.5, weight: .medium))
-                        .lineLimit(1)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .help(l10n.s.homebrewUpdateHomebrew)
                 .disabled(homebrew.isBusy)
                 Spacer(minLength: 0)
             }
@@ -269,16 +263,10 @@ struct PanelHomebrewView: View {
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(.orange)
                 Spacer(minLength: 0)
-                Button {
+                PraxisButton(l10n.s.homebrewUpgradeAll, icon: "arrow.up.circle", role: .secondary, size: .small,
+                             help: l10n.s.homebrewUpgradeAll) {
                     presentConfirmation(HomebrewPendingAction(action: .upgradeAll))
-                } label: {
-                    Label(l10n.s.homebrewUpgradeAll, systemImage: "arrow.up.circle")
-                        .font(.system(size: 10.5, weight: .medium))
-                        .lineLimit(1)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .help(l10n.s.homebrewUpgradeAll)
                 .disabled(homebrew.isBusy)
             }
         } else {
@@ -557,38 +545,22 @@ struct PanelHomebrewView: View {
         } else if package.isInstalled {
             if package.update != nil {
                 VStack(alignment: .trailing, spacing: 6) {
-                    Button {
+                    PraxisButton(l10n.s.homebrewUpgrade, icon: "arrow.up.circle", role: .primary, size: .small) {
                         presentConfirmation(HomebrewPendingAction(action: .upgrade, package: package))
-                    } label: {
-                        Label(l10n.s.homebrewUpgrade, systemImage: "arrow.up.circle")
-                            .font(.system(size: 11, weight: .semibold))
                     }
-                    .buttonStyle(.borderedProminent)
-                    Button(role: .destructive) {
+                    PraxisButton(l10n.s.homebrewUninstall, icon: "trash", role: .destructive, size: .small) {
                         presentConfirmation(HomebrewPendingAction(action: .uninstall, package: package))
-                    } label: {
-                        Label(l10n.s.homebrewUninstall, systemImage: "trash")
-                            .font(.system(size: 11, weight: .semibold))
                     }
-                    .tint(.red)
                 }
             } else {
-                Button(role: .destructive) {
+                PraxisButton(l10n.s.homebrewUninstall, icon: "trash", role: .destructive, size: .small) {
                     presentConfirmation(HomebrewPendingAction(action: .uninstall, package: package))
-                } label: {
-                    Label(l10n.s.homebrewUninstall, systemImage: "trash")
-                        .font(.system(size: 11, weight: .semibold))
                 }
-                .tint(.red)
             }
         } else {
-            Button {
+            PraxisButton(l10n.s.homebrewInstall, icon: "arrow.down.circle", role: .primary, size: .small) {
                 presentConfirmation(HomebrewPendingAction(action: .install, package: package))
-            } label: {
-                Label(l10n.s.homebrewInstall, systemImage: "arrow.down.circle")
-                    .font(.system(size: 11, weight: .semibold))
             }
-            .buttonStyle(.borderedProminent)
         }
     }
 

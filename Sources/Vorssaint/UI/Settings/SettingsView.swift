@@ -493,11 +493,8 @@ struct GeneralSettings: View {
                 .settingsSectionAnchor(.musicBlocking)
             }
             Section(feedbackStrings.sectionTitle) {
-                Button {
+                PraxisButton(feedbackStrings.openButton, icon: "bubble.left.and.text.bubble.right", role: .secondary) {
                     appDelegate()?.openFeedbackWindow()
-                } label: {
-                    Label(feedbackStrings.openButton,
-                          systemImage: "bubble.left.and.text.bubble.right")
                 }
                 SettingsCaptionText(feedbackStrings.sectionCaption)
             }

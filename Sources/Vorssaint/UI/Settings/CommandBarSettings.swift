@@ -43,10 +43,10 @@ struct CommandBarSettings: View {
                 // carries an icon: a ⌘ glyph in front of "Open the bar now"
                 // reads as the shortcut that opens it, which it is not.
                 HStack(spacing: 10) {
-                    Button(text.openButton) {
+                    PraxisButton(text.openButton, role: .secondary, size: .small) {
                         CommandBarService.shared.show()
                     }
-                    Button(text.resetPositionButton) {
+                    PraxisButton(text.resetPositionButton, role: .ghost, size: .small) {
                         CommandBarService.shared.resetPanelPosition()
                     }
                     .disabled(!service.hasCustomPosition)
@@ -327,7 +327,7 @@ struct CommandBarSettings: View {
                             .controlSize(.mini)
                     }
                 }
-                Button(text.forgetAllButton) {
+                PraxisButton(text.forgetAllButton, icon: "trash", role: .destructive, size: .mini) {
                     CommandBarService.shared.forgetLearnedRanking()
                 }
             } header: {
@@ -560,7 +560,10 @@ private struct CommandBarLinkEditor: View {
                         .textFieldStyle(.roundedBorder)
                     if draft.kind == .place || draft.kind == .script {
                         // Typing a path by hand is how people get it wrong.
-                        Button(FeatureStrings.radialMenu(l10n.language).chooseButton) {
+                        PraxisButton(FeatureStrings.radialMenu(l10n.language).chooseButton,
+                                     icon: "folder",
+                                     role: .secondary,
+                                     size: .mini) {
                             chooseDestination()
                         }
                     }

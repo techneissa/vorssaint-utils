@@ -139,9 +139,7 @@ struct FeedbackView: View {
                     Text(strings.sending)
                         .foregroundStyle(.secondary)
                 }
-                Button(strings.sendButton) { send() }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
+                PraxisButton(strings.sendButton, icon: "paperplane.fill", role: .primary, size: .regular) { send() }
                     .disabled(!canSend)
                     .keyboardShortcut(.return, modifiers: [.command])
             }
@@ -197,9 +195,7 @@ struct FeedbackView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 400)
-            Button(strings.done, action: onClose)
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
+            PraxisButton(strings.done, role: .primary, size: .regular, action: onClose)
                 .padding(.top, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

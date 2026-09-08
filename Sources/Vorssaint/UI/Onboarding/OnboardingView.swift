@@ -91,7 +91,7 @@ struct OnboardingView: View {
 
     private var navigationBar: some View {
         HStack {
-            Button(l10n.s.obBack) {
+            PraxisButton(l10n.s.obBack, role: .ghost, size: .regular) {
                 withAnimation(.easeInOut(duration: 0.2)) { index = max(0, index - 1) }
             }
             .disabled(index == 0)
@@ -109,7 +109,7 @@ struct OnboardingView: View {
 
             Spacer()
 
-            Button(primaryButtonTitle) {
+            PraxisButton(primaryButtonTitle, role: .primary, size: .regular) {
                 if index >= steps.count - 1 {
                     index = 0
                     onFinish()
@@ -123,8 +123,6 @@ struct OnboardingView: View {
                 }
             }
             .keyboardShortcut(.defaultAction)
-            .controlSize(.large)
-            .buttonStyle(.borderedProminent)
         }
         .padding(16)
     }

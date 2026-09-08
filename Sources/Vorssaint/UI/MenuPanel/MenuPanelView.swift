@@ -2023,14 +2023,9 @@ struct UtilityActionButton: View {
     }
 
     private var permissionButton: some View {
-        Button {
+        PraxisButton(permissionButtonTitle ?? "", icon: "hand.raised.fill", role: .secondary, size: .mini) {
             permissionAction?()
-        } label: {
-            Label(permissionButtonTitle ?? "", systemImage: "hand.raised.fill")
-                .font(.system(size: 10, weight: .semibold))
         }
-        .buttonStyle(.bordered)
-        .controlSize(.mini)
     }
 
     private var iconColor: Color {
@@ -2105,24 +2100,14 @@ struct PanelToggleRow: View {
                         .lineLimit(1)
                 }
                 if needsAttention, let permissionAction {
-                    Button {
+                    PraxisButton(permissionButtonTitle ?? "", icon: "hand.raised.fill", role: .secondary, size: .mini) {
                         permissionAction()
-                    } label: {
-                        Label(permissionButtonTitle ?? "", systemImage: "hand.raised.fill")
-                            .font(.system(size: 9.5, weight: .semibold))
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.mini)
                 }
                 if !isEditing, let accessoryTitle, let accessoryAction {
-                    Button {
+                    PraxisButton(accessoryTitle, icon: "arrow.up.forward.square", role: .secondary, size: .mini) {
                         accessoryAction()
-                    } label: {
-                        Label(accessoryTitle, systemImage: "arrow.up.forward.square")
-                            .font(.system(size: 9.5, weight: .semibold))
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.mini)
                 }
             }
             Spacer(minLength: 0)
@@ -2513,11 +2498,9 @@ struct KeepAwakeCard: View {
                     if keepAwakeMouseJiggle {
                         mouseJiggleIntervalRow
                         if mouseJiggleNeedsAccessibility {
-                            Button(l10n.s.permissionRequest) {
+                            PraxisButton(l10n.s.permissionRequest, icon: "hand.raised", role: .secondary, size: .small) {
                                 grantAccessibility()
                             }
-                            .buttonStyle(.bordered)
-                            .controlSize(.small)
                         }
                     }
                 }
@@ -2724,12 +2707,9 @@ struct KeepAwakeCard: View {
     }
 
     private func extendButton(_ minutes: Int) -> some View {
-        Button("+\(minutes) min") {
+        PraxisButton("+\(minutes) min", role: .secondary, size: .small) {
             awake.extend(minutes: minutes)
         }
-        .buttonStyle(.bordered)
-        .controlSize(.small)
-        .font(.system(size: 10))
     }
 
     private static func remainingText(until end: Date) -> String {

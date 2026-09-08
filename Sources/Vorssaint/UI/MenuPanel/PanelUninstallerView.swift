@@ -294,26 +294,18 @@ struct PanelUninstallerView: View {
                     .foregroundStyle(.secondary)
             }
             HStack {
-                Button(l10n.s.uninstallerCancel) {
+                PraxisButton(l10n.s.uninstallerCancel, role: .ghost, size: .small) {
                     uninstaller.reset()
                 }
-                .controlSize(.small)
                 .disabled(uninstaller.isRemovingWithHomebrew)
                 Spacer()
-                Button {
+                PraxisButton(removeButtonTitle, icon: "trash", role: .destructive, size: .small) {
                     if let package = uninstaller.selectedHomebrewPackage {
                         presentHomebrewRemovalConfirmation(for: package)
                     } else {
                         uninstaller.removeSelected()
                     }
-                } label: {
-                    Label(removeButtonTitle, systemImage: "trash")
-                        .font(.system(size: 11, weight: .semibold))
-                        .lineLimit(1)
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
-                .tint(.red)
                 .disabled(!uninstaller.items.contains(where: \.include)
                           || (uninstaller.selectedHomebrewPackage != nil && homebrew.isBusy))
             }

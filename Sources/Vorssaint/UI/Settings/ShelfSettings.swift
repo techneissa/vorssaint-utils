@@ -78,10 +78,8 @@ struct ShelfSettings: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    Button {
+                    PraxisButton(l10n.s.shelfOpenNow, icon: "tray.and.arrow.down", role: .secondary, size: .small) {
                         ShelfService.shared.summon()
-                    } label: {
-                        Label(l10n.s.shelfOpenNow, systemImage: "tray.and.arrow.down")
                     }
                 }
 

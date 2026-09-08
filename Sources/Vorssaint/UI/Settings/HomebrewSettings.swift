@@ -146,12 +146,9 @@ struct HomebrewSettings: View {
     }
 
     private var searchButton: some View {
-        Button {
+        PraxisButton(l10n.s.homebrewSearchButton, icon: "magnifyingglass", role: .secondary, size: .mini) {
             search()
-        } label: {
-            Label(l10n.s.homebrewSearchButton, systemImage: "magnifyingglass")
         }
-        .fixedSize()
         .disabled(query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || homebrew.isBusy)
     }
 
@@ -167,12 +164,9 @@ struct HomebrewSettings: View {
     }
 
     private var updateHomebrewButton: some View {
-        Button {
+        PraxisButton(l10n.s.homebrewUpdateHomebrew, icon: "arrow.triangle.2.circlepath", role: .secondary, size: .mini) {
             pendingAction = HomebrewPendingAction(action: .updateHomebrew)
-        } label: {
-            Label(l10n.s.homebrewUpdateHomebrew, systemImage: "arrow.triangle.2.circlepath")
         }
-        .fixedSize()
         .disabled(homebrew.isBusy)
     }
 
@@ -191,12 +185,9 @@ struct HomebrewSettings: View {
                 Label("\(l10n.s.homebrewUpdates) \(homebrew.outdatedCount)", systemImage: "arrow.up.circle.fill")
                     .font(.caption)
                     .foregroundStyle(.orange)
-                Button {
+                PraxisButton(l10n.s.homebrewUpgradeAll, icon: "arrow.up.circle", role: .primary, size: .mini) {
                     pendingAction = HomebrewPendingAction(action: .upgradeAll)
-                } label: {
-                    Label(l10n.s.homebrewUpgradeAll, systemImage: "arrow.up.circle")
                 }
-                .controlSize(.small)
                 .disabled(homebrew.isBusy)
             }
         }
@@ -217,13 +208,9 @@ struct HomebrewSettings: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 0)
-            Button {
+            PraxisButton(l10n.s.homebrewShellSetupButton, icon: "wrench.and.screwdriver", role: .primary) {
                 homebrew.openShellConfiguration()
-            } label: {
-                Label(l10n.s.homebrewShellSetupButton, systemImage: "wrench.and.screwdriver")
             }
-            .controlSize(.small)
-            .buttonStyle(.borderedProminent)
             Button {
                 homebrew.refreshShellConfigurationStatus()
             } label: {
@@ -523,25 +510,17 @@ struct HomebrewSettings: View {
                         .foregroundStyle(.secondary)
                 } else if package.isInstalled {
                     if package.update != nil {
-                        Button {
+                        PraxisButton(l10n.s.homebrewUpgrade, icon: "arrow.up.circle", role: .primary) {
                             pendingAction = HomebrewPendingAction(action: .upgrade, package: package)
-                        } label: {
-                            Label(l10n.s.homebrewUpgrade, systemImage: "arrow.up.circle")
                         }
-                        .buttonStyle(.borderedProminent)
                     }
-                    Button(role: .destructive) {
+                    PraxisButton(l10n.s.homebrewUninstall, icon: "trash", role: .destructive) {
                         pendingAction = HomebrewPendingAction(action: .uninstall, package: package)
-                    } label: {
-                        Label(l10n.s.homebrewUninstall, systemImage: "trash")
                     }
                 } else {
-                    Button {
+                    PraxisButton(l10n.s.homebrewInstall, icon: "arrow.down.circle", role: .primary) {
                         pendingAction = HomebrewPendingAction(action: .install, package: package)
-                    } label: {
-                        Label(l10n.s.homebrewInstall, systemImage: "arrow.down.circle")
                     }
-                    .buttonStyle(.borderedProminent)
                 }
             }
             .disabled(homebrew.isBusy)
@@ -575,12 +554,9 @@ struct HomebrewSettings: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: 360)
-            Button {
+            PraxisButton(l10n.s.homebrewInstallHomebrew, icon: "terminal", role: .primary) {
                 homebrew.openHomebrewInstaller()
-            } label: {
-                Label(l10n.s.homebrewInstallHomebrew, systemImage: "terminal")
             }
-            .buttonStyle(.borderedProminent)
             Text(homebrew.didOpenInstaller ? l10n.s.homebrewInstallHomebrewOpened : l10n.s.homebrewInstallHomebrewCaption)
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -593,10 +569,8 @@ struct HomebrewSettings: View {
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: 360)
             }
-            Button {
+            PraxisButton(l10n.s.homebrewRefresh, icon: "arrow.clockwise", role: .secondary) {
                 homebrew.refreshInstalled()
-            } label: {
-                Label(l10n.s.homebrewRefresh, systemImage: "arrow.clockwise")
             }
             Spacer()
         }
@@ -818,20 +792,16 @@ struct HomebrewTrustCard: View {
                 .font(compact ? .system(size: 9.5) : .caption)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
-            Button {
-                homebrew.trustTapAndContinue()
-            } label: {
-                HStack(spacing: 5) {
-                    if homebrew.isTrustingTap {
-                        ProgressView()
-                            .controlSize(.mini)
-                    }
-                    Text(l10n.s.homebrewTrustButton)
+            HStack(spacing: 6) {
+                if homebrew.isTrustingTap {
+                    ProgressView()
+                        .controlSize(.mini)
                 }
+                PraxisButton(l10n.s.homebrewTrustButton, role: .primary, size: compact ? .small : .regular) {
+                    homebrew.trustTapAndContinue()
+                }
+                .disabled(homebrew.isTrustingTap)
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(compact ? .small : .regular)
-            .disabled(homebrew.isTrustingTap)
         }
         .padding(compact ? 8 : 12)
         .frame(maxWidth: .infinity, alignment: .leading)

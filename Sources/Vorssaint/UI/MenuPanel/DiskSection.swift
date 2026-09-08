@@ -402,24 +402,14 @@ struct DiskSection: View {
             VStack(alignment: .leading, spacing: 7) {
                 blockHeader(l10n.s.monitorItemDiskProtection, editing: editing, visible: $diskProtection)
                 HStack(spacing: 7) {
-                    Button {
+                    PraxisButton(l10n.s.diskEject, icon: "eject.fill", role: .secondary, size: .small) {
                         protection.eject(disk)
-                    } label: {
-                        Label(l10n.s.diskEject, systemImage: "eject.fill")
-                            .font(.system(size: 10.5, weight: .medium))
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
                     .disabled(!disk.canEject || protection.state(for: disk) == .ejecting)
 
-                    Button {
+                    PraxisButton(l10n.s.diskEjectAll, icon: "eject.fill", role: .secondary, size: .small) {
                         protection.ejectAll(disks)
-                    } label: {
-                        Label(l10n.s.diskEjectAll, systemImage: "eject.fill")
-                            .font(.system(size: 10.5, weight: .medium))
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
                     .disabled(ejectableDisks.isEmpty)
                 }
                 Text(disk.canEject ? ejectCaption(for: disk) : l10n.s.diskNoExternal)
@@ -462,25 +452,15 @@ struct DiskSection: View {
                         .lineLimit(1)
                         .truncationMode(.middle)
                     Spacer()
-                    Button {
+                    PraxisButton(l10n.s.diskOpenInFinder, icon: "folder", role: .secondary, size: .small) {
                         NSWorkspace.shared.open(URL(fileURLWithPath: disk.mountPath))
-                    } label: {
-                        Label(l10n.s.diskOpenInFinder, systemImage: "folder")
-                            .font(.system(size: 10.5))
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
                 }
-                Button {
+                PraxisButton(l10n.s.diskStorageSettings, icon: "gearshape", role: .secondary, size: .small) {
                     if let url = URL(string: "x-apple.systempreferences:com.apple.Storage-Settings.extension") {
                         NSWorkspace.shared.open(url)
                     }
-                } label: {
-                    Label(l10n.s.diskStorageSettings, systemImage: "gearshape")
-                        .font(.system(size: 10.5, weight: .medium))
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
             }
         }
     }

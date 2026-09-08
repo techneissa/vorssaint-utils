@@ -111,10 +111,12 @@ struct MonitorPanelConfig: View {
             Spacer()
         }
         if expandedBlocks.contains(id) {
-            Group {
+            PraxisToggleGrid {
                 PraxisSettingsToggle(label: l10n.s.monitorShowInPanel, isOn: master)
-                items()
-                    .disabled(!master.wrappedValue)
+                Group {
+                    items()
+                }
+                .disabled(!master.wrappedValue)
             }
             .disclosureIndent()
         }

@@ -67,10 +67,8 @@ struct AutoQuitSettings: View {
                     .disabled(!enabled)
                 }
 
-                Button {
+                PraxisButton(l10n.s.autoQuitAddApp, icon: "plus", role: .secondary, size: .mini) {
                     showingAppPicker = true
-                } label: {
-                    Label(l10n.s.autoQuitAddApp, systemImage: "plus")
                 }
                 .disabled(!enabled)
 

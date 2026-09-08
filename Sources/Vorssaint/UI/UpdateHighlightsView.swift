@@ -101,23 +101,20 @@ struct UpdateHighlightsView: View {
 
                 HStack {
                     if clamped > 0 {
-                        Button(s.obBack) { index = clamped - 1 }
-                            .buttonStyle(.borderless)
-                            .foregroundStyle(.secondary)
+                        PraxisButton(s.obBack, role: .ghost, size: .mini) { index = clamped - 1 }
                     } else {
-                        Button(s.highlightsSeeAll) { openSettings(.releaseNotes) }
-                            .buttonStyle(.borderless)
-                            .foregroundStyle(.secondary)
+                        PraxisButton(s.highlightsSeeAll, role: .ghost, size: .mini) {
+                            openSettings(.releaseNotes)
+                        }
                     }
                     Spacer()
-                    Button(s.obContinue) {
+                    PraxisButton(s.obContinue, role: .primary, size: .regular) {
                         if clamped >= pages.count - 1 {
                             onFinish()
                         } else {
                             index = clamped + 1
                         }
                     }
-                    .buttonStyle(.borderedProminent)
                     .keyboardShortcut(.defaultAction)
                 }
             }
@@ -158,8 +155,7 @@ struct UpdateHighlightsView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            Button(highlight.actionLabel) { highlight.action() }
-                .buttonStyle(.bordered)
+            PraxisButton(highlight.actionLabel, role: .secondary, size: .small, action: highlight.action)
         }
         .padding(.horizontal, 24)
     }

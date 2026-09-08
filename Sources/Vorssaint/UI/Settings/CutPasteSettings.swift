@@ -91,7 +91,7 @@ struct CutPasteSettings: View {
                         )
                         .frame(width: 108)
                         .disabled(!renameEnabled)
-                        Button(l10n.s.shortcutReset) {
+                        PraxisButton(l10n.s.shortcutReset, icon: "arrow.counterclockwise", role: .ghost, size: .mini) {
                             renameShortcutRaw = GlobalShortcut.finderRenameDefault.storageValue
                             renameError = nil
                             FinderRenameService.shared.syncWithPreferences()

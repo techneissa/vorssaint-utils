@@ -31,49 +31,51 @@ struct MonitorAlertsControls: View {
                 .font(compact ? .system(size: 9.5) : .caption)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
-            if AppFeature.monitorCPU.isAvailable {
-                PraxisSettingsToggle(label: text.cpu, isOn: $alertCPU)
-                if alertCPU {
-                    Stepper("\(text.cpuThreshold) \(alertCPUThreshold)%",
-                            value: $alertCPUThreshold,
-                            in: 50...100,
-                            step: 5)
+            PraxisToggleGrid {
+                if AppFeature.monitorCPU.isAvailable {
+                    PraxisSettingsToggle(label: text.cpu, isOn: $alertCPU)
+                    PraxisSettingsToggle(label: text.cpuTemperature, isOn: $alertCPUTemperature)
                 }
-                PraxisSettingsToggle(label: text.cpuTemperature, isOn: $alertCPUTemperature)
-                if alertCPUTemperature {
-                    Stepper("\(text.cpuTemperatureThreshold) \(alertCPUTemperatureThreshold) °C",
-                            value: $alertCPUTemperatureThreshold,
-                            in: 70...105,
-                            step: 5)
+                if AppFeature.monitorMemory.isAvailable {
+                    PraxisSettingsToggle(label: text.memory, isOn: $alertMemory)
                 }
-            }
-            if AppFeature.monitorMemory.isAvailable {
-                PraxisSettingsToggle(label: text.memory, isOn: $alertMemory)
-            }
-            if AppFeature.monitorDisk.isAvailable {
-                PraxisSettingsToggle(label: text.disk, isOn: $alertDisk)
-                if alertDisk {
-                    Stepper("\(text.diskThreshold) \(alertDiskFreePercent)%",
-                            value: $alertDiskFreePercent,
-                            in: 5...30,
-                            step: 5)
+                if AppFeature.monitorDisk.isAvailable {
+                    PraxisSettingsToggle(label: text.disk, isOn: $alertDisk)
+                }
+                if AppFeature.monitorPower.isAvailable, PowerSampler.hasInternalBattery {
+                    PraxisSettingsToggle(label: text.batteryTemperature, isOn: $alertBatteryTemperature)
+                    PraxisSettingsToggle(label: text.battery, isOn: $alertBattery)
                 }
             }
-            if AppFeature.monitorPower.isAvailable, PowerSampler.hasInternalBattery {
-                PraxisSettingsToggle(label: text.batteryTemperature, isOn: $alertBatteryTemperature)
-                if alertBatteryTemperature {
-                    Stepper("\(text.batteryTemperatureThreshold) \(alertBatteryTemperatureThreshold) °C",
-                            value: $alertBatteryTemperatureThreshold,
-                            in: 30...50,
-                            step: 5)
-                }
-                PraxisSettingsToggle(label: text.battery, isOn: $alertBattery)
-                if alertBattery {
-                    Stepper("\(text.batteryThreshold) \(alertBatteryPercent)%",
-                            value: $alertBatteryPercent,
-                            in: 5...50,
-                            step: 5)
-                }
+            if AppFeature.monitorCPU.isAvailable, alertCPU {
+                Stepper("\(text.cpuThreshold) \(alertCPUThreshold)%",
+                        value: $alertCPUThreshold,
+                        in: 50...100,
+                        step: 5)
+            }
+            if AppFeature.monitorCPU.isAvailable, alertCPUTemperature {
+                Stepper("\(text.cpuTemperatureThreshold) \(alertCPUTemperatureThreshold) °C",
+                        value: $alertCPUTemperatureThreshold,
+                        in: 70...105,
+                        step: 5)
+            }
+            if AppFeature.monitorDisk.isAvailable, alertDisk {
+                Stepper("\(text.diskThreshold) \(alertDiskFreePercent)%",
+                        value: $alertDiskFreePercent,
+                        in: 5...30,
+                        step: 5)
+            }
+            if AppFeature.monitorPower.isAvailable, PowerSampler.hasInternalBattery, alertBatteryTemperature {
+                Stepper("\(text.batteryTemperatureThreshold) \(alertBatteryTemperatureThreshold) °C",
+                        value: $alertBatteryTemperatureThreshold,
+                        in: 30...50,
+                        step: 5)
+            }
+            if AppFeature.monitorPower.isAvailable, PowerSampler.hasInternalBattery, alertBattery {
+                Stepper("\(text.batteryThreshold) \(alertBatteryPercent)%",
+                        value: $alertBatteryPercent,
+                        in: 5...50,
+                        step: 5)
             }
             if anyAlertEnabled {
                 Picker(text.cooldown, selection: $alertCooldown) {

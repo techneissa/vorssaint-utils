@@ -46,7 +46,7 @@ struct ScreenshotToolOrderControls: View {
 
             HStack {
                 Spacer()
-                Button(l10n.s.shortcutReset) {
+                PraxisButton(l10n.s.shortcutReset, icon: "arrow.counterclockwise", role: .ghost, size: .mini) {
                     orderRaw = ScreenshotSupport.Tool.defaultOrderStorage
                 }
                 .disabled(orderRaw == ScreenshotSupport.Tool.defaultOrderStorage)

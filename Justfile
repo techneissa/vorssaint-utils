@@ -32,6 +32,9 @@ run:
 test:
     bash scripts/dev-run.sh --test
 
+test-cli-ui:
+    bash scripts/tests/test-cli-ui.sh
+
 # Upstream ./build.sh full swiftc -O (slow)
 build-optimized:
     bash scripts/dev-run.sh --build --dev --optimized

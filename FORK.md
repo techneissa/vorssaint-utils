@@ -76,8 +76,26 @@ open "/Applications/Vorssaint (Developer).app"
 | Permissions | Separate TCC identity | Separate TCC identity |
 
 macOS permissions granted to the official app **do not** apply to the Developer build.
-If Features → Permissions shows "Not granted", enable them again for **Vorssaint (Developer)**
-in System Settings (or use Request in the portal). Both apps can sit in `/Applications` at once.
+Grant them again for **Vorssaint (Developer)** in System Settings.
+
+**Sticky permissions across rebuilds:** macOS pins Accessibility / Screen Recording
+to the app's code-signing identity. Ad-hoc signing breaks that on every install.
+`just install` signs with your Apple Development cert when available (stable +
+trusted), otherwise `Vorssaint Utils Signing`, and always keeps entitlements on
+both stage and `/Applications` copies.
+
+After a signing identity change (or if the portal stays on "Not granted" while
+System Settings shows enabled):
+
+```bash
+tccutil reset Accessibility com.vorssaint.utils.dev
+tccutil reset ScreenCapture com.vorssaint.utils.dev
+just install
+open "/Applications/Vorssaint (Developer).app"
+```
+
+Then grant **Vorssaint (Developer)** again in System Settings (or use Request).
+Later installs with the same signer keep those grants.
 
 ## Making UI changes
 

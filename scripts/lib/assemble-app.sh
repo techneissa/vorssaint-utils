@@ -9,7 +9,6 @@ assemble_staged_app() {
     local stage_root="build/stage"
     local stage="$stage_root/${APP_NAME}.app"
     local entitlements="Resources/Vorssaint.entitlements"
-    local legacy_identity="Vorssaint Utils Signing"
 
     if [[ ! -x "$bin" ]]; then
         if declare -F ui_err >/dev/null 2>&1; then
@@ -86,31 +85,25 @@ assemble_staged_app() {
     fi
     xattr -c -r "$stage" 2>/dev/null || true
 
-    local devid=""
-    devid="$(security find-identity -v -p codesigning 2>/dev/null \
-        | grep 'Developer ID Application' \
-        | head -1 \
-        | sed -E 's/.*"(.*)".*/\1/' || true)"
-
-    if [[ -n "$devid" ]]; then
-        codesign --force --strip-disallowed-xattrs --options runtime --timestamp \
-            --entitlements "$entitlements" --sign "$devid" "$stage"
-    elif security find-identity -p codesigning 2>/dev/null | grep -q "$legacy_identity"; then
-        codesign --force --strip-disallowed-xattrs --sign "$legacy_identity" "$stage"
-    else
-        codesign --force --strip-disallowed-xattrs --sign - "$stage"
-    fi
+    # shellcheck source=codesign-app.sh
+    source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/codesign-app.sh"
+    vorssaint_resolve_signing_identity "$entitlements"
+    vorssaint_codesign_app "$stage"
 
     if ! codesign --verify --deep --strict "$stage" >/dev/null 2>&1; then
         xattr -c -r "$stage" 2>/dev/null || true
-        if [[ -n "$devid" ]]; then
-            codesign --force --strip-disallowed-xattrs --options runtime --timestamp \
-                --entitlements "$entitlements" --sign "$devid" "$stage"
-        elif security find-identity -p codesigning 2>/dev/null | grep -q "$legacy_identity"; then
-            codesign --force --strip-disallowed-xattrs --sign "$legacy_identity" "$stage"
-        else
-            codesign --force --strip-disallowed-xattrs --sign - "$stage"
-        fi
+        vorssaint_codesign_app "$stage"
     fi
     codesign --verify --deep --strict "$stage"
+
+    if declare -F ui_detail >/dev/null 2>&1; then
+        ui_detail "signed as: $VORSSAINT_SIGN_AS ($VORSSAINT_SIGN_IDENTITY)"
+    fi
+    if [[ "$VORSSAINT_SIGN_AS" == "ad-hoc" ]]; then
+        if declare -F ui_warn >/dev/null 2>&1; then
+            ui_warn "Ad-hoc signature: permissions reset every install. Prefer an Apple Development cert, or ./Tools/setup-signing.sh + Always Trust in Keychain Access."
+        else
+            echo "warning: ad-hoc signature; permissions will not stick across installs" >&2
+        fi
+    fi
 }

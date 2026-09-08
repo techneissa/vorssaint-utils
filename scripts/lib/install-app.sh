@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install a staged Vorssaint .app into /Applications (Keyforge-style install step).
-# Sourced by scripts/dev-run.sh after a successful ./build.sh (no --install).
+# Sourced by scripts/dev-run.sh after a successful build.
 #
 # Expects: APP_NAME, EXECUTABLE, UI helpers from cli-ui.sh, cwd = repo root.
 
@@ -8,7 +8,6 @@ install_app_to_applications() {
     local src="build/stage/${APP_NAME}.app"
     local dest="/Applications/${APP_NAME}.app"
     local entitlements="Resources/Vorssaint.entitlements"
-    local legacy_identity="Vorssaint Utils Signing"
 
     if [[ ! -d "$src" ]]; then
         ui_err "missing staged app: $src"
@@ -53,44 +52,26 @@ install_app_to_applications() {
     ditto --noextattr --noqtn "$src" "$dest"
     touch "$dest"
 
-    # Re-sign after copy (Finder/provenance xattrs invalidate the staged signature).
-    local devid=""
-    devid="$(security find-identity -v -p codesigning 2>/dev/null \
-        | grep 'Developer ID Application' \
-        | head -1 \
-        | sed -E 's/.*"(.*)".*/\1/' || true)"
-
-    local sign_msg
-    if [[ -n "$devid" ]]; then
-        sign_msg="Developer ID"
-        codesign --force --strip-disallowed-xattrs --options runtime --timestamp \
-            --entitlements "$entitlements" --sign "$devid" "$dest"
-    elif security find-identity -p codesigning 2>/dev/null | grep -q "$legacy_identity"; then
-        sign_msg="legacy self-signed"
-        codesign --force --strip-disallowed-xattrs --sign "$legacy_identity" "$dest"
-    else
-        sign_msg="ad-hoc"
-        codesign --force --strip-disallowed-xattrs --sign - "$dest"
-    fi
+    # Re-sign after copy with the SAME identity + entitlements as assemble.
+    # (Omitting entitlements here previously stripped them and confused TCC.)
+    # shellcheck source=codesign-app.sh
+    source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/codesign-app.sh"
+    vorssaint_resolve_signing_identity "$entitlements"
+    ui_detail "re-signing install as: $VORSSAINT_SIGN_AS"
+    vorssaint_codesign_app "$dest"
 
     # Second pass if filesystem metadata unsettled the first signature.
     sleep 1
     xattr -c -r "$dest" 2>/dev/null || true
     if ! codesign --verify --deep --strict "$dest" >/dev/null 2>&1; then
-        ui_detail "re-signing after filesystem metadata settled ($sign_msg)"
-        if [[ -n "$devid" ]]; then
-            codesign --force --strip-disallowed-xattrs --options runtime --timestamp \
-                --entitlements "$entitlements" --sign "$devid" "$dest"
-        elif security find-identity -p codesigning 2>/dev/null | grep -q "$legacy_identity"; then
-            codesign --force --strip-disallowed-xattrs --sign "$legacy_identity" "$dest"
-        else
-            codesign --force --strip-disallowed-xattrs --sign - "$dest"
-        fi
+        ui_detail "re-signing after filesystem metadata settled ($VORSSAINT_SIGN_AS)"
+        vorssaint_codesign_app "$dest"
     fi
     codesign --verify --deep --strict "$dest"
 
     ui_ok "Installed  $dest"
-    if codesign -dv "$dest" 2>&1 | grep -q 'Signature=adhoc'; then
+    if [[ "$VORSSAINT_SIGN_AS" == "ad-hoc" ]]; then
         ui_detail "ad-hoc: first launch on a new Mac may need right-click → Open"
+        ui_warn "Ad-hoc: TCC grants will not stick. Use Apple Development or ./Tools/setup-signing.sh."
     fi
 }

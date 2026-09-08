@@ -152,6 +152,7 @@ if (( OPTIMIZED )); then
     close_step() {
         local n="$1"
         (( step_closed == n )) && return
+        ui_progress_close
         ui_activity_stop
         case "$n" in
             1) ui_step_done "binary" ;;
@@ -208,7 +209,9 @@ if (( OPTIMIZED )); then
         exit "$ec"
     fi
 else
-    # Incremental release — brew-speed runtime, practical reinstalls
+    # Incremental release: brew-speed runtime, practical reinstalls.
+    # There is no download phase here. SwiftPM's [n/m] counters are local
+    # compile/link jobs. The last few jobs often sit quiet while linking.
     UI_TOTAL_STEPS=2
 
     ui_step 1 2 "Compile"

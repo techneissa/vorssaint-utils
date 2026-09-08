@@ -84,21 +84,19 @@ struct PanelURLCleanerView: View {
                 .disabled(!canClearInput)
             }
             HStack(spacing: 7) {
-                Button(l10n.s.urlCleanerPasteButton) {
+                PraxisButton(l10n.s.urlCleanerPasteButton, icon: "doc.on.clipboard", role: .secondary, size: .mini) {
                     paste()
                 }
-                Button(l10n.s.urlCleanerCleanButton) {
+                PraxisButton(l10n.s.urlCleanerCleanButton, icon: "wand.and.stars", role: .primary, size: .mini) {
                     clean()
                 }
-                .buttonStyle(.borderedProminent)
                 .disabled(input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 Spacer()
-                Button(l10n.s.urlCleanerCopyButton) {
+                PraxisButton(l10n.s.urlCleanerCopyButton, icon: "doc.on.doc", role: .secondary, size: .mini) {
                     copy()
                 }
                 .disabled(output.isEmpty)
             }
-            .controlSize(.small)
 
             resultView
         }

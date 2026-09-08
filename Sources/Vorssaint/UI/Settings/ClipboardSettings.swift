@@ -136,10 +136,8 @@ struct ClipboardSettings: View {
                 Text(text.shortcutCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Button {
+                PraxisButton(text.shortcut, icon: "doc.on.clipboard", role: .secondary, size: .mini) {
                     ClipboardHistoryService.shared.showHistoryWindow()
-                } label: {
-                    Label(text.shortcut, systemImage: "doc.on.clipboard")
                 }
                 .disabled(history.entries.isEmpty)
             }
@@ -155,11 +153,11 @@ struct ClipboardSettings: View {
                     Text(text.recent)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Button(text.clearRecent) {
+                    PraxisButton(text.clearRecent, icon: "clock.arrow.circlepath", role: .destructive, size: .mini) {
                         history.clearRecent()
                     }
                     .disabled(history.recentEntries.isEmpty)
-                    Button(text.clearAll) {
+                    PraxisButton(text.clearAll, icon: "trash", role: .destructive, size: .mini) {
                         history.clearAll()
                     }
                     .disabled(history.recentEntries.isEmpty)

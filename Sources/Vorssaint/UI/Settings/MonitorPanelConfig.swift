@@ -104,9 +104,13 @@ struct MonitorPanelConfig: View {
                                       master: Binding<Bool>,
                                       @ViewBuilder _ items: @escaping () -> Content) -> some View {
         DisclosureGroup(isExpanded: expansionBinding(for: id)) {
-            PraxisSettingsToggle(label: l10n.s.monitorShowInPanel, isOn: master)
-            items()
+            PraxisToggleGrid {
+                PraxisSettingsToggle(label: l10n.s.monitorShowInPanel, isOn: master)
+                Group {
+                    items()
+                }
                 .disabled(!master.wrappedValue)
+            }
         } label: {
             HStack {
                 Text(title)

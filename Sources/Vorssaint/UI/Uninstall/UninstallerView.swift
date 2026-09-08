@@ -56,8 +56,7 @@ struct UninstallerView: View {
                 )
                 .animation(.easeOut(duration: 0.15), value: dropTargeted)
 
-            Button(l10n.s.uninstallerChoose) { choose() }
-                .controlSize(.large)
+            PraxisButton(l10n.s.uninstallerChoose, icon: "plus.app", role: .primary, size: .regular) { choose() }
 
             Text(l10n.s.uninstallerEmptyNote)
                 .font(.caption)
@@ -96,11 +95,14 @@ struct UninstallerView: View {
                 .foregroundStyle(.tertiary)
                 .fixedSize(horizontal: false, vertical: true)
             HStack(spacing: 8) {
-                Button(l10n.s.uninstallerFDAGrant) { permissions.requestFullDiskAccess() }
+                PraxisButton(l10n.s.uninstallerFDAGrant, role: .secondary, size: .mini) {
+                    permissions.requestFullDiskAccess()
+                }
                 // Shown alongside because access only takes effect on relaunch.
-                Button(l10n.s.uninstallerFDARelaunch) { appDelegate()?.relaunchApp() }
+                PraxisButton(l10n.s.uninstallerFDARelaunch, icon: "arrow.clockwise", role: .secondary, size: .mini) {
+                    appDelegate()?.relaunchApp()
+                }
             }
-            .controlSize(.small)
         }
         .padding(11)
         .frame(width: 360)
@@ -200,11 +202,11 @@ struct UninstallerView: View {
                     .font(.caption).foregroundStyle(.secondary)
             }
             Spacer()
-            Button(l10n.s.uninstallerCancel) { uninstaller.reset() }
-            Button(l10n.s.uninstallerRemove) { uninstaller.removeSelected() }
-                .buttonStyle(.borderedProminent)
-                .tint(.red)
-                .disabled(!uninstaller.items.contains(where: \.include))
+            PraxisButton(l10n.s.uninstallerCancel, role: .ghost, size: .regular) { uninstaller.reset() }
+            PraxisButton(l10n.s.uninstallerRemove, icon: "trash", role: .destructive, size: .regular) {
+                uninstaller.removeSelected()
+            }
+            .disabled(!uninstaller.items.contains(where: \.include))
         }
         .padding(16)
     }
@@ -226,9 +228,7 @@ struct UninstallerView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
-            Button(l10n.s.uninstallerAnother) { uninstaller.reset() }
-                .controlSize(.large)
-                .buttonStyle(.borderedProminent)
+            PraxisButton(l10n.s.uninstallerAnother, role: .primary, size: .regular) { uninstaller.reset() }
                 .padding(.top, 6)
             Spacer()
         }

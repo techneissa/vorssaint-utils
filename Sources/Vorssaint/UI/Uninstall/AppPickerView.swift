@@ -51,8 +51,7 @@ struct AppPickerView: View {
             Text(l10n.s.uninstallerPickerTitle)
                 .font(.system(size: compact ? 12 : 16, weight: .semibold))
             Spacer()
-            Button(l10n.s.uninstallerCancel, action: onCancel)
-                .controlSize(compact ? .small : .regular)
+            PraxisButton(l10n.s.uninstallerCancel, role: .ghost, size: compact ? .small : .regular, action: onCancel)
         }
     }
 

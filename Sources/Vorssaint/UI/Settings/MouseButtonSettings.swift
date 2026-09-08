@@ -124,7 +124,7 @@ struct MouseButtonShortcutsSection: View {
                         Text(text.captureBlind)
                     }
                     Spacer()
-                    Button(text.captureCancel) { stopCapture() }
+                    PraxisButton(text.captureCancel, role: .ghost, size: .mini) { stopCapture() }
                 }
                 if let captureFeedback {
                     Text(captureFeedback)
@@ -139,10 +139,8 @@ struct MouseButtonShortcutsSection: View {
                 handleCapture(seen)
             }
         } else {
-            Button {
+            PraxisButton(text.addButton, icon: "plus", role: .secondary, size: .mini) {
                 startCapture()
-            } label: {
-                Label(text.addButton, systemImage: "plus")
             }
         }
     }

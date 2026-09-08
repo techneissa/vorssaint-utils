@@ -40,21 +40,13 @@ struct ScreenshotSettings: View {
         Form {
             Section {
                 HStack(spacing: 10) {
-                    Button {
+                    PraxisButton(strings.captureButton, icon: "camera.viewfinder", role: .primary, size: .large, fillWidth: true) {
                         ScreenshotService.shared.capture()
-                    } label: {
-                        Label(strings.captureButton, systemImage: "camera.viewfinder")
-                            .frame(maxWidth: .infinity)
                     }
-                    Button {
+                    PraxisButton(strings.scrollingCaptureButton, icon: "rectangle.stack", role: .secondary, size: .large, fillWidth: true) {
                         ScreenshotService.shared.captureScrolling()
-                    } label: {
-                        Label(strings.scrollingCaptureButton, systemImage: "rectangle.stack")
-                            .frame(maxWidth: .infinity)
                     }
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
                 Text(strings.panelCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -151,10 +143,8 @@ struct ScreenshotSettings: View {
                 Text(strings.shareCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Button {
+                PraxisButton(strings.sharePrivacyButton, icon: "hand.raised", role: .secondary) {
                     showingSharePrivacy = true
-                } label: {
-                    Label(strings.sharePrivacyButton, systemImage: "hand.raised")
                 }
                 if !sharing.records.isEmpty {
                     Button {
@@ -219,7 +209,7 @@ struct ScreenshotSettings: View {
                 .buttonStyle(.borderless)
                 .screenshotSafeHelp(l10n.s.shortcutReset)
             }
-            Button(strings.folderChoose) {
+            PraxisButton(strings.folderChoose, icon: "folder", role: .secondary, size: .mini) {
                 chooseFolder()
             }
         }
@@ -273,7 +263,7 @@ struct ScreenshotSettings: View {
                         .frame(width: 70)
                     Stepper("", value: $numberStart, in: 0...999_999)
                         .labelsHidden()
-                    Button(strings.fileNumberResetButton) {
+                    PraxisButton(strings.fileNumberResetButton, icon: "arrow.counterclockwise", role: .ghost, size: .mini) {
                         nextNumber = numberStart
                     }
                     Spacer()
@@ -352,14 +342,14 @@ struct ScreenshotSharePrivacyView: View {
                 Label(strings.sharePrivacyTitle, systemImage: "hand.raised")
                     .font(.title3.weight(.semibold))
                 Spacer()
-                Button(actionTitle ?? strings.done) {
+                PraxisButton(actionTitle ?? strings.done, role: .primary) {
                     dismiss()
                     guard let onAction else { return }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         onAction()
                     }
                 }
-                    .keyboardShortcut(.defaultAction)
+                .keyboardShortcut(.defaultAction)
             }
             .padding(20)
 
@@ -406,7 +396,7 @@ private struct ScreenshotSharedLinksView: View {
                 Text(strings.sharedLinksTitle)
                     .font(.title3.weight(.semibold))
                 Spacer()
-                Button(strings.done) { dismiss() }
+                PraxisButton(strings.done, role: .primary) { dismiss() }
                     .keyboardShortcut(.defaultAction)
             }
             .padding(18)

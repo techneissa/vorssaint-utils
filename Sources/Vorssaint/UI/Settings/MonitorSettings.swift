@@ -95,30 +95,34 @@ struct MonitorSettings: View {
                     .foregroundStyle(.secondary)
             }
             Section(l10n.s.fanControlBetaSection) {
-                PraxisSettingsToggle(label: l10n.s.fanControlBetaShow, isOn: $showFanControlBeta)
+                PraxisToggleGrid {
+                    PraxisSettingsToggle(label: l10n.s.fanControlBetaShow, isOn: $showFanControlBeta)
+                }
                 Text(l10n.s.fanControlBetaCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             Section(l10n.s.monitorGraphsSection) {
-                if AppFeature.monitorCPU.isAvailable {
-                    PraxisSettingsToggle(label: l10n.s.monitorShowCPU, isOn: $graphCPU)
-                }
-                if AppFeature.monitorGPU.isAvailable {
-                    PraxisSettingsToggle(label: l10n.s.monitorShowGPU, isOn: $graphGPU)
-                }
-                if AppFeature.monitorMemory.isAvailable {
-                    PraxisSettingsToggle(label: l10n.s.monitorShowMemory, isOn: $graphMemory)
-                }
-                if AppFeature.monitorNetwork.isAvailable {
-                    PraxisSettingsToggle(label: l10n.s.monitorShowNetwork, isOn: $graphNetwork)
-                }
-                if AppFeature.monitorDisk.isAvailable {
-                    PraxisSettingsToggle(label: l10n.s.diskSection, isOn: $graphDisk)
-                }
-                if AppFeature.monitorPower.isAvailable {
-                    PraxisSettingsToggle(label: l10n.s.monitorShowPowerLabel, isOn: $graphPower)
-                    PraxisSettingsToggle(label: l10n.s.batteryLabel, isOn: $graphBattery)
+                PraxisToggleGrid {
+                    if AppFeature.monitorCPU.isAvailable {
+                        PraxisSettingsToggle(label: l10n.s.monitorShowCPU, isOn: $graphCPU)
+                    }
+                    if AppFeature.monitorGPU.isAvailable {
+                        PraxisSettingsToggle(label: l10n.s.monitorShowGPU, isOn: $graphGPU)
+                    }
+                    if AppFeature.monitorMemory.isAvailable {
+                        PraxisSettingsToggle(label: l10n.s.monitorShowMemory, isOn: $graphMemory)
+                    }
+                    if AppFeature.monitorNetwork.isAvailable {
+                        PraxisSettingsToggle(label: l10n.s.monitorShowNetwork, isOn: $graphNetwork)
+                    }
+                    if AppFeature.monitorDisk.isAvailable {
+                        PraxisSettingsToggle(label: l10n.s.diskSection, isOn: $graphDisk)
+                    }
+                    if AppFeature.monitorPower.isAvailable {
+                        PraxisSettingsToggle(label: l10n.s.monitorShowPowerLabel, isOn: $graphPower)
+                        PraxisSettingsToggle(label: l10n.s.batteryLabel, isOn: $graphBattery)
+                    }
                 }
                 Text(l10n.s.monitorGraphsCaption)
                     .font(.caption)

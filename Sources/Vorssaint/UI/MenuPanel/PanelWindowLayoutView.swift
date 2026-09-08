@@ -132,15 +132,10 @@ struct PanelWindowLayoutView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             if !permissions.accessibility {
-                Button {
+                PraxisButton(text.missingPermission, icon: "hand.raised.fill", role: .secondary, size: .mini) {
                     Permissions.shared.requestAccessibility()
                     Permissions.shared.openAccessibilitySettings()
-                } label: {
-                    Label(text.missingPermission, systemImage: "hand.raised.fill")
-                        .font(.system(size: 10, weight: .semibold))
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.mini)
             }
         }
         .panelCard()
@@ -157,33 +152,23 @@ struct PanelWindowLayoutView: View {
                     .foregroundStyle(.tertiary)
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 7) {
                     ForEach(shown) { action in
-                        Button {
+                        PraxisButton(title(for: action),
+                                     icon: editingActions
+                                        ? (hidden.contains(action) ? "eye.slash" : "eye")
+                                        : action.symbolName,
+                                     role: .secondary,
+                                     size: .small,
+                                     fillWidth: true,
+                                     help: shortcutsEnabled && action.supportsShortcut
+                                        ? action.savedShortcut?.displayString
+                                        : nil) {
                             if editingActions {
                                 withAnimation(.easeOut(duration: 0.15)) { toggleHidden(action) }
                             } else {
                                 service.apply(action)
                             }
-                        } label: {
-                            VStack(spacing: 2) {
-                                Label(title(for: action), systemImage: editingActions
-                                        ? (hidden.contains(action) ? "eye.slash" : "eye")
-                                        : action.symbolName)
-                                    .font(.system(size: 10.5, weight: .semibold))
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.82)
-                                if shortcutsEnabled, action.supportsShortcut,
-                                   let shortcut = action.savedShortcut {
-                                    Text(shortcut.displayString)
-                                        .font(.system(size: 9, weight: .medium, design: .rounded))
-                                        .foregroundStyle(.secondary)
-                                        .lineLimit(1)
-                                }
-                            }
-                                .frame(maxWidth: .infinity, minHeight: 28)
-                                .opacity(editingActions && hidden.contains(action) ? 0.45 : 1)
                         }
-                        .buttonStyle(.bordered)
-                        .controlSize(.small)
+                        .opacity(editingActions && hidden.contains(action) ? 0.45 : 1)
                         .disabled(!permissions.accessibility && !editingActions)
                     }
                 }

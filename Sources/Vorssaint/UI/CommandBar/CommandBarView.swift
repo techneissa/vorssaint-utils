@@ -660,14 +660,12 @@ struct CommandBarView: View {
                     Spacer()
                     // Someone who opened the bar with the mouse has to be able
                     // to finish with the mouse.
-                    Button(l10n.s.uninstallerCancel) { service.stepBack() }
-                        .buttonStyle(.bordered)
-                        .controlSize(.small)
-                    Button(text.confirmButton) {
+                    PraxisButton(l10n.s.uninstallerCancel, role: .ghost, size: .small) {
+                        service.stepBack()
+                    }
+                    PraxisButton(text.confirmButton, role: .primary, size: .small) {
                         service.runSelected()
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.small)
                 }
                 .padding(12)
                 .background(

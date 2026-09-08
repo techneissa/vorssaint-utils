@@ -197,58 +197,24 @@ struct ClipboardQuickPanelView: View {
                         .font(.system(size: 9.5))
                         .foregroundStyle(.tertiary)
                     Spacer()
-                    Button {
+                    PraxisButton("", icon: "arrow.up", role: .secondary, size: .mini, help: text.moveUp) {
                         history.move(entry, .up)
-                    } label: {
-                        Image(systemName: "arrow.up")
-                            .font(.system(size: 10, weight: .bold))
-                            .frame(width: 18, height: 18)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.mini)
-                    .help(text.moveUp)
                     .disabled(!canReorderEntries || !history.canMove(entry, .up))
-                    Button {
+                    PraxisButton("", icon: "arrow.down", role: .secondary, size: .mini, help: text.moveDown) {
                         history.move(entry, .down)
-                    } label: {
-                        Image(systemName: "arrow.down")
-                            .font(.system(size: 10, weight: .bold))
-                            .frame(width: 18, height: 18)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.mini)
-                    .help(text.moveDown)
                     .disabled(!canReorderEntries || !history.canMove(entry, .down))
-                    Button {
+                    PraxisButton("", icon: entry.isPinned ? "pin.slash" : "pin", role: .secondary, size: .mini,
+                                 help: entry.isPinned ? text.unpin : text.pin) {
                         history.togglePin(entry)
-                    } label: {
-                        Image(systemName: entry.isPinned ? "pin.slash" : "pin")
-                            .font(.system(size: 10, weight: .bold))
-                            .frame(width: 18, height: 18)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.mini)
-                    .help(entry.isPinned ? text.unpin : text.pin)
-                    Button {
+                    PraxisButton("", icon: "trash", role: .destructive, size: .mini, help: text.delete) {
                         history.remove(entry)
-                    } label: {
-                        Image(systemName: "trash")
-                            .font(.system(size: 10, weight: .bold))
-                            .frame(width: 18, height: 18)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.mini)
-                    .help(text.delete)
-                    Button {
+                    PraxisButton("", icon: "doc.on.doc", role: .primary, size: .mini, help: text.copy) {
                         history.copyOnlyQuickEntry(entry)
-                    } label: {
-                        Image(systemName: "doc.on.doc")
-                            .font(.system(size: 10, weight: .bold))
-                            .frame(width: 18, height: 18)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.mini)
-                    .help(text.copy)
                 }
             }
         }
@@ -431,22 +397,23 @@ struct ClipboardQuickPanelView: View {
             if history.quickBatchCount > 0 {
                 // The selection's actions, spelled out: the visible twin of
                 // Enter and ⌘C, so the flow needs no shortcut knowledge.
-                Button(String(format: text.pasteSelectedFormat, history.quickBatchCount)) {
+                PraxisButton(String(format: text.pasteSelectedFormat, history.quickBatchCount),
+                             icon: "doc.on.clipboard", role: .primary, size: .small) {
                     history.copySelectedQuickEntry()
                 }
-                .buttonStyle(.borderedProminent)
-                Button(String(format: text.copySelectedFormat, history.quickBatchCount)) {
+                PraxisButton(String(format: text.copySelectedFormat, history.quickBatchCount),
+                             icon: "doc.on.doc", role: .secondary, size: .small) {
                     history.copySelectedQuickEntryOnly()
                 }
-                Button(text.clearSelection) {
+                PraxisButton(text.clearSelection, role: .ghost, size: .small) {
                     history.clearQuickBatchSelection()
                 }
             } else {
-                Button(text.clearRecent) {
+                PraxisButton(text.clearRecent, role: .secondary, size: .small) {
                     history.clearRecent()
                 }
                 .disabled(history.recentEntries.isEmpty)
-                Button(text.clearAll) {
+                PraxisButton(text.clearAll, role: .destructive, size: .small) {
                     history.clearAll()
                 }
                 .disabled(history.recentEntries.isEmpty)
@@ -456,7 +423,6 @@ struct ClipboardQuickPanelView: View {
                 .font(.system(size: 10.5, weight: .medium))
                 .foregroundStyle(.secondary)
         }
-        .controlSize(.small)
     }
 
     private func shortcutIndex(for entry: ClipboardHistoryEntry) -> Int? {

@@ -66,14 +66,9 @@ struct PanelUninstallerView: View {
         VStack(spacing: 10) {
             dropZone
 
-            Button {
+            PraxisButton(l10n.s.uninstallerChoose, icon: "plus.app", role: .secondary, size: .small) {
                 choose()
-            } label: {
-                Label(l10n.s.uninstallerChoose, systemImage: "plus.app")
-                    .font(.system(size: 11.5, weight: .medium))
             }
-            .buttonStyle(.bordered)
-            .controlSize(.small)
 
             Text(l10n.s.uninstallerEmptyNote)
                 .font(.system(size: 10))
@@ -135,15 +130,13 @@ struct PanelUninstallerView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             HStack(spacing: 7) {
-                Button(l10n.s.uninstallerFDAGrant) {
+                PraxisButton(l10n.s.uninstallerFDAGrant, role: .secondary, size: .small) {
                     permissions.requestFullDiskAccess()
                 }
-                Button(l10n.s.uninstallerFDARelaunch) {
+                PraxisButton(l10n.s.uninstallerFDARelaunch, role: .secondary, size: .small) {
                     appDelegate()?.relaunchApp()
                 }
             }
-            .controlSize(.small)
-            .font(.system(size: 10.5))
         }
         .padding(9)
         .background(
@@ -285,21 +278,13 @@ struct PanelUninstallerView: View {
                     .foregroundStyle(.secondary)
             }
             HStack {
-                Button(l10n.s.uninstallerCancel) {
+                PraxisButton(l10n.s.uninstallerCancel, role: .ghost, size: .small) {
                     uninstaller.reset()
                 }
-                .controlSize(.small)
                 Spacer()
-                Button {
+                PraxisButton(l10n.s.uninstallerRemove, icon: "trash", role: .destructive, size: .small) {
                     uninstaller.removeSelected()
-                } label: {
-                    Label(l10n.s.uninstallerRemove, systemImage: "trash")
-                        .font(.system(size: 11, weight: .semibold))
-                        .lineLimit(1)
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
-                .tint(.red)
                 .disabled(!uninstaller.items.contains(where: \.include))
             }
         }
@@ -322,11 +307,9 @@ struct PanelUninstallerView: View {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            Button(l10n.s.uninstallerAnother) {
+            PraxisButton(l10n.s.uninstallerAnother, role: .primary, size: .small) {
                 uninstaller.reset()
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.small)
         }
         .frame(maxWidth: .infinity)
         .panelCard()

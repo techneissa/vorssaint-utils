@@ -73,10 +73,8 @@ struct TextSnippetsSettings: View {
                                toggle: { setEnabled($0, id: snippet.id) },
                                edit: { editing = snippet })
                 }
-                Button {
+                PraxisButton(text.addButton, icon: "plus", role: .secondary) {
                     creating = true
-                } label: {
-                    Label(text.addButton, systemImage: "plus")
                 }
             } footer: {
                 VStack(alignment: .leading, spacing: 2) {
@@ -277,16 +275,14 @@ private struct SnippetEditor: View {
             }
             HStack {
                 if let delete {
-                    Button(role: .destructive) {
+                    PraxisButton(text.deleteButton, icon: "trash", role: .destructive) {
                         delete()
                         dismiss()
-                    } label: {
-                        Text(text.deleteButton)
                     }
                 }
                 Spacer()
-                Button(l10n.s.uninstallerCancel) { dismiss() }
-                Button(text.saveButton) {
+                PraxisButton(l10n.s.uninstallerCancel, role: .ghost) { dismiss() }
+                PraxisButton(text.saveButton, role: .primary) {
                     var saved = snippet
                     saved.trigger = sanitizedTrigger
                     saved.name = snippet.name.trimmingCharacters(in: .whitespaces)
@@ -294,7 +290,6 @@ private struct SnippetEditor: View {
                     save(saved)
                     dismiss()
                 }
-                .buttonStyle(.borderedProminent)
                 .disabled(triggerTooShort || duplicateTrigger || snippet.replacement.isEmpty)
             }
         }

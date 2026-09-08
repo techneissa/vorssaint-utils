@@ -46,12 +46,9 @@ struct MouseExceptionsList: View {
                 }
             }
 
-            Button {
+            PraxisButton(text.addButton, icon: "plus", role: .secondary, size: .mini) {
                 showingAppPicker = true
-            } label: {
-                Label(text.addButton, systemImage: "plus")
             }
-            .controlSize(.small)
             // Rows inside a disclosure group center themselves; the button
             // belongs under the list it adds to.
             .frame(maxWidth: .infinity, alignment: .leading)

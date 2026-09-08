@@ -183,32 +183,15 @@ struct RecorderInspector: View {
     private var backgroundSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             sectionTitle(strings.backgroundSectionLabel)
-            Button {
-                showsBackdropPopover = true
-            } label: {
-                HStack(spacing: 8) {
-                    RoundedRectangle(cornerRadius: 5, style: .continuous)
-                        .fill(LinearGradient(
-                            colors: BackdropPickerAssets.previewColors(for: model.backdropStyle),
-                            startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .frame(width: 26, height: 20)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 5, style: .continuous)
-                                .strokeBorder(Color.white.opacity(0.16), lineWidth: 1)
-                        }
-                    Text(model.showsBackdrop
+            PraxisButton(model.showsBackdrop
                          ? strings.backgroundSectionLabel
-                         : FeatureStrings.screenshot(l10n.language).backdropNone)
-                        .font(.system(size: 12))
-                    Spacer()
-                    Image(systemName: "chevron.up.chevron.down")
-                        .font(.system(size: 9, weight: .semibold))
-                        .foregroundStyle(.tertiary)
-                }
-                .contentShape(Rectangle())
+                         : FeatureStrings.screenshot(l10n.language).backdropNone,
+                         icon: "photo.on.rectangle.angled",
+                         role: .secondary,
+                         size: .regular,
+                         fillWidth: true) {
+                showsBackdropPopover = true
             }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
             .popover(isPresented: $showsBackdropPopover, arrowEdge: .trailing) {
                 ScreenshotBackdropPopover(model: model, showsAdjustments: false)
             }
@@ -327,16 +310,14 @@ struct RecorderInspector: View {
                     .pickerStyle(.segmented)
                     .labelsHidden()
                 if !segment.followsPointer {
-                    Button(strings.zoomPickSpotHint) { model.beginAiming() }
-                        .buttonStyle(.borderless)
-                        .font(.system(size: 10.5))
-                        .foregroundStyle(Color.accentColor)
+                    PraxisButton(strings.zoomPickSpotHint, role: .ghost, size: .mini) {
+                        model.beginAiming()
+                    }
                 }
             }
-            Button(strings.removeZoom) { model.removeSelectedZoom() }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .frame(maxWidth: .infinity)
+            PraxisButton(strings.removeZoom, icon: "trash", role: .destructive, size: .small, fillWidth: true) {
+                model.removeSelectedZoom()
+            }
         }
     }
 
@@ -418,10 +399,9 @@ struct RecorderInspector: View {
                 }
             }
 
-            Button(strings.removeText) { model.removeSelectedText() }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .frame(maxWidth: .infinity)
+            PraxisButton(strings.removeText, icon: "trash", role: .destructive, size: .small, fillWidth: true) {
+                model.removeSelectedText()
+            }
         }
     }
 
@@ -583,16 +563,16 @@ struct RecorderInspector: View {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            Button(model.canCreateAutomaticZooms
-                   ? strings.createAutomaticZooms : strings.zoomLaneEmptyHint) {
+            PraxisButton(model.canCreateAutomaticZooms
+                           ? strings.createAutomaticZooms : strings.zoomLaneEmptyHint,
+                         icon: "plus.magnifyingglass",
+                         role: .primary, size: .small) {
                 if model.canCreateAutomaticZooms {
                     model.regenerateZooms()
                 } else {
                     model.addZoom(at: model.sourceTime)
                 }
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.small)
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 12)

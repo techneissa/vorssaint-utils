@@ -93,7 +93,7 @@ struct RadialMenuSettings: View {
                     Text(text.positionCenter).tag(false)
                 }
                 .pickerStyle(.segmented)
-                Button(text.tryButton) {
+                PraxisButton(text.tryButton, icon: "play.circle", role: .secondary) {
                     RadialMenuService.shared.presentPreview()
                 }
             } header: {
@@ -142,14 +142,12 @@ struct RadialMenuSettings: View {
                                   moveHandler: { moved, target in move(moved, before: target) })
                 }
                 if level.count < RadialMenuSupport.maxItemsPerWheel {
-                    Button {
+                    PraxisButton(text.addButton, icon: "plus", role: .secondary) {
                         // A fresh draft per tap: the sheet keys its identity
                         // to the item id, so state can never leak from one
                         // add into the next (a leaked id made every save
                         // replace the previous action instead of appending).
                         editing = RadialMenuItem(kind: .app)
-                    } label: {
-                        Label(text.addButton, systemImage: "plus")
                     }
                 }
             } header: {
@@ -485,22 +483,19 @@ private struct RadialItemEditor: View {
 
             HStack {
                 if let delete {
-                    Button(role: .destructive) {
+                    PraxisButton(text.deleteButton, icon: "trash", role: .destructive) {
                         delete()
                         dismiss()
-                    } label: {
-                        Text(text.deleteButton)
                     }
                 }
                 Spacer()
-                Button(l10n.s.uninstallerCancel) { dismiss() }
-                Button(text.saveButton) {
+                PraxisButton(l10n.s.uninstallerCancel, role: .ghost) { dismiss() }
+                PraxisButton(text.saveButton, role: .primary) {
                     var saved = item
                     saved.name = item.name.trimmingCharacters(in: .whitespaces)
                     save(saved)
                     dismiss()
                 }
-                .buttonStyle(.borderedProminent)
                 .disabled(saveDisabled)
             }
         }
@@ -530,11 +525,15 @@ private struct RadialItemEditor: View {
         switch item.kind {
         case .app:
             LabeledContent(text.kindApp) {
-                Button(chooseTitle) { choose(applications: true) }
+                PraxisButton(chooseTitle, icon: "folder", role: .secondary, size: .mini) {
+                    choose(applications: true)
+                }
             }
         case .file:
             LabeledContent(text.kindFile) {
-                Button(chooseTitle) { choose(applications: false) }
+                PraxisButton(chooseTitle, icon: "folder", role: .secondary, size: .mini) {
+                    choose(applications: false)
+                }
             }
         case .url:
             TextField(text.kindURL, text: $item.payload, prompt: Text(text.urlPlaceholder))

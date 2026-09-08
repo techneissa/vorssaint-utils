@@ -281,15 +281,11 @@ struct MetricDetailView: View {
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
                 } else {
-                    Button {
+                    PraxisButton(speed.downloadMbps == nil ? l10n.s.speedTestRun : l10n.s.speedTestAgain,
+                                 icon: "gauge.with.dots.needle.67percent",
+                                 role: .secondary, size: .small) {
                         speed.start()
-                    } label: {
-                        Label(speed.downloadMbps == nil ? l10n.s.speedTestRun : l10n.s.speedTestAgain,
-                              systemImage: "gauge.with.dots.needle.67percent")
-                            .font(.system(size: 11))
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
                 }
                 Spacer()
                 if let down = speed.downloadMbps, let up = speed.uploadMbps {

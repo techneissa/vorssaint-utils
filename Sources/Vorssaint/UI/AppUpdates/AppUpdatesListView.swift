@@ -58,22 +58,9 @@ struct AppUpdatesListView: View {
                 .font(.system(size: compact ? 10.5 : 12))
                 .foregroundStyle(.secondary)
             Spacer(minLength: 0)
-            Button {
+            PraxisButton(text.checkNow, icon: "arrow.clockwise", role: .secondary, size: .small) {
                 updates.check()
-            } label: {
-                if updates.isChecking {
-                    HStack(spacing: 5) {
-                        ProgressView().controlSize(.mini)
-                        Text(text.checking)
-                    }
-                    .font(.system(size: compact ? 10.5 : 12, weight: .medium))
-                } else {
-                    Label(text.checkNow, systemImage: "arrow.clockwise")
-                        .font(.system(size: compact ? 10.5 : 12, weight: .medium))
-                }
             }
-            .buttonStyle(.bordered)
-            .controlSize(.small)
             .disabled(isBusy)
         }
     }
@@ -192,14 +179,11 @@ struct AppUpdatesListView: View {
             }
             Spacer(minLength: 0)
 
-            Button {
+            PraxisButton(item.canInstallInPlace ? text.updateOne : text.appStoreBadge,
+                         icon: item.canInstallInPlace ? "arrow.down.circle" : "arrow.up.forward.app",
+                         role: .secondary, size: .small) {
                 updates.update(item)
-            } label: {
-                Text(item.canInstallInPlace ? text.updateOne : text.appStoreBadge)
-                    .font(.system(size: compact ? 10 : 11, weight: .medium))
             }
-            .buttonStyle(.bordered)
-            .controlSize(.small)
             .disabled(isBusy)
             .help(item.canInstallInPlace ? text.updateOne : text.storeHint)
         }
@@ -224,15 +208,11 @@ struct AppUpdatesListView: View {
     @ViewBuilder
     private var updateButton: some View {
         HStack(spacing: 8) {
-            Button {
+            PraxisButton(String(format: text.updateSelectedFormat, updates.selectedCount),
+                         icon: "arrow.down.circle", role: .primary,
+                         size: compact ? .small : .regular, fillWidth: compact) {
                 updates.updateSelected()
-            } label: {
-                Text(String(format: text.updateSelectedFormat, updates.selectedCount))
-                    .font(.system(size: compact ? 11 : 12, weight: .semibold))
-                    .frame(maxWidth: compact ? .infinity : nil)
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(compact ? .small : .regular)
             .disabled(updates.selectedCount == 0 || isBusy)
             if !compact {
                 Spacer(minLength: 0)

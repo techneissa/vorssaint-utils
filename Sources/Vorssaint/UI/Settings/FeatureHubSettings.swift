@@ -320,7 +320,7 @@ struct PermissionsPortalSections: View {
                 Text("Developer build")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.orange)
-                Text("This is Vorssaint (Developer) — bundle ID com.vorssaint.utils.dev. macOS permissions granted to the regular Vorssaint app do not apply here. Enable each permission again for this app in System Settings (look for “Vorssaint (Developer)”).")
+                Text("This is Vorssaint (Developer). Bundle ID com.vorssaint.utils.dev. Grant each permission for this app in System Settings.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)

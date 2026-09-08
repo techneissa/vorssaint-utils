@@ -67,10 +67,8 @@ struct ShelfSettings: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    Button {
+                    PraxisButton(l10n.s.shelfOpenNow, icon: "tray.and.arrow.down", role: .secondary) {
                         ShelfService.shared.summon()
-                    } label: {
-                        Label(l10n.s.shelfOpenNow, systemImage: "tray.and.arrow.down")
                     }
                 }
 
@@ -112,10 +110,8 @@ struct ShelfSettings: View {
                             }
                         }
                     }
-                    Button {
+                    PraxisButton(l10n.s.autoQuitAddApp, icon: "plus", role: .secondary, size: .mini) {
                         showingAppPicker = true
-                    } label: {
-                        Label(l10n.s.autoQuitAddApp, systemImage: "plus")
                     }
                     Text(l10n.s.shelfExclusionsCaption)
                         .font(.caption)

@@ -39,12 +39,9 @@ struct WindowPreviewExclusionsList: View {
                 }
             }
 
-            Button {
+            PraxisButton(text.addButton, icon: "plus", role: .secondary, size: .mini) {
                 showingAppPicker = true
-            } label: {
-                Label(text.addButton, systemImage: "plus")
             }
-            .controlSize(.small)
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(text.caption)

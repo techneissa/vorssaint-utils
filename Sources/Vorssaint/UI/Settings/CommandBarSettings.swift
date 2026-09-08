@@ -29,10 +29,8 @@ struct CommandBarSettings: View {
     var body: some View {
         Form {
             Section {
-                Button {
+                PraxisButton(text.openButton, icon: "command", role: .secondary) {
                     CommandBarService.shared.show()
-                } label: {
-                    Label(text.openButton, systemImage: "command")
                 }
                 Text(text.settingsCaption)
                     .font(.caption)
@@ -104,18 +102,12 @@ struct CommandBarSettings: View {
                             .lineLimit(1)
                             .truncationMode(.middle)
                         Spacer()
-                        Button(editLabel) { editing = link }
-                            .buttonStyle(.bordered)
-                            .controlSize(.mini)
-                        Button(text.removeButton) { removeLink(link) }
-                            .buttonStyle(.bordered)
-                            .controlSize(.mini)
+                        PraxisButton(editLabel, icon: "pencil", role: .secondary, size: .mini) { editing = link }
+                        PraxisButton(text.removeButton, icon: "minus.circle", role: .destructive, size: .mini) { removeLink(link) }
                     }
                 }
-                Button {
+                PraxisButton(common.addButton, icon: "plus", role: .secondary) {
                     editing = CommandBarLink()
-                } label: {
-                    Label(common.addButton, systemImage: "plus")
                 }
             } header: {
                 Text(text.linksTitle)
@@ -144,9 +136,9 @@ struct CommandBarSettings: View {
                                 .font(.caption)
                                 .foregroundStyle(.orange)
                         }
-                        Button(text.removeButton) { removeRowShortcut(entry.key) }
-                            .buttonStyle(.bordered)
-                            .controlSize(.mini)
+                        PraxisButton(text.removeButton, icon: "minus.circle", role: .destructive, size: .mini) {
+                            removeRowShortcut(entry.key)
+                        }
                     }
                 }
             } header: {
@@ -169,9 +161,9 @@ struct CommandBarSettings: View {
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
                         Spacer()
-                        Button(text.removeButton) { removeAlias(entry.key) }
-                            .buttonStyle(.bordered)
-                            .controlSize(.mini)
+                        PraxisButton(text.removeButton, icon: "minus.circle", role: .destructive, size: .mini) {
+                            removeAlias(entry.key)
+                        }
                     }
                 }
             } header: {
@@ -190,9 +182,9 @@ struct CommandBarSettings: View {
                             .font(.system(size: 12))
                             .lineLimit(1)
                         Spacer()
-                        Button(text.removeButton) { removePin(entry.key) }
-                            .buttonStyle(.bordered)
-                            .controlSize(.mini)
+                        PraxisButton(text.removeButton, icon: "minus.circle", role: .destructive, size: .mini) {
+                            removePin(entry.key)
+                        }
                     }
                 }
             } header: {
@@ -211,12 +203,12 @@ struct CommandBarSettings: View {
                             .font(.system(size: 12))
                             .lineLimit(1)
                         Spacer()
-                        Button(text.removeButton) { unhide(entry.key) }
-                            .buttonStyle(.bordered)
-                            .controlSize(.mini)
+                        PraxisButton(text.removeButton, icon: "minus.circle", role: .destructive, size: .mini) {
+                            unhide(entry.key)
+                        }
                     }
                 }
-                Button(text.forgetAllButton) {
+                PraxisButton(text.forgetAllButton, icon: "trash", role: .destructive) {
                     UserDefaults.standard.removeObject(forKey: DefaultsKey.commandBarUsage)
                 }
             } header: {
@@ -390,7 +382,10 @@ private struct CommandBarLinkEditor: View {
                         .textFieldStyle(.roundedBorder)
                     if draft.kind == .place {
                         // Typing a path by hand is how people get it wrong.
-                        Button(FeatureStrings.radialMenu(l10n.language).chooseButton) { choosePlace() }
+                        PraxisButton(FeatureStrings.radialMenu(l10n.language).chooseButton,
+                                     icon: "folder",
+                                     role: .secondary,
+                                     size: .mini) { choosePlace() }
                     }
                 }
             }
@@ -423,14 +418,13 @@ private struct CommandBarLinkEditor: View {
 
             HStack {
                 Spacer()
-                Button(l10n.s.uninstallerCancel, action: cancel)
-                Button(common.saveButton) {
+                PraxisButton(l10n.s.uninstallerCancel, role: .ghost) { cancel() }
+                PraxisButton(common.saveButton, role: .primary) {
                     var clean = draft
                     clean.name = clean.name.trimmingCharacters(in: .whitespaces)
                     clean.destination = clean.destination.trimmingCharacters(in: .whitespaces)
                     save(clean)
                 }
-                .buttonStyle(.borderedProminent)
                 .disabled(!canSave)
             }
         }

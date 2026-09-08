@@ -30,11 +30,10 @@ struct ScreenRecorderSettings: View {
     var body: some View {
         Form {
             Section {
-                Button {
+                PraxisButton(service.isRecording ? strings.stopButton : strings.startButton,
+                             icon: service.isRecording ? "stop.circle" : "record.circle",
+                             role: service.isRecording ? .destructive : .primary) {
                     ScreenRecorderService.shared.toggle()
-                } label: {
-                    Label(service.isRecording ? strings.stopButton : strings.startButton,
-                          systemImage: service.isRecording ? "stop.circle" : "record.circle")
                 }
                 Text(service.isRecording
                      ? RecorderSupport.elapsedLabel(seconds: service.elapsedSeconds)
@@ -145,7 +144,7 @@ struct ScreenRecorderSettings: View {
                 .buttonStyle(.borderless)
                 .screenshotSafeHelp(l10n.s.shortcutReset)
             }
-            Button(strings.folderChoose) {
+            PraxisButton(strings.folderChoose, icon: "folder", role: .secondary, size: .mini) {
                 chooseFolder()
             }
         }

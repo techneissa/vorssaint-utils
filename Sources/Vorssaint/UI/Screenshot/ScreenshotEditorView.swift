@@ -712,29 +712,34 @@ struct ScreenshotEditorView: View {
             shareMenu
             Divider().frame(height: 16).padding(.horizontal, 3)
 
-            Menu {
-                Button(strings.saveButton) {
+            HStack(spacing: 4) {
+                PraxisButton(strings.saveButton, icon: "square.and.arrow.down", role: .primary, size: .small) {
                     commitEditingTextIfNeeded()
                     controller.save()
                 }
-                Button(strings.saveAsButton) {
-                    commitEditingTextIfNeeded()
-                    controller.saveAs()
+                .screenshotSafeHelp("⌘S")
+                Menu {
+                    Button(strings.saveButton) {
+                        commitEditingTextIfNeeded()
+                        controller.save()
+                    }
+                    Button(strings.saveAsButton) {
+                        commitEditingTextIfNeeded()
+                        controller.saveAs()
+                    }
+                } label: {
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                        .frame(width: 20, height: 24)
                 }
-            } label: {
-                Text(strings.saveButton)
-            } primaryAction: {
-                commitEditingTextIfNeeded()
-                controller.save()
+                .menuStyle(.borderlessButton)
             }
             .fixedSize()
-            .screenshotSafeHelp("⌘S")
 
-            Button(strings.copyButton) {
+            PraxisButton(strings.copyButton, icon: "doc.on.doc", role: .primary, size: .small) {
                 commitEditingTextIfNeeded()
                 controller.copyToClipboard()
             }
-            .buttonStyle(.borderedProminent)
             .screenshotSafeHelp("⏎")
         }
         .padding(.horizontal, 9)
@@ -922,13 +927,12 @@ struct ScreenshotEditorView: View {
 
     private var cropBar: some View {
         HStack(spacing: 8) {
-            Button(strings.cancel) {
+            PraxisButton(strings.cancel, role: .ghost, size: .small) {
                 model.tool = .select
             }
-            Button(strings.cropApply) {
+            PraxisButton(strings.cropApply, icon: "checkmark", role: .primary, size: .small) {
                 model.applyCrop()
             }
-            .buttonStyle(.borderedProminent)
             .screenshotSafeHelp("⏎")
         }
         .padding(.horizontal, 12)

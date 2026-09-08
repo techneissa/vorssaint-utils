@@ -304,25 +304,21 @@ struct MediaWorkspaceView: View {
 
     private var actionRow: some View {
         HStack(spacing: 8) {
-            Button {
+            PraxisButton(actionTitle,
+                         icon: selectedTool == .textExtractor ? "text.viewfinder" : "play.fill",
+                         role: .primary, size: compact ? .small : .regular) {
                 run()
-            } label: {
-                Label(actionTitle, systemImage: selectedTool == .textExtractor ? "text.viewfinder" : "play.fill")
             }
-            .buttonStyle(.borderedProminent)
             .disabled(inputURL == nil || isRunning)
 
             if isRunning {
-                Button {
+                PraxisButton(l10n.s.mediaCancel, icon: "xmark", role: .ghost, size: compact ? .small : .regular) {
                     media.cancel()
-                } label: {
-                    Label(l10n.s.mediaCancel, systemImage: "xmark")
                 }
             }
 
             Spacer(minLength: 0)
         }
-        .controlSize(compact ? .small : .regular)
     }
 
     @ViewBuilder

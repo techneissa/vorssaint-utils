@@ -104,14 +104,9 @@ struct PanelHomebrewView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
-            Button {
+            PraxisButton(l10n.s.homebrewInstallHomebrew, icon: "terminal", role: .primary, size: .small) {
                 homebrew.openHomebrewInstaller()
-            } label: {
-                Label(l10n.s.homebrewInstallHomebrew, systemImage: "terminal")
-                    .font(.system(size: 11, weight: .medium))
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.small)
             Text(homebrew.didOpenInstaller ? l10n.s.homebrewInstallHomebrewOpened : l10n.s.homebrewInstallHomebrewCaption)
                 .font(.system(size: 9.5))
                 .foregroundStyle(.secondary)
@@ -124,14 +119,9 @@ struct PanelHomebrewView: View {
                     .lineLimit(3)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            Button {
+            PraxisButton(l10n.s.homebrewRefresh, icon: "arrow.clockwise", role: .secondary, size: .small) {
                 homebrew.refreshInstalled()
-            } label: {
-                Label(l10n.s.homebrewRefresh, systemImage: "arrow.clockwise")
-                    .font(.system(size: 11, weight: .medium))
             }
-            .buttonStyle(.bordered)
-            .controlSize(.small)
         }
         .frame(maxWidth: .infinity)
         .panelCard()
@@ -157,22 +147,12 @@ struct PanelHomebrewView: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
                 HStack(spacing: 7) {
-                    Button {
+                    PraxisButton(l10n.s.homebrewShellSetupButton, icon: "wrench.and.screwdriver", role: .primary, size: .small) {
                         homebrew.openShellConfiguration()
-                    } label: {
-                        Label(l10n.s.homebrewShellSetupButton, systemImage: "wrench.and.screwdriver")
-                            .font(.system(size: 10.5, weight: .medium))
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.small)
-                    Button {
+                    PraxisButton(l10n.s.homebrewRefresh, icon: "arrow.clockwise", role: .secondary, size: .small) {
                         homebrew.refreshShellConfigurationStatus()
-                    } label: {
-                        Label(l10n.s.homebrewRefresh, systemImage: "arrow.clockwise")
-                            .font(.system(size: 10.5, weight: .medium))
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
                 }
             }
             .panelCard()
@@ -187,14 +167,9 @@ struct PanelHomebrewView: View {
                                          onFocus: keepPopoverOpen,
                                          onSubmit: search)
                     .frame(height: 24)
-                Button {
+                PraxisButton("", icon: "magnifyingglass", role: .primary, size: .small) {
                     search()
-                } label: {
-                    Image(systemName: "magnifyingglass")
-                        .frame(width: 20, height: 18)
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
                 .disabled(query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || homebrew.isBusy)
             }
             Picker("", selection: $searchKind) {
@@ -223,28 +198,16 @@ struct PanelHomebrewView: View {
             .pickerStyle(.segmented)
 
             HStack(spacing: 7) {
-                Button {
+                PraxisButton(l10n.s.homebrewCheckPackages, icon: "arrow.clockwise", role: .secondary, size: .small,
+                             help: l10n.s.homebrewCheckPackages) {
                     homebrew.refreshInstalled()
-                } label: {
-                    Label(l10n.s.homebrewCheckPackages, systemImage: "arrow.clockwise")
-                        .font(.system(size: 10.5, weight: .medium))
-                        .lineLimit(1)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .help(l10n.s.homebrewCheckPackages)
                 .disabled(homebrew.isBusy)
-                Button {
+                PraxisButton(l10n.s.homebrewUpdateHomebrew, icon: "arrow.triangle.2.circlepath", role: .secondary, size: .small,
+                             help: l10n.s.homebrewUpdateHomebrew) {
                     pendingAction = HomebrewPendingAction(action: .updateHomebrew)
                     keepPopoverOpen()
-                } label: {
-                    Label(l10n.s.homebrewUpdateHomebrew, systemImage: "arrow.triangle.2.circlepath")
-                        .font(.system(size: 10.5, weight: .medium))
-                        .lineLimit(1)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .help(l10n.s.homebrewUpdateHomebrew)
                 .disabled(homebrew.isBusy)
                 Spacer(minLength: 0)
             }
@@ -270,17 +233,11 @@ struct PanelHomebrewView: View {
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(.orange)
                 Spacer(minLength: 0)
-                Button {
+                PraxisButton(l10n.s.homebrewUpgradeAll, icon: "arrow.up.circle", role: .secondary, size: .small,
+                             help: l10n.s.homebrewUpgradeAll) {
                     pendingAction = HomebrewPendingAction(action: .upgradeAll)
                     keepPopoverOpen()
-                } label: {
-                    Label(l10n.s.homebrewUpgradeAll, systemImage: "arrow.up.circle")
-                        .font(.system(size: 10.5, weight: .medium))
-                        .lineLimit(1)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .help(l10n.s.homebrewUpgradeAll)
                 .disabled(homebrew.isBusy)
             }
         } else {
@@ -552,38 +509,22 @@ struct PanelHomebrewView: View {
         } else if package.isInstalled {
             if package.update != nil {
                 VStack(alignment: .trailing, spacing: 6) {
-                    Button {
+                    PraxisButton(l10n.s.homebrewUpgrade, icon: "arrow.up.circle", role: .primary, size: .small) {
                         pendingAction = HomebrewPendingAction(action: .upgrade, package: package)
-                    } label: {
-                        Label(l10n.s.homebrewUpgrade, systemImage: "arrow.up.circle")
-                            .font(.system(size: 11, weight: .semibold))
                     }
-                    .buttonStyle(.borderedProminent)
-                    Button(role: .destructive) {
+                    PraxisButton(l10n.s.homebrewUninstall, icon: "trash", role: .destructive, size: .small) {
                         pendingAction = HomebrewPendingAction(action: .uninstall, package: package)
-                    } label: {
-                        Label(l10n.s.homebrewUninstall, systemImage: "trash")
-                            .font(.system(size: 11, weight: .semibold))
                     }
-                    .tint(.red)
                 }
             } else {
-                Button(role: .destructive) {
+                PraxisButton(l10n.s.homebrewUninstall, icon: "trash", role: .destructive, size: .small) {
                     pendingAction = HomebrewPendingAction(action: .uninstall, package: package)
-                } label: {
-                    Label(l10n.s.homebrewUninstall, systemImage: "trash")
-                        .font(.system(size: 11, weight: .semibold))
                 }
-                .tint(.red)
             }
         } else {
-            Button {
+            PraxisButton(l10n.s.homebrewInstall, icon: "arrow.down.circle", role: .primary, size: .small) {
                 pendingAction = HomebrewPendingAction(action: .install, package: package)
-            } label: {
-                Label(l10n.s.homebrewInstall, systemImage: "arrow.down.circle")
-                    .font(.system(size: 11, weight: .semibold))
             }
-            .buttonStyle(.borderedProminent)
         }
     }
 

@@ -88,23 +88,28 @@ struct RecorderEditorView: View {
                 .screenshotSafeHelp("⌘C")
             }
 
-            Menu {
-                Button(strings.saveVideoButton, action: controller.saveVideo)
-                    .keyboardShortcut("s", modifiers: .command)
-                Button(strings.saveAsButton, action: controller.saveVideoAs)
-                    .keyboardShortcut("s", modifiers: [.command, .shift])
-                Button(strings.saveGIFButton, action: controller.saveGIF)
-                Divider()
-                Button(strings.folderLabel + "…", action: controller.chooseSaveFolder)
-            } label: {
-                Label(strings.saveVideoButton, systemImage: "square.and.arrow.down")
-            } primaryAction: {
-                controller.saveVideo()
+            HStack(spacing: 4) {
+                PraxisButton(strings.saveVideoButton, icon: "square.and.arrow.down", role: .primary, size: .small) {
+                    controller.saveVideo()
+                }
+                .disabled(model.isExporting)
+                .screenshotSafeHelp("⌘S")
+                Menu {
+                    Button(strings.saveVideoButton, action: controller.saveVideo)
+                        .keyboardShortcut("s", modifiers: .command)
+                    Button(strings.saveAsButton, action: controller.saveVideoAs)
+                        .keyboardShortcut("s", modifiers: [.command, .shift])
+                    Button(strings.saveGIFButton, action: controller.saveGIF)
+                    Divider()
+                    Button(strings.folderLabel + "…", action: controller.chooseSaveFolder)
+                } label: {
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                        .frame(width: 20, height: 24)
+                }
+                .menuStyle(.borderlessButton)
+                .disabled(model.isExporting)
             }
-            .menuStyle(.button)
-            .buttonStyle(.borderedProminent)
-            .disabled(model.isExporting)
-            .screenshotSafeHelp("⌘S")
         }
         .padding(.leading, 76)
         .padding(.trailing, 14)
@@ -244,14 +249,10 @@ struct RecorderEditorView: View {
 
     private var transportRow: some View {
         HStack(spacing: 12) {
-            Button(action: model.togglePlay) {
-                Image(systemName: model.isPlaying ? "pause.fill" : "play.fill")
-                    .font(.system(size: 13, weight: .semibold))
-                    .frame(width: 26, height: 20)
+            PraxisButton("", icon: model.isPlaying ? "pause.fill" : "play.fill", role: .secondary, size: .regular,
+                         help: "Space") {
+                model.togglePlay()
             }
-            .buttonStyle(.bordered)
-            .controlSize(.regular)
-            .screenshotSafeHelp("Space")
 
             Text(timeLabel)
                 .font(.system(size: 12, weight: .medium))
@@ -268,32 +269,21 @@ struct RecorderEditorView: View {
             .foregroundStyle(Color(white: 0.8))
 
             if let selection = model.cutSelection {
-                Button {
+                PraxisButton(strings.cutOutButton + "  "
+                             + RecorderSupport.elapsedLabel(
+                                seconds: Int((selection.upperBound - selection.lowerBound).rounded())),
+                             icon: "scissors", role: .destructive, size: .regular) {
                     model.cutSelectedRange()
-                } label: {
-                    Label(strings.cutOutButton + "  "
-                          + RecorderSupport.elapsedLabel(
-                            seconds: Int((selection.upperBound - selection.lowerBound).rounded())),
-                          systemImage: "scissors")
-                        .font(.system(size: 12, weight: .medium))
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.regular)
-                .tint(.red)
                 .disabled(!model.canCutSelection)
             }
 
             Spacer()
 
-            Button(action: model.toggleSound) {
-                Image(systemName: model.document.keepsSystemAudio
-                      ? "speaker.wave.2.fill" : "speaker.slash.fill")
-                    .frame(width: 22, height: 18)
+            PraxisButton("", icon: model.document.keepsSystemAudio ? "speaker.wave.2.fill" : "speaker.slash.fill",
+                         role: .secondary, size: .regular, help: strings.systemAudioToggle) {
+                model.toggleSound()
             }
-            .buttonStyle(.bordered)
-            .controlSize(.regular)
-            .tint(model.document.keepsSystemAudio ? .accentColor : nil)
-            .screenshotSafeHelp(strings.systemAudioToggle)
             .accessibilityLabel(strings.systemAudioToggle)
 
             Menu {
@@ -382,23 +372,10 @@ struct RecorderEditorView: View {
     /// clickable to show it in the Finder. Ending with the name of a folder
     /// stops one step short of what the person actually wanted.
     private func finishedFileChip(_ url: URL) -> some View {
-        Button {
+        PraxisButton(url.lastPathComponent, icon: "checkmark.circle.fill", role: .secondary, size: .regular,
+                     help: l10n.s.cleanerRevealInFinder) {
             NSWorkspace.shared.activateFileViewerSelecting([url])
-        } label: {
-            HStack(spacing: 6) {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.green)
-                Text(url.lastPathComponent)
-                    .font(.system(size: 11, weight: .medium))
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-                    .frame(maxWidth: 190)
-            }
-            .contentShape(Rectangle())
         }
-        .buttonStyle(.bordered)
-        .controlSize(.large)
-        .screenshotSafeHelp(l10n.s.cleanerRevealInFinder)
         .onDrag { NSItemProvider(contentsOf: url) ?? NSItemProvider() }
         .transition(.opacity)
     }

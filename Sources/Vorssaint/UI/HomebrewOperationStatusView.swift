@@ -70,15 +70,13 @@ struct HomebrewOperationStatusView: View {
             }
             Spacer(minLength: 0)
             if status.isActive {
-                Button(l10n.s.homebrewCancelOperation) {
+                PraxisButton(l10n.s.homebrewCancelOperation, role: .ghost, size: .mini) {
                     onCancel()
                 }
-                .controlSize(.mini)
             } else {
-                Button(l10n.s.homebrewClearLog) {
+                PraxisButton(l10n.s.homebrewClearLog, role: .ghost, size: .mini) {
                     onClear()
                 }
-                .controlSize(.mini)
             }
         }
     }
@@ -110,16 +108,13 @@ struct HomebrewOperationStatusView: View {
                 .fixedSize(horizontal: false, vertical: true)
             if terminalFallbackCommand != nil {
                 HStack(spacing: 8) {
-                    Button(l10n.s.homebrewOpenTerminal) {
+                    PraxisButton(l10n.s.homebrewOpenTerminal, icon: "terminal", role: .secondary, size: .mini) {
                         onOpenTerminal()
                     }
-                    Button {
+                    PraxisButton(l10n.s.menuCopy, icon: "doc.on.doc", role: .secondary, size: .mini) {
                         copy(terminalFallbackCommand)
-                    } label: {
-                        Label(l10n.s.menuCopy, systemImage: "doc.on.doc")
                     }
                 }
-                .controlSize(.small)
             }
         }
     }

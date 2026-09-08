@@ -110,7 +110,7 @@ struct WhatsAppDownloadsSettings: View {
                         .font(.system(.caption, design: .monospaced))
                 }
                 Spacer()
-                Button(l10n.s.cleanerRevealInFinder) {
+                PraxisButton(l10n.s.cleanerRevealInFinder, icon: "folder", role: .secondary, size: .mini) {
                     if let url = manager.downloadsURL {
                         NSWorkspace.shared.activateFileViewerSelecting([url])
                     }
@@ -133,10 +133,12 @@ struct WhatsAppDownloadsSettings: View {
                     .font(.caption)
                     .foregroundStyle(.orange)
                 Spacer()
-                Button(FeatureStrings.hub(l10n.language).openSystemSettings) {
+                PraxisButton(FeatureStrings.hub(l10n.language).openSystemSettings,
+                             icon: "gearshape",
+                             role: .ghost,
+                             size: .mini) {
                     permissions.openFilesAndFoldersSettings()
                 }
-                .controlSize(.small)
             }
         case .unknown:
             EmptyView()
@@ -171,10 +173,9 @@ struct WhatsAppDownloadsSettings: View {
                         .font(.caption)
                         .foregroundStyle(.orange)
                     Spacer()
-                    Button(l10n.s.cleanerNotifOpenSettings) {
+                    PraxisButton(l10n.s.cleanerNotifOpenSettings, icon: "gearshape", role: .ghost, size: .mini) {
                         permissions.openNotificationSettings()
                     }
-                    .controlSize(.small)
                 }
             }
         }
@@ -279,13 +280,16 @@ struct WhatsAppDownloadsSettings: View {
                 .disabled(organizer.isBusy)
 
                 HStack {
-                    Button(organizerText.organizeNow) { organizer.runNow() }
-                        .buttonStyle(.borderedProminent)
-                        .disabled(organizer.isBusy)
+                    PraxisButton(organizerText.organizeNow, icon: "folder.badge.gearshape", role: .primary) {
+                        organizer.runNow()
+                    }
+                    .disabled(organizer.isBusy)
                     if organizer.isBusy { ProgressView().controlSize(.small) }
                     Spacer()
-                    Button(organizerText.undo) { organizer.undoLastRun() }
-                        .disabled(!organizer.canUndo || organizer.isBusy)
+                    PraxisButton(organizerText.undo, icon: "arrow.uturn.backward", role: .secondary) {
+                        organizer.undoLastRun()
+                    }
+                    .disabled(!organizer.canUndo || organizer.isBusy)
                 }
                 organizerStatus
                 Text(organizerText.privacyNote)
@@ -308,14 +312,14 @@ struct WhatsAppDownloadsSettings: View {
                     .lineLimit(1)
                     .truncationMode(.middle)
                 Spacer()
-                Button(organizerText.chooseFolder) { chooseOrganizerDestination() }
-                    .controlSize(.small)
-                    .disabled(organizer.isBusy)
+                PraxisButton(organizerText.chooseFolder, icon: "folder", role: .secondary, size: .mini) {
+                    chooseOrganizerDestination()
+                }
+                .disabled(organizer.isBusy)
                 if !organizerDestination.isEmpty {
-                    Button(organizerText.useDefault) {
+                    PraxisButton(organizerText.useDefault, role: .ghost, size: .mini) {
                         _ = organizer.setDestination(nil)
                     }
-                    .controlSize(.small)
                     .disabled(organizer.isBusy)
                 }
                 Button {
@@ -460,12 +464,9 @@ struct WhatsAppDownloadsSettings: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
             HStack {
-                Button {
+                PraxisButton(l10n.s.cleanerScan, icon: "magnifyingglass", role: .primary) {
                     manager.scan()
-                } label: {
-                    Label(l10n.s.cleanerScan, systemImage: "magnifyingglass")
                 }
-                .buttonStyle(.borderedProminent)
                 .disabled(manager.phase == .scanning || manager.phase == .cleaning)
                 if manager.phase == .scanning {
                     ProgressView()
@@ -513,8 +514,7 @@ struct WhatsAppDownloadsSettings: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Button(text.selectRules) { manager.selectRules() }
-                    .controlSize(.small)
+                PraxisButton(text.selectRules, role: .secondary, size: .mini) { manager.selectRules() }
             }
 
             ScrollView {
@@ -536,11 +536,12 @@ struct WhatsAppDownloadsSettings: View {
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
                 Spacer()
-                Button(String(format: text.cleanSelectedFormat,
-                              manager.selectedCount, byteString(manager.selectedBytes))) {
+                PraxisButton(String(format: text.cleanSelectedFormat,
+                                    manager.selectedCount, byteString(manager.selectedBytes)),
+                             icon: "trash",
+                             role: .destructive) {
                     manager.cleanSelected(automatic: false)
                 }
-                .buttonStyle(.borderedProminent)
                 .disabled(manager.selectedCount == 0)
             }
         }
@@ -573,8 +574,9 @@ struct WhatsAppDownloadsSettings: View {
                 .foregroundStyle(.secondary)
                 .monospacedDigit()
             if candidate.excluded {
-                Button(text.manageAgain) { manager.removeExclusion(candidate.id) }
-                    .controlSize(.mini)
+                PraxisButton(text.manageAgain, role: .secondary, size: .mini) {
+                    manager.removeExclusion(candidate.id)
+                }
             } else {
                 Menu {
                     Button(text.keep) { manager.exclude(candidate.id) }

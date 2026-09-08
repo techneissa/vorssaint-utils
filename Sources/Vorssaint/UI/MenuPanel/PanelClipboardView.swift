@@ -71,28 +71,14 @@ struct PanelClipboardView: View {
                     .textFieldStyle(.roundedBorder)
                     .font(.system(size: 11))
                     .disabled(history.entries.isEmpty)
-                Button {
+                PraxisButton("", icon: "trash", role: .secondary, size: .mini, help: text.clearRecent) {
                     history.clearRecent()
                     copiedID = nil
-                } label: {
-                    Image(systemName: "trash")
-                        .font(.system(size: 11, weight: .semibold))
-                        .frame(width: 24, height: 22)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.mini)
-                .help(text.clearRecent)
                 .disabled(history.recentEntries.isEmpty)
-                Button {
+                PraxisButton("", icon: "arrow.up.forward.app", role: .secondary, size: .mini, help: text.shortcut) {
                     history.showHistoryWindow()
-                } label: {
-                    Image(systemName: "arrow.up.forward.app")
-                        .font(.system(size: 11, weight: .semibold))
-                        .frame(width: 24, height: 22)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.mini)
-                .help(text.shortcut)
             }
         }
         .panelCard()
@@ -180,54 +166,27 @@ struct PanelClipboardView: View {
             }
             entryPreview(entry)
             HStack(spacing: 6) {
-                Button {
+                PraxisButton("", icon: "arrow.up", role: .secondary, size: .mini, help: text.moveUp) {
                     history.move(entry, .up)
-                } label: {
-                    Image(systemName: "arrow.up")
-                        .font(.system(size: 10, weight: .bold))
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.mini)
-                .help(text.moveUp)
                 .disabled(!canReorderEntries || !history.canMove(entry, .up))
-                Button {
+                PraxisButton("", icon: "arrow.down", role: .secondary, size: .mini, help: text.moveDown) {
                     history.move(entry, .down)
-                } label: {
-                    Image(systemName: "arrow.down")
-                        .font(.system(size: 10, weight: .bold))
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.mini)
-                .help(text.moveDown)
                 .disabled(!canReorderEntries || !history.canMove(entry, .down))
-                Button {
+                PraxisButton("", icon: entry.isPinned ? "pin.slash" : "pin", role: .secondary, size: .mini,
+                             help: entry.isPinned ? text.unpin : text.pin) {
                     history.togglePin(entry)
-                } label: {
-                    Image(systemName: entry.isPinned ? "pin.slash" : "pin")
-                        .font(.system(size: 10, weight: .bold))
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.mini)
-                .help(entry.isPinned ? text.unpin : text.pin)
-                Button {
+                PraxisButton(copiedID == entry.id ? text.copied : text.copy,
+                             icon: copiedID == entry.id ? "checkmark" : "doc.on.doc",
+                             role: .primary, size: .mini) {
                     history.copy(entry)
                     copiedID = entry.id
-                } label: {
-                    Label(copiedID == entry.id ? text.copied : text.copy,
-                          systemImage: copiedID == entry.id ? "checkmark" : "doc.on.doc")
-                        .font(.system(size: 10, weight: .semibold))
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.mini)
-                Button {
+                PraxisButton("", icon: "trash", role: .destructive, size: .mini, help: text.delete) {
                     history.remove(entry)
-                } label: {
-                    Image(systemName: "trash")
-                        .font(.system(size: 10, weight: .bold))
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.mini)
-                .help(text.delete)
                 Spacer()
                 Text(entry.copiedAt, style: .time)
                     .font(.system(size: 9.5))

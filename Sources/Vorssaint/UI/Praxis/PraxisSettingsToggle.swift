@@ -13,9 +13,14 @@ struct PraxisSettingsToggle: View {
     var centered: Bool = false
     /// Feature accent when on.
     var accent: Color? = nil
+    /// Hug the label width instead of stretching to the row. Prefer setting
+    /// this via `PraxisToggleGrid` / `praxisToggleFitContent` environment.
+    var fitContent: Bool = false
     @Binding var isOn: Bool
+    @Environment(\.praxisToggleFitContent) private var fitContentFromEnvironment
     @State private var isHovered = false
 
+    private var hugsContent: Bool { fitContent || fitContentFromEnvironment }
     private var onTint: Color { accent ?? Color(nsColor: .systemGreen) }
     private var buttonHeight: CGFloat { compact ? 28 : 36 }
     private var leadingPadding: CGFloat { compact ? 8 : 12 }
@@ -34,10 +39,13 @@ struct PraxisSettingsToggle: View {
                     .font(.system(size: PraxisFont.label))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(centered ? .center : .leading)
-                    .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
+                    .frame(maxWidth: hugsContent ? nil : .infinity,
+                           alignment: centered ? .center : .leading)
+                    .fixedSize(horizontal: hugsContent, vertical: false)
                     .padding(.leading, centered ? 0 : (icon != nil ? 32 : 12))
             }
         }
+        .fixedSize(horizontal: hugsContent, vertical: false)
     }
 
     private var leadingButton: some View {
@@ -55,13 +63,14 @@ struct PraxisSettingsToggle: View {
                     .font(.system(size: PraxisFont.headline, weight: .semibold))
                     .foregroundStyle(isOn ? onTint : Color.secondary)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .minimumScaleFactor(hugsContent ? 1 : 0.8)
+                    .fixedSize(horizontal: hugsContent, vertical: false)
+                    .frame(maxWidth: hugsContent ? nil : .infinity, alignment: .leading)
             }
             .padding(.leading, leadingPadding)
             .padding(.trailing, trailingPadding)
             .frame(height: buttonHeight)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: hugsContent ? nil : .infinity)
             .background(chipBackground, in: RoundedRectangle(cornerRadius: PraxisRadius.control, style: .continuous))
             .contentShape(RoundedRectangle(cornerRadius: PraxisRadius.control))
             .overlay { chipBorder }
@@ -87,11 +96,12 @@ struct PraxisSettingsToggle: View {
                     .font(.system(size: PraxisFont.headline, weight: .semibold))
                     .foregroundStyle(isOn ? onTint : Color.secondary)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.7)
+                    .minimumScaleFactor(hugsContent ? 1 : 0.7)
+                    .fixedSize(horizontal: hugsContent, vertical: false)
             }
             .padding(.horizontal, leadingPadding)
             .frame(height: buttonHeight)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: hugsContent ? nil : .infinity)
             .background(chipBackground, in: RoundedRectangle(cornerRadius: PraxisRadius.control, style: .continuous))
             .overlay { chipBorder }
         }

@@ -65,7 +65,7 @@ struct KeyboardDebounceSettings: View {
                         Text("\(selectedWindow) ms")
                             .monospacedDigit()
                     }
-                    Button(l10n.s.keyDebounceAddKey) {
+                    PraxisButton(l10n.s.keyDebounceAddKey, icon: "plus", role: .secondary, size: .mini) {
                         if let selectedKeyCode {
                             setWindow(selectedWindow, for: selectedKeyCode)
                         }

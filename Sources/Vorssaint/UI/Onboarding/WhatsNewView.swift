@@ -46,15 +46,14 @@ struct WhatsNewView: View {
 
     private var footer: some View {
         HStack {
-            Button(l10n.s.whatsNewDontShowAgain) {
+            PraxisButton(l10n.s.whatsNewDontShowAgain, role: .ghost, size: .small) {
                 onDontShowAgain()
             }
             Spacer()
-            Button(l10n.s.menuClose) {
+            PraxisButton(l10n.s.menuClose, role: .primary, size: .small) {
                 onClose()
             }
             .keyboardShortcut(.defaultAction)
-            .buttonStyle(.borderedProminent)
         }
         .padding(16)
     }
@@ -102,12 +101,13 @@ struct UpdatePreviewView: View {
             Divider()
 
             HStack {
-                Button(l10n.s.uninstallerCancel) { onCancel() }
+                PraxisButton(l10n.s.uninstallerCancel, role: .ghost, size: .regular) { onCancel() }
                     .keyboardShortcut(.cancelAction)
                 Spacer()
-                Button(l10n.s.updateInstallButton) { onUpdate() }
-                    .keyboardShortcut(.defaultAction)
-                    .buttonStyle(.borderedProminent)
+                PraxisButton(l10n.s.updateInstallButton, icon: "arrow.down.circle", role: .primary, size: .regular) {
+                    onUpdate()
+                }
+                .keyboardShortcut(.defaultAction)
             }
             .padding(16)
         }
@@ -174,16 +174,15 @@ struct UpdateShowcaseIntroView: View {
             Divider()
 
             HStack {
-                Button(l10n.s.supportIntroLaterButton) {
+                PraxisButton(l10n.s.supportIntroLaterButton, role: .ghost, size: .regular) {
                     onClose()
                 }
                 .keyboardShortcut(.cancelAction)
                 Spacer()
-                Button(l10n.s.obContinue) {
+                PraxisButton(l10n.s.obContinue, role: .primary, size: .regular) {
                     step = .support
                 }
                 .keyboardShortcut(.defaultAction)
-                .buttonStyle(.borderedProminent)
             }
             .padding(16)
         }
@@ -201,11 +200,10 @@ struct UpdateShowcaseIntroView: View {
 
             HStack {
                 Spacer()
-                Button(l10n.s.supportIntroLaterButton) {
+                PraxisButton(l10n.s.supportIntroLaterButton, role: .ghost, size: .regular) {
                     onClose()
                 }
                 .keyboardShortcut(.defaultAction)
-                .controlSize(.large)
             }
             .padding(16)
         }
@@ -235,19 +233,13 @@ struct UpdateShowcaseIntroView: View {
                 .frame(maxWidth: 430)
 
             HStack(spacing: 10) {
-                Button {
+                PraxisButton(l10n.s.supportIntroStarButton, icon: "star.fill", role: .primary, size: .regular) {
                     openURL(AppInfo.repositoryURL)
-                } label: {
-                    Label(l10n.s.supportIntroStarButton, systemImage: "star.fill")
                 }
-                .buttonStyle(.borderedProminent)
 
-                Button {
+                PraxisButton(l10n.s.supportIntroSponsorButton, icon: "heart.fill", role: .secondary, size: .regular) {
                     openURL(AppInfo.donateURL)
-                } label: {
-                    Label(l10n.s.supportIntroSponsorButton, systemImage: "heart.fill")
                 }
-                .buttonStyle(.bordered)
             }
             .padding(.top, 4)
 
@@ -386,28 +378,19 @@ struct UpdateSupportIntroView: View {
                 .frame(maxWidth: 430)
 
             HStack(spacing: 10) {
-                Button {
+                PraxisButton(l10n.s.supportIntroStarButton, icon: "star.fill", role: .primary, size: .regular) {
                     openURL(AppInfo.repositoryURL)
-                } label: {
-                    Label(l10n.s.supportIntroStarButton, systemImage: "star.fill")
                 }
-                .buttonStyle(.borderedProminent)
 
-                Button {
+                PraxisButton(l10n.s.supportIntroSponsorButton, icon: "heart.fill", role: .secondary, size: .regular) {
                     openURL(AppInfo.donateURL)
-                } label: {
-                    Label(l10n.s.supportIntroSponsorButton, systemImage: "heart.fill")
                 }
-                .buttonStyle(.bordered)
             }
             .padding(.top, 4)
 
-            Button {
+            PraxisButton(l10n.s.keepAwakeActiveIconCoffee, icon: "cup.and.saucer.fill", role: .secondary, size: .regular) {
                 openURL(AppInfo.coffeeURL)
-            } label: {
-                Label(l10n.s.keepAwakeActiveIconCoffee, systemImage: "cup.and.saucer.fill")
             }
-            .buttonStyle(.bordered)
 
             Text(l10n.s.donateThanks)
                 .font(.caption)
@@ -419,25 +402,21 @@ struct UpdateSupportIntroView: View {
     private var footer: some View {
         HStack {
             if let previous = step.previous {
-                Button(l10n.s.obBack) {
+                PraxisButton(l10n.s.obBack, role: .ghost, size: .regular) {
                     move(to: previous, forward: false)
                 }
             }
             Spacer()
             if let next = step.next {
-                Button(l10n.s.obContinue) {
+                PraxisButton(l10n.s.obContinue, role: .primary, size: .regular) {
                     move(to: next, forward: true)
                 }
                 .keyboardShortcut(.defaultAction)
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
             } else {
-                Button(l10n.s.supportIntroDoneButton) {
+                PraxisButton(l10n.s.supportIntroDoneButton, role: .primary, size: .regular) {
                     onFinish()
                 }
                 .keyboardShortcut(.defaultAction)
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
             }
         }
         .padding(16)
@@ -690,13 +669,9 @@ private struct UpdateShowcaseMediaSurface: View {
             if case let .ready(url) = state,
                url.pathExtension.lowercased() == "gif" {
                 HStack {
-                    Button {
+                    PraxisButton(l10n.s.updateShowcaseRestart, icon: "gobackward", role: .secondary, size: .small) {
                         gifReloadID = UUID()
-                    } label: {
-                        Label(l10n.s.updateShowcaseRestart, systemImage: "gobackward")
                     }
-                    .controlSize(.small)
-                    .buttonStyle(.bordered)
                     Spacer()
                 }
                 .frame(height: 28)

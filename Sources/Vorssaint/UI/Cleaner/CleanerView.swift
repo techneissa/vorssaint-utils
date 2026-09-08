@@ -233,9 +233,9 @@ struct CleanerView: View {
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: 380)
-            Button(l10n.s.cleanerScan) { cleaner.scan() }
-                .controlSize(.large)
-                .buttonStyle(.borderedProminent)
+            PraxisButton(l10n.s.cleanerScan, icon: "sparkle", role: .primary, size: .regular) {
+                cleaner.scan()
+            }
             scheduleCard
             // The Settings page has its own full tool for these downloads;
             // the panel gets this one-line home so the feature is findable
@@ -317,12 +317,11 @@ struct CleanerView: View {
                             .font(.caption2)
                             .foregroundStyle(.tertiary)
                     }
-                    Button(whatsAppStrings.manageButton) {
+                    PraxisButton(whatsAppStrings.manageButton, icon: "gearshape", role: .secondary, size: .mini) {
                         SettingsRouter.shared.cleanerTool = "whatsApp"
                         SettingsRouter.shared.page = .cleaner
                         appDelegate()?.openSettingsWindow()
                     }
-                    .controlSize(.small)
                 }
                 .padding(.horizontal, 11)
                 .padding(.top, 5)
@@ -554,12 +553,11 @@ struct CleanerView: View {
                         .font(.caption2)
                         .foregroundStyle(.orange)
                         .fixedSize(horizontal: false, vertical: true)
-                    Button(l10n.s.cleanerNotifOpenSettings) {
+                    PraxisButton(l10n.s.cleanerNotifOpenSettings, icon: "gearshape", role: .ghost, size: .mini) {
                         if let url = URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension") {
                             NSWorkspace.shared.open(url)
                         }
                     }
-                    .controlSize(.small)
                 }
                 if let next = scheduler.nextFire {
                     Text(String(format: l10n.s.cleanerScheduleNextFormat,
@@ -639,10 +637,13 @@ struct CleanerView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             HStack(spacing: 8) {
-                Button(l10n.s.uninstallerFDAGrant) { permissions.requestFullDiskAccess() }
-                Button(l10n.s.uninstallerFDARelaunch) { appDelegate()?.relaunchApp() }
+                PraxisButton(l10n.s.uninstallerFDAGrant, role: .secondary, size: .small) {
+                    permissions.requestFullDiskAccess()
+                }
+                PraxisButton(l10n.s.uninstallerFDARelaunch, role: .secondary, size: .small) {
+                    appDelegate()?.relaunchApp()
+                }
             }
-            .controlSize(.small)
         }
         .padding(11)
         .frame(maxWidth: 380)
@@ -790,13 +791,12 @@ struct CleanerView: View {
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
             Spacer()
-            Button(l10n.s.uninstallerCancel) { cleaner.reset() }
-            Button(String(format: l10n.s.cleanerCleanSizeFormat,
-                          Self.byteString(cleaner.selectedSize))) {
+            PraxisButton(l10n.s.uninstallerCancel, role: .ghost, size: .regular) { cleaner.reset() }
+            PraxisButton(String(format: l10n.s.cleanerCleanSizeFormat,
+                                Self.byteString(cleaner.selectedSize)),
+                         icon: "sparkle", role: .primary, size: .regular) {
                 cleaner.cleanSelected()
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
             .disabled(cleaner.selectedCount == 0)
         }
         .padding(compact ? 12 : 16)
@@ -823,8 +823,7 @@ struct CleanerView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
-            Button(l10n.s.cleanerAgain) { cleaner.reset() }
-                .controlSize(.large)
+            PraxisButton(l10n.s.cleanerAgain, role: .primary, size: .regular) { cleaner.reset() }
                 .padding(.top, 6)
             Spacer(minLength: compact ? 20 : 0)
         }

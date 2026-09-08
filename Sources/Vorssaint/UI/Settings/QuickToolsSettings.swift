@@ -32,10 +32,8 @@ struct QuickToolsSettings: View {
         Form {
             if AppFeature.quickLauncher.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(l10n.s.launcherOpenNow, icon: "square.grid.2x2", role: .secondary) {
                         QuickLauncherService.shared.show()
-                    } label: {
-                        Label(l10n.s.launcherOpenNow, systemImage: "square.grid.2x2")
                     }
                     Text(l10n.s.launcherCaption)
                         .font(.caption)
@@ -63,13 +61,12 @@ struct QuickToolsSettings: View {
 
             if AppFeature.quickToggles.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(colorScheme == .dark
+                                 ? FeatureStrings.quickToggles(l10n.language).darkModeToLight
+                                 : FeatureStrings.quickToggles(l10n.language).darkModeToDark,
+                                 icon: colorScheme == .dark ? "sun.max.fill" : "moon.fill",
+                                 role: .secondary) {
                         QuickTogglesService.shared.toggleDarkMode()
-                    } label: {
-                        Label(colorScheme == .dark
-                                ? FeatureStrings.quickToggles(l10n.language).darkModeToLight
-                                : FeatureStrings.quickToggles(l10n.language).darkModeToDark,
-                              systemImage: colorScheme == .dark ? "sun.max.fill" : "moon.fill")
                     }
                     Text(FeatureStrings.quickToggles(l10n.language).panelCaption)
                         .font(.caption)
@@ -81,10 +78,8 @@ struct QuickToolsSettings: View {
 
             if AppFeature.screenOCR.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(l10n.s.ocrName, icon: "text.viewfinder", role: .secondary) {
                         ScreenTextService.shared.capture()
-                    } label: {
-                        Label(l10n.s.ocrName, systemImage: "text.viewfinder")
                     }
                     Text(l10n.s.ocrCaption)
                         .font(.caption)
@@ -116,10 +111,8 @@ struct QuickToolsSettings: View {
 
             if AppFeature.colorPicker.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(l10n.s.colorPickerPickNow, icon: "eyedropper", role: .secondary) {
                         ColorSamplerService.shared.pick()
-                    } label: {
-                        Label(l10n.s.colorPickerPickNow, systemImage: "eyedropper")
                     }
                     Text(l10n.s.colorPickerCaption)
                         .font(.caption)
@@ -153,11 +146,10 @@ struct QuickToolsSettings: View {
 
             if AppFeature.micMute.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(micMute.isMuted ? l10n.s.micUnmuteName : l10n.s.micMuteName,
+                                 icon: micMute.isMuted ? "mic.slash.fill" : "mic",
+                                 role: .secondary) {
                         MicMuteService.shared.toggle()
-                    } label: {
-                        Label(micMute.isMuted ? l10n.s.micUnmuteName : l10n.s.micMuteName,
-                              systemImage: micMute.isMuted ? "mic.slash.fill" : "mic")
                     }
                     if micMute.isMuted {
                         Label(l10n.s.micMutedHUD, systemImage: "mic.slash.fill")
@@ -191,11 +183,10 @@ struct QuickToolsSettings: View {
 
             if AppFeature.cameraPreview.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(FeatureStrings.cameraPreview(l10n.language).openButton,
+                                 icon: "web.camera",
+                                 role: .secondary) {
                         CameraPreviewService.shared.show()
-                    } label: {
-                        Label(FeatureStrings.cameraPreview(l10n.language).openButton,
-                              systemImage: "web.camera")
                     }
                     Text(FeatureStrings.cameraPreview(l10n.language).panelCaption)
                         .font(.caption)
@@ -223,11 +214,10 @@ struct QuickToolsSettings: View {
 
             if AppFeature.scratchpad.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(FeatureStrings.scratchpad(l10n.language).openButton,
+                                 icon: "note.text",
+                                 role: .secondary) {
                         ScratchpadService.shared.show()
-                    } label: {
-                        Label(FeatureStrings.scratchpad(l10n.language).openButton,
-                              systemImage: "note.text")
                     }
                     Text(FeatureStrings.scratchpad(l10n.language).panelCaption)
                         .font(.caption)
@@ -308,10 +298,9 @@ private struct CameraPermissionRow: View {
                     .font(.caption)
                     .foregroundStyle(.orange)
             }
-            Button(l10n.s.permissionOpenSettings) {
+            PraxisButton(l10n.s.permissionOpenSettings, icon: "gearshape", role: .ghost, size: .mini) {
                 Permissions.shared.openCameraSettings()
             }
-            .controlSize(.small)
         }
     }
 }

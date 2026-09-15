@@ -763,8 +763,8 @@ struct ScreenshotEditorView: View {
                         .frame(width: 20, height: 24)
                 }
                 .menuStyle(.borderlessButton)
+                .fixedSize()
             }
-            .fixedSize()
 
             PraxisButton(strings.copyButton, icon: "doc.on.doc", role: .primary, size: .small) {
                 commitEditingTextIfNeeded()

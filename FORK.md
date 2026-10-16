@@ -23,14 +23,14 @@ HEAD, so update timing stays predictable and conflicts stay manageable.
 ## Remotes
 
 ```bash
-origin   -> git@github.com:SpaciousTech/vorssaint-utils.git   (push allowed)
+origin   -> git@github.com:techneissa/vorssaint-utils.git   (push allowed)
 upstream -> https://github.com/vorssaint/vorssaint-utils.git  (push disabled)
 ```
 
 ## One-time setup
 
 ```bash
-git clone git@github.com:SpaciousTech/vorssaint-utils.git
+git clone git@github.com:techneissa/vorssaint-utils.git
 cd vorssaint-utils
 git remote add upstream https://github.com/vorssaint/vorssaint-utils.git
 git remote set-url --push upstream DISABLED

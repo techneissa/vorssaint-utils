@@ -1840,30 +1840,19 @@ struct QuickControlsSection: View {
     }
 
     private var switcherIconRowOption: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(spacing: 8) {
-                Text(String(format: l10n.s.switcherIconRowMode, switcherShortcutDisplayString))
-                    .font(.system(size: 10.5, weight: .medium))
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                Spacer(minLength: 8)
-                Toggle("", isOn: $switcherIconRowMode)
-                    .labelsHidden()
-                    .toggleStyle(.switch)
-                    .controlSize(.mini)
-                    .disabled(switcherSimpleMode)
-                    .onChange(of: switcherIconRowMode) { _, _ in
-                        AppSwitcher.shared.syncWithPreferences()
-                    }
+        PraxisSettingsToggle(
+            label: String(format: l10n.s.switcherIconRowMode, switcherShortcutDisplayString),
+            note: l10n.s.switcherIconRowModeCaption,
+            compact: true,
+            isOn: $switcherIconRowMode
+        )
+            .disabled(switcherSimpleMode)
+            .onChange(of: switcherIconRowMode) { _, _ in
+                AppSwitcher.shared.syncWithPreferences()
             }
-            Text(l10n.s.switcherIconRowModeCaption)
-                .font(.system(size: 9.5))
-                .foregroundStyle(.tertiary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(.leading, 31)
-        .padding(.trailing, 4)
-        .padding(.bottom, 2)
+            .padding(.leading, 31)
+            .padding(.trailing, 4)
+            .padding(.bottom, 2)
     }
 
     private var switcherPermissionAction: (() -> Void)? {
@@ -2065,13 +2054,55 @@ struct PanelToggleRow: View {
     var accessoryAction: (() -> Void)? = nil
 
     var body: some View {
-        rowContent
-            .panelCard()
+        if isEditing {
+            editorRow
+                .panelCard()
+        } else {
+            liveRow
+        }
     }
 
-    private var rowContent: some View {
+    private var liveRow: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .top, spacing: 6) {
+                PraxisSettingsToggle(
+                    label: title,
+                    note: caption,
+                    icon: systemImage,
+                    compact: true,
+                    accent: needsAttention ? .orange : nil,
+                    isOn: $isOn
+                )
+                if let badge {
+                    PanelBetaBadge(text: badge)
+                        .padding(.top, 6)
+                }
+            }
+            if isActive, let activeText {
+                Label(activeText, systemImage: "checkmark.circle.fill")
+                    .font(.system(size: 9.5, weight: .medium))
+                    .foregroundStyle(.green)
+                    .lineLimit(1)
+                    .padding(.leading, 12)
+            }
+            if needsAttention, let permissionAction {
+                PraxisButton(permissionButtonTitle ?? "", icon: "hand.raised.fill", role: .secondary, size: .mini) {
+                    permissionAction()
+                }
+                .padding(.leading, 12)
+            }
+            if let accessoryTitle, let accessoryAction {
+                PraxisButton(accessoryTitle, icon: "arrow.up.forward.square", role: .secondary, size: .mini) {
+                    accessoryAction()
+                }
+                .padding(.leading, 12)
+            }
+        }
+    }
+
+    private var editorRow: some View {
         HStack(spacing: 9) {
-            if isEditing && showsDragHandle {
+            if showsDragHandle {
                 PanelDragHandle()
             }
             Image(systemName: systemImage)
@@ -2093,40 +2124,14 @@ struct PanelToggleRow: View {
                     .font(.system(size: 10))
                     .foregroundStyle(captionColor)
                     .fixedSize(horizontal: false, vertical: true)
-                if isActive, let activeText {
-                    Label(activeText, systemImage: "checkmark.circle.fill")
-                        .font(.system(size: 9.5, weight: .medium))
-                        .foregroundStyle(.green)
-                        .lineLimit(1)
-                }
-                if needsAttention, let permissionAction {
-                    PraxisButton(permissionButtonTitle ?? "", icon: "hand.raised.fill", role: .secondary, size: .mini) {
-                        permissionAction()
-                    }
-                }
-                if !isEditing, let accessoryTitle, let accessoryAction {
-                    PraxisButton(accessoryTitle, icon: "arrow.up.forward.square", role: .secondary, size: .mini) {
-                        accessoryAction()
-                    }
-                }
             }
             Spacer(minLength: 0)
-            trailingControl
-        }
-    }
-
-    @ViewBuilder
-    private var trailingControl: some View {
-        if isEditing, let visibility {
-            if !visibility.wrappedValue {
-                PanelHiddenBadge()
+            if let visibility {
+                if !visibility.wrappedValue {
+                    PanelHiddenBadge()
+                }
+                PanelInlineHideButton(isVisible: visibility)
             }
-            PanelInlineHideButton(isVisible: visibility)
-        } else {
-            Toggle("", isOn: $isOn)
-                .labelsHidden()
-                .controlSize(.small)
-                .toggleStyle(.switch)
         }
     }
 
@@ -2685,25 +2690,14 @@ struct KeepAwakeCard: View {
                            isOn: Binding<Bool>,
                            disabled: Bool,
                            captionIsError: Bool = false) -> some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 1) {
-                Text(title)
-                    .font(.system(size: 12))
-                if let caption {
-                    Text(caption)
-                        .font(.system(size: 10))
-                        .foregroundStyle(captionIsError ? Color.red : Color.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            Spacer(minLength: 8)
-            Toggle("", isOn: isOn)
-                .toggleStyle(.switch)
-                .controlSize(.mini)
-                .labelsHidden()
-                .disabled(disabled)
-        }
+        PraxisSettingsToggle(
+            label: title,
+            note: caption,
+            compact: true,
+            accent: captionIsError ? .red : nil,
+            isOn: isOn
+        )
+        .disabled(disabled)
     }
 
     private func extendButton(_ minutes: Int) -> some View {

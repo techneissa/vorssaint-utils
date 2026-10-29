@@ -133,10 +133,8 @@ struct RadialMenuSettings: View {
                     .foregroundStyle(.secondary)
 
                 if level.count < RadialMenuSupport.maxItemsPerWheel {
-                    Button {
+                    PraxisButton(text.addButton, icon: "plus", role: .secondary, size: .mini) {
                         editing = RadialMenuItem(kind: .app)
-                    } label: {
-                        Label(text.addButton, systemImage: "plus")
                     }
                 }
 

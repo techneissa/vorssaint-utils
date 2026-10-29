@@ -102,12 +102,11 @@ struct ScreenRecordingCaptureSettings: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
-                VStack(alignment: .leading, spacing: 4) {
-                    Toggle(strings.automaticZoomToggle, isOn: $automaticZoom)
-                    Text(strings.automaticZoomCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+                PraxisSettingsToggle(
+                    label: strings.automaticZoomToggle,
+                    note: strings.automaticZoomCaption,
+                    isOn: $automaticZoom
+                )
             }
 
             Section {
@@ -152,16 +151,14 @@ struct ScreenRecordingCaptureSettings: View {
             }
 
             Section {
-                Toggle(screenshotStrings.shareEnabledToggle, isOn: $sharingEnabled)
+                PraxisSettingsToggle(label: screenshotStrings.shareEnabledToggle, isOn: $sharingEnabled)
                 if sharingEnabled {
                     Text(shareStrings.caption)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
-                Button {
+                PraxisButton(screenshotStrings.sharePrivacyButton, icon: "hand.raised", role: .secondary) {
                     showingSharePrivacy = true
-                } label: {
-                    Label(screenshotStrings.sharePrivacyButton, systemImage: "hand.raised")
                 }
                 if !sharing.records.isEmpty {
                     Button {

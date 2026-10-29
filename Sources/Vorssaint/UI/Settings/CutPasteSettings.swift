@@ -32,21 +32,23 @@ struct CutPasteSettings: View {
         Form {
             if AppFeature.finderCutPaste.isAvailable {
                 Section {
-                    PraxisSettingsToggle(label: l10n.s.cutPasteEnable, isOn: $enabled)
+                    PraxisSettingsToggle(
+                        label: l10n.s.cutPasteEnable,
+                        note: l10n.s.cutPasteEnableCaption,
+                        isOn: $enabled
+                    )
                         .onChange(of: enabled) { _, _ in
                             FinderCutPaste.shared.syncWithPreferences()
                         }
-                    Text(l10n.s.cutPasteEnableCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                     if enabled {
-                        Toggle(l10n.s.cutPasteShowHUD, isOn: $showHUD)
+                        PraxisSettingsToggle(
+                            label: l10n.s.cutPasteShowHUD,
+                            note: l10n.s.cutPasteShowHUDCaption,
+                            isOn: $showHUD
+                        )
                             .onChange(of: showHUD) { _, _ in
                                 FinderCutPaste.shared.syncWithPreferences()
                             }
-                        Text(l10n.s.cutPasteShowHUDCaption)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
                     }
                     if enabled, service.isRunning {
                         Label(l10n.s.cutPasteActiveNow, systemImage: "checkmark.circle.fill")

@@ -92,11 +92,12 @@ struct QuitProtectionSettings: View {
         let currentModifier = QuitProtectionSupport.extraModifierFor(extraModifier.wrappedValue)
 
         Section(shortcut.symbol) {
-            Toggle(strings.enabled, isOn: enabled)
+            PraxisSettingsToggle(
+                label: strings.enabled,
+                note: strings.enabledCaption,
+                isOn: enabled
+            )
                 .onChange(of: enabled.wrappedValue) { _, _ in service.syncWithPreferences() }
-            Text(strings.enabledCaption)
-                .font(.caption)
-                .foregroundStyle(.secondary)
 
             Picker(strings.mode, selection: mode) {
                 Text(strings.hold).tag(QuitProtectionMode.hold.rawValue)
@@ -158,7 +159,7 @@ struct QuitProtectionSettings: View {
 
             exceptionsSection(for: shortcut, scope: currentScope, enabled: enabled.wrappedValue)
 
-            Toggle(strings.feedback, isOn: showFeedback)
+            PraxisSettingsToggle(label: strings.feedback, isOn: showFeedback)
                 .onChange(of: showFeedback.wrappedValue) { _, _ in service.syncWithPreferences() }
         }
     }
@@ -194,10 +195,8 @@ struct QuitProtectionSettings: View {
                         }
                     }
                 }
-                Button {
+                PraxisButton(strings.addApp, icon: "plus", role: .secondary, size: .mini) {
                     pickerShortcut = shortcut
-                } label: {
-                    Label(strings.addApp, systemImage: "plus")
                 }
                 .disabled(!enabled)
             }

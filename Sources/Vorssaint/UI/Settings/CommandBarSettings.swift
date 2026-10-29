@@ -100,10 +100,8 @@ struct CommandBarSettings: View {
             }
 
             Section {
-                Button {
+                PraxisButton(text.appCenterTitle, icon: "app.badge", role: .secondary) {
                     showsAppShortcuts = true
-                } label: {
-                    Label(text.appCenterTitle, systemImage: "app.badge")
                 }
                 Text(text.appCenterCaption)
                     .font(.caption)
@@ -150,10 +148,8 @@ struct CommandBarSettings: View {
                             .controlSize(.mini)
                     }
                 }
-                Button {
+                PraxisButton(text.filesAddFolder, icon: "plus", role: .secondary, size: .mini) {
                     addFileScope()
-                } label: {
-                    Label(text.filesAddFolder, systemImage: "plus")
                 }
                 DisclosureHeaderRow(isExpanded: $showsFileOptions) {
                     Text(FeatureStrings.recorder(l10n.language).moreOptions)
@@ -223,10 +219,8 @@ struct CommandBarSettings: View {
                             .controlSize(.mini)
                     }
                 }
-                Button {
+                PraxisButton(text.linkAddButton, icon: "plus", role: .secondary, size: .mini) {
                     editing = CommandBarLink()
-                } label: {
-                    Label(text.linkAddButton, systemImage: "plus")
                 }
             } header: {
                 Text(text.linksTitle)

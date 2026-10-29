@@ -185,7 +185,7 @@ struct ClipboardSettings: View {
     private var clipboardAutoClearSection: some View {
         Section {
             HStack {
-                Toggle(text.autoClearEnable, isOn: $autoClearOnDelay)
+                PraxisSettingsToggle(label: text.autoClearEnable, isOn: $autoClearOnDelay)
                     .onChange(of: autoClearOnDelay) { _, _ in
                         ClipboardAutoClearService.shared.syncWithPreferences()
                     }
@@ -197,15 +197,15 @@ struct ClipboardSettings: View {
                     .foregroundStyle(.secondary)
             }
             .fixedSize(horizontal: false, vertical: true)
-            Toggle(text.autoClearOnSleep, isOn: $autoClearOnSleep)
+            PraxisSettingsToggle(label: text.autoClearOnSleep, isOn: $autoClearOnSleep)
                 .onChange(of: autoClearOnSleep) { _, _ in
                     ClipboardAutoClearService.shared.syncWithPreferences()
                 }
-            Toggle(text.autoClearOnDisplaySleep, isOn: $autoClearOnDisplaySleep)
+            PraxisSettingsToggle(label: text.autoClearOnDisplaySleep, isOn: $autoClearOnDisplaySleep)
                 .onChange(of: autoClearOnDisplaySleep) { _, _ in
                     ClipboardAutoClearService.shared.syncWithPreferences()
                 }
-            Toggle(text.autoClearOnScreenLock, isOn: $autoClearOnScreenLock)
+            PraxisSettingsToggle(label: text.autoClearOnScreenLock, isOn: $autoClearOnScreenLock)
                 .onChange(of: autoClearOnScreenLock) { _, _ in
                     ClipboardAutoClearService.shared.syncWithPreferences()
                 }

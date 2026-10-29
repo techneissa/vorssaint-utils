@@ -70,13 +70,14 @@ struct ShelfSettings: View {
                             .foregroundStyle(.secondary)
                     }
                     VStack(alignment: .leading, spacing: 3) {
-                        Toggle(l10n.s.shelfEdgeToggle, isOn: $edgeDrag)
+                        PraxisSettingsToggle(
+                            label: l10n.s.shelfEdgeToggle,
+                            note: l10n.s.shelfEdgeCaption,
+                            isOn: $edgeDrag
+                        )
                             .onChange(of: edgeDrag) { _, _ in
                                 ShelfService.shared.syncDragMonitor()
                             }
-                        Text(l10n.s.shelfEdgeCaption)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
                     }
                     PraxisButton(l10n.s.shelfOpenNow, icon: "tray.and.arrow.down", role: .secondary, size: .small) {
                         ShelfService.shared.summon()
@@ -97,10 +98,11 @@ struct ShelfSettings: View {
                             .foregroundStyle(.secondary)
                     }
                     VStack(alignment: .leading, spacing: 3) {
-                        Toggle(l10n.s.shelfClearOnClose, isOn: $clearOnClose)
-                        Text(l10n.s.shelfClearOnCloseCaption)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        PraxisSettingsToggle(
+                            label: l10n.s.shelfClearOnClose,
+                            note: l10n.s.shelfClearOnCloseCaption,
+                            isOn: $clearOnClose
+                        )
                     }
                 }
 
@@ -127,10 +129,8 @@ struct ShelfSettings: View {
                             }
                         }
                     }
-                    Button {
+                    PraxisButton(l10n.s.autoQuitAddApp, icon: "plus", role: .secondary, size: .mini) {
                         showingAppPicker = true
-                    } label: {
-                        Label(l10n.s.autoQuitAddApp, systemImage: "plus")
                     }
                     Text(l10n.s.shelfExclusionsCaption)
                         .font(.caption)

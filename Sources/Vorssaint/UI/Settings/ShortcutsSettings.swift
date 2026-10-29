@@ -59,11 +59,9 @@ struct ShortcutsSettings: View {
 
             if AppFeature.commandBar.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(FeatureStrings.commandBar(l10n.language).appCenterTitle,
+                                 icon: "app.badge", role: .secondary) {
                         showsAppShortcuts = true
-                    } label: {
-                        Label(FeatureStrings.commandBar(l10n.language).appCenterTitle,
-                              systemImage: "app.badge")
                     }
                     Text(FeatureStrings.commandBar(l10n.language).appCenterCaption)
                         .font(.caption)
@@ -254,8 +252,10 @@ private struct KeyboardBrightnessShortcutToggle: View {
     @Binding var isEnabled: Bool
 
     var body: some View {
-        Toggle(FeatureStrings.brightness(l10n.language).keyboardBrightnessShortcuts,
-               isOn: $isEnabled)
+        PraxisSettingsToggle(
+            label: FeatureStrings.brightness(l10n.language).keyboardBrightnessShortcuts,
+            isOn: $isEnabled
+        )
             .onChange(of: isEnabled) { _, _ in
                 brightness.syncWithPreferences()
             }

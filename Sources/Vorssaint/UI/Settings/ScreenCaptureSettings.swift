@@ -108,7 +108,7 @@ private struct RecentCapturesShortcutRows: View {
 
     var body: some View {
         let role = GlobalShortcutRole.recentCaptures
-        Toggle(role.title(l10n.s), isOn: $enabled)
+        PraxisSettingsToggle(label: role.title(l10n.s), isOn: $enabled)
             .onChange(of: enabled) { _, _ in
                 service.syncWithPreferences()
             }
@@ -154,15 +154,15 @@ private struct ToolShortcutRows: View {
     }
 
     var body: some View {
-        Toggle(keys.role.title(l10n.s), isOn: $enabled)
+        PraxisSettingsToggle(label: keys.role.title(l10n.s), isOn: $enabled)
             .onChange(of: enabled) { _, _ in
                 service.syncWithPreferences()
             }
         ShortcutPreferenceRow(role: keys.role, isEnabled: enabled) {
             service.syncWithPreferences()
         }
-        Toggle(FeatureStrings.screenshot(l10n.language).showCaptureMenuOnShortcut,
-               isOn: $showsCaptureMenu)
+        PraxisSettingsToggle(label: FeatureStrings.screenshot(l10n.language).showCaptureMenuOnShortcut,
+                             isOn: $showsCaptureMenu)
             .disabled(!enabled)
         if enabled, service.toolShortcutRegistrationFailures.contains(tool) {
             Text(l10n.s.shortcutUnavailable)
@@ -180,22 +180,22 @@ private struct ScreenTextCaptureSettings: View {
 
     var body: some View {
         Section {
-            Button {
+            PraxisButton(l10n.s.ocrName, icon: "text.viewfinder", role: .secondary) {
                 ScreenTextService.shared.capture()
-            } label: {
-                Label(l10n.s.ocrName, systemImage: "text.viewfinder")
             }
             Text(l10n.s.ocrCaption)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Toggle(l10n.s.ocrRemoveLineBreaksToggle, isOn: $removesLineBreaks)
-            Text(l10n.s.ocrRemoveLineBreaksCaption)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            Toggle(l10n.s.ocrQRToggle, isOn: $detectsQRCodes)
-            Text(l10n.s.ocrQRCaption)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            PraxisSettingsToggle(
+                label: l10n.s.ocrRemoveLineBreaksToggle,
+                note: l10n.s.ocrRemoveLineBreaksCaption,
+                isOn: $removesLineBreaks
+            )
+            PraxisSettingsToggle(
+                label: l10n.s.ocrQRToggle,
+                note: l10n.s.ocrQRCaption,
+                isOn: $detectsQRCodes
+            )
             if !permissions.screenRecording {
                 PermissionRow(kind: .screenRecording)
             }
@@ -213,10 +213,8 @@ private struct ColorCaptureSettings: View {
 
     var body: some View {
         Section {
-            Button {
+            PraxisButton(l10n.s.colorPickerPickNow, icon: "eyedropper", role: .secondary) {
                 ColorSamplerService.shared.pick()
-            } label: {
-                Label(l10n.s.colorPickerPickNow, systemImage: "eyedropper")
             }
             Text(l10n.s.colorPickerCaption)
                 .font(.caption)
@@ -228,7 +226,7 @@ private struct ColorCaptureSettings: View {
             }
             .pickerStyle(.segmented)
             if format == ColorCopyFormat.hex.rawValue {
-                Toggle(l10n.s.colorPickerBareHexToggle, isOn: $usesBareHex)
+                PraxisSettingsToggle(label: l10n.s.colorPickerBareHexToggle, isOn: $usesBareHex)
             }
         } header: {
             Text(l10n.s.colorPickerName)

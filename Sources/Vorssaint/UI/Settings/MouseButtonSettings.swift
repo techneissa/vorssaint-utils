@@ -62,7 +62,11 @@ struct MouseButtonShortcutsSection: View {
                 }
                 captureRow
             }
-            Toggle(text.spacesEnableLabel, isOn: $spacesEnabled)
+            PraxisSettingsToggle(
+                label: text.spacesEnableLabel,
+                note: text.spacesEnableCaption,
+                isOn: $spacesEnabled
+            )
                 .onChange(of: spacesEnabled) { _, on in
                     if !on {
                         stopSpacesCapture()
@@ -77,15 +81,13 @@ struct MouseButtonShortcutsSection: View {
                         permissions.requestAccessibility()
                     }
                 }
-            Text(text.spacesEnableCaption)
-                .font(.caption)
-                .foregroundStyle(.secondary)
             if spacesEnabled {
                 spacesRow
-                Toggle(text.spacesFollowsDragLabel, isOn: $spacesFollowsDrag)
-                Text(text.spacesFollowsDragCaption)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                PraxisSettingsToggle(
+                    label: text.spacesFollowsDragLabel,
+                    note: text.spacesFollowsDragCaption,
+                    isOn: $spacesFollowsDrag
+                )
                 if !spacesCommandsAreReachable {
                     Text(text.spacesShortcutsOffNote)
                         .font(.caption)
@@ -235,10 +237,8 @@ struct MouseButtonShortcutsSection: View {
                 .accessibilityLabel(text.removeButton)
             }
         } else {
-            Button {
+            PraxisButton(text.spacesPickButton, icon: "plus", role: .secondary, size: .mini) {
                 startSpacesCapture()
-            } label: {
-                Label(text.spacesPickButton, systemImage: "plus")
             }
         }
     }

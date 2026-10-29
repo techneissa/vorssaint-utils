@@ -98,7 +98,7 @@ struct WhatsAppDownloadsSettings: View {
 
     private var introductionSection: some View {
         Section {
-            Toggle(text.title, isOn: $enabled)
+            PraxisSettingsToggle(label: text.title, isOn: $enabled)
             Text(organizerEnabled ? organizerText.privacyNote : text.intro)
                 .font(.callout)
             HStack(spacing: 8) {

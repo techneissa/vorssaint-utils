@@ -429,7 +429,7 @@ struct GeneralSettings: View {
                 .pickerStyle(.segmented)
 #if compiler(>=6.2)
                 if #available(macOS 26.0, *) {
-                    Toggle(appearanceStrings.liquidGlass, isOn: $appearance.liquidGlassEnabled)
+                    PraxisSettingsToggle(label: appearanceStrings.liquidGlass, isOn: $appearance.liquidGlassEnabled)
                 }
 #endif
             }
@@ -538,13 +538,14 @@ struct UpdatesView: View {
                     UpdateService.shared.autoCheckEnabled = value
                 }
 
-            VStack(alignment: .leading, spacing: 4) {
-                Toggle(l10n.s.includeBetaUpdatesToggle, isOn: $includeBetas)
-                    .onChange(of: includeBetas) { _, value in
-                        UpdateService.shared.includeBetaUpdates = value
-                    }
-                SettingsCaptionText(l10n.s.includeBetaUpdatesCaption)
-            }
+            PraxisSettingsToggle(
+                label: l10n.s.includeBetaUpdatesToggle,
+                note: l10n.s.includeBetaUpdatesCaption,
+                isOn: $includeBetas
+            )
+                .onChange(of: includeBetas) { _, value in
+                    UpdateService.shared.includeBetaUpdates = value
+                }
 
             statusRow
 
@@ -957,12 +958,15 @@ struct MouseSettings: View {
             }
             if AppFeature.focusFollowsMouse.isAvailable {
                 Section(l10n.s.focusFollowsMouseName) {
-                    Toggle(l10n.s.focusFollowsMouseName, isOn: $focusFollowsMouseEnabled)
+                    PraxisSettingsToggle(
+                        label: l10n.s.focusFollowsMouseName,
+                        note: l10n.s.focusFollowsMouseCaption,
+                        isOn: $focusFollowsMouseEnabled
+                    )
                         .onChange(of: focusFollowsMouseEnabled) { _, enabled in
                             FocusFollowsMouseService.shared.syncWithPreferences()
                             if enabled { Permissions.shared.requestAccessibility() }
                         }
-                    SettingsCaptionText(l10n.s.focusFollowsMouseCaption)
                     if focusFollowsMouseEnabled {
                         HStack {
                             Slider(value: focusFollowsMouseDelayBinding,
@@ -1028,13 +1032,14 @@ struct MouseSettings: View {
             }
             if AppFeature.mouseAcceleration.isAvailable {
                 Section(l10n.s.mouseAccelerationName) {
-                    Toggle(l10n.s.mouseAccelerationName, isOn: $mouseAccelerationDisabled)
+                    PraxisSettingsToggle(
+                        label: l10n.s.mouseAccelerationName,
+                        note: l10n.s.mouseAccelerationCaption,
+                        isOn: $mouseAccelerationDisabled
+                    )
                         .onChange(of: mouseAccelerationDisabled) { _, _ in
                             MouseAccelerationService.shared.syncWithPreferences()
                         }
-                    Text(l10n.s.mouseAccelerationCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                 }
                 .settingsSectionAnchor(.mouseAcceleration)
             }
@@ -1064,12 +1069,15 @@ struct MouseSettings: View {
             }
             if AppFeature.mouseClickDebounce.isAvailable {
                 Section(mouseClickDebounceText.title) {
-                    Toggle(mouseClickDebounceText.title, isOn: $mouseClickDebounceEnabled)
+                    PraxisSettingsToggle(
+                        label: mouseClickDebounceText.title,
+                        note: mouseClickDebounceText.caption,
+                        isOn: $mouseClickDebounceEnabled
+                    )
                         .onChange(of: mouseClickDebounceEnabled) { _, enabled in
                             MouseClickDebounceService.shared.syncWithPreferences()
                             if enabled { permissions.requestAccessibility() }
                         }
-                    SettingsCaptionText(mouseClickDebounceText.caption)
                     if mouseClickDebounceEnabled {
                         DisclosureGroup(isExpanded: $mouseClickDebounceMoreOptionsExpanded) {
                             Stepper(value: mouseClickDebounceWindowBinding,
@@ -1265,15 +1273,15 @@ struct SwitcherSettings: View {
                     Text(l10n.s.switcherWindowShortcutCaption)
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Toggle(l10n.s.switcherTakeOverSystemShortcuts,
-                           isOn: $switcherTakeOverSystemShortcuts)
+                    PraxisSettingsToggle(
+                        label: l10n.s.switcherTakeOverSystemShortcuts,
+                        note: l10n.s.switcherTakeOverSystemShortcutsCaption,
+                        isOn: $switcherTakeOverSystemShortcuts
+                    )
                         .disabled(!switcherEnabled)
                         .onChange(of: switcherTakeOverSystemShortcuts) { _, _ in
                             AppSwitcher.shared.syncWithPreferences()
                         }
-                    Text(l10n.s.switcherTakeOverSystemShortcutsCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                     Text(String(format: l10n.s.switcherUsageHintFormat,
                                 GlobalShortcutRole.switcher.savedShortcut.displayString))
                         .font(.caption)
@@ -1293,11 +1301,12 @@ struct SwitcherSettings: View {
                     }
                     SettingsCaptionText(l10n.s.switcherAppearanceDelayCaption)
 
-                    Toggle(l10n.s.switcherSearchPin, isOn: $switcherSearchPinEnabled)
+                    PraxisSettingsToggle(
+                        label: l10n.s.switcherSearchPin,
+                        note: l10n.s.switcherSearchPinCaption,
+                        isOn: $switcherSearchPinEnabled
+                    )
                         .disabled(!switcherEnabled)
-                    Text(l10n.s.switcherSearchPinCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
 
                     PraxisSettingsToggle(
                         label: l10n.s.switcherSimpleMode,
@@ -1420,9 +1429,11 @@ struct SwitcherSettings: View {
                                     .frame(width: 52, alignment: .trailing)
                             }
                             SettingsCaptionText(l10n.s.dockPreviewBackgroundOpacityCaption)
-                            Toggle(l10n.s.dockPreviewQuitAppOnClose,
-                                   isOn: $dockPreviewQuitAppOnClose)
-                            SettingsCaptionText(l10n.s.dockPreviewQuitAppOnCloseCaption)
+                            PraxisSettingsToggle(
+                                label: l10n.s.dockPreviewQuitAppOnClose,
+                                note: l10n.s.dockPreviewQuitAppOnCloseCaption,
+                                isOn: $dockPreviewQuitAppOnClose
+                            )
                         }
                     }
                 } header: {
@@ -1477,8 +1488,11 @@ struct SwitcherSettings: View {
                     .onChange(of: previewSize) { _, _ in
                         AppSwitcher.shared.syncWithPreferences()
                     }
-                    Toggle(l10n.s.minimalWindowPreviews, isOn: $minimalPreviews)
-                    SettingsCaptionText(l10n.s.minimalWindowPreviewsCaption)
+                    PraxisSettingsToggle(
+                        label: l10n.s.minimalWindowPreviews,
+                        note: l10n.s.minimalWindowPreviewsCaption,
+                        isOn: $minimalPreviews
+                    )
                     WindowPreviewExclusionsList()
                 } header: {
                     Text(FeatureStrings.windowPreviewExclusions(l10n.language).sectionTitle)
@@ -1614,7 +1628,7 @@ struct AboutSettings: View {
                 PraxisButton(l10n.s.reviewIntro, icon: "sparkles", role: .secondary) {
                     appDelegate()?.showOnboarding()
                 }
-                Button(l10n.s.reviewHighlights) {
+                PraxisButton(l10n.s.reviewHighlights, icon: "sparkles", role: .secondary) {
                     appDelegate()?.showUpdateHighlights()
                 }
                 Link(l10n.s.viewOnGitHub, destination: AppInfo.repositoryURL)

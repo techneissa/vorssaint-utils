@@ -121,12 +121,12 @@ struct WindowLayoutSettings: View {
                         .foregroundStyle(.orange)
                 }
                 Divider()
-                Toggle(WindowDirectionalStrings.localized(l10n.language).title,
-                       isOn: $directionalEnabled)
+                PraxisSettingsToggle(
+                    label: WindowDirectionalStrings.localized(l10n.language).title,
+                    note: WindowDirectionalStrings.localized(l10n.language).caption,
+                    isOn: $directionalEnabled
+                )
                     .onChange(of: directionalEnabled) { _, _ in service.syncWithPreferences() }
-                Text(WindowDirectionalStrings.localized(l10n.language).caption)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
                 if directionalEnabled {
                     ShortcutRecorderButton(shortcut: directionalShortcut,
                                            isEnabled: permissions.accessibility,

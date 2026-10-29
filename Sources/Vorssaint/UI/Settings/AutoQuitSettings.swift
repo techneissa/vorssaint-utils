@@ -13,13 +13,14 @@ struct AutoQuitSettings: View {
     var body: some View {
         Form {
             Section {
-                PraxisSettingsToggle(label: l10n.s.autoQuitEnable, isOn: $enabled)
+                PraxisSettingsToggle(
+                    label: l10n.s.autoQuitEnable,
+                    note: l10n.s.autoQuitEnableCaption,
+                    isOn: $enabled
+                )
                     .onChange(of: enabled) { _, _ in
                         AutoQuitService.shared.syncWithPreferences()
                     }
-                Text(l10n.s.autoQuitEnableCaption)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
                 if enabled, service.isRunning {
                     Label(l10n.s.autoQuitActiveNow, systemImage: "checkmark.circle.fill")
                         .font(.caption)

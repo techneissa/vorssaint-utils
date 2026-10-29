@@ -49,21 +49,15 @@ struct ScreenshotCaptureSettings: View {
         Group {
             Section {
                 HStack(spacing: 10) {
-                    Button {
+                    PraxisButton(strings.captureButton, icon: "camera.viewfinder",
+                                 role: .secondary, fillWidth: true) {
                         ScreenshotService.shared.capture()
-                    } label: {
-                        Label(strings.captureButton, systemImage: "camera.viewfinder")
-                            .frame(maxWidth: .infinity)
                     }
-                    Button {
+                    PraxisButton(strings.scrollingCaptureButton, icon: "rectangle.stack",
+                                 role: .secondary, fillWidth: true) {
                         ScreenshotService.shared.captureScrolling()
-                    } label: {
-                        Label(strings.scrollingCaptureButton, systemImage: "rectangle.stack")
-                            .frame(maxWidth: .infinity)
                     }
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
                 Text(strings.panelCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -94,7 +88,7 @@ struct ScreenshotCaptureSettings: View {
                         .font(.caption)
                         .foregroundStyle(.orange)
                 }
-                Toggle(strings.editClipboardImage, isOn: $clipboardShortcutEnabled)
+                PraxisSettingsToggle(label: strings.editClipboardImage, isOn: $clipboardShortcutEnabled)
                     .onChange(of: clipboardShortcutEnabled) { _, _ in
                         ScreenshotService.shared.syncWithPreferences()
                     }
@@ -120,7 +114,7 @@ struct ScreenshotCaptureSettings: View {
                 Text(strings.freezeCaption)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Toggle(strings.hideVorssaintWindowsToggle, isOn: $hideVorssaintWindows)
+                PraxisSettingsToggle(label: strings.hideVorssaintWindowsToggle, isOn: $hideVorssaintWindows)
                 Picker(strings.delayLabel, selection: $delay) {
                     ForEach(ScreenshotSupport.allowedDelays, id: \.self) { seconds in
                         if seconds == 0 {
@@ -190,10 +184,8 @@ struct ScreenshotCaptureSettings: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
-                Button {
+                PraxisButton(strings.sharePrivacyButton, icon: "hand.raised", role: .secondary) {
                     showingSharePrivacy = true
-                } label: {
-                    Label(strings.sharePrivacyButton, systemImage: "hand.raised")
                 }
                 if !sharing.records.isEmpty {
                     Button {

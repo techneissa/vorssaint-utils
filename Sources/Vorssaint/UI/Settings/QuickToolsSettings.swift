@@ -27,10 +27,8 @@ struct QuickToolsSettings: View {
         Form {
             if AppFeature.quickLauncher.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(l10n.s.launcherOpenNow, icon: "square.grid.2x2", role: .secondary) {
                         QuickLauncherService.shared.show()
-                    } label: {
-                        Label(l10n.s.launcherOpenNow, systemImage: "square.grid.2x2")
                     }
                     Text(l10n.s.launcherCaption)
                         .font(.caption)
@@ -59,22 +57,22 @@ struct QuickToolsSettings: View {
 
             if AppFeature.quickToggles.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(colorScheme == .dark
+                                    ? FeatureStrings.quickToggles(l10n.language).darkModeToLight
+                                    : FeatureStrings.quickToggles(l10n.language).darkModeToDark,
+                                 icon: colorScheme == .dark ? "sun.max.fill" : "moon.fill",
+                                 role: .secondary) {
                         QuickTogglesService.shared.toggleDarkMode()
-                    } label: {
-                        Label(colorScheme == .dark
-                                ? FeatureStrings.quickToggles(l10n.language).darkModeToLight
-                                : FeatureStrings.quickToggles(l10n.language).darkModeToDark,
-                              systemImage: colorScheme == .dark ? "sun.max.fill" : "moon.fill")
                     }
                     if brightness.keyboardLightEnabled != nil {
-                        Toggle(isOn: Binding(
-                            get: { brightness.keyboardLightEnabled ?? false },
-                            set: { brightness.setKeyboardLightEnabled($0) }
-                        )) {
-                            Label(FeatureStrings.brightness(l10n.language).keyboardLight,
-                                  systemImage: "keyboard")
-                        }
+                        PraxisSettingsToggle(
+                            label: FeatureStrings.brightness(l10n.language).keyboardLight,
+                            icon: "keyboard",
+                            isOn: Binding(
+                                get: { brightness.keyboardLightEnabled ?? false },
+                                set: { brightness.setKeyboardLightEnabled($0) }
+                            )
+                        )
                     }
                     DiskExclusionsList()
                     Text(FeatureStrings.quickToggles(l10n.language).panelCaption)
@@ -89,11 +87,10 @@ struct QuickToolsSettings: View {
 
             if AppFeature.micMute.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(micMute.isMuted ? l10n.s.micUnmuteName : l10n.s.micMuteName,
+                                 icon: micMute.isMuted ? "mic.slash.fill" : "mic",
+                                 role: .secondary) {
                         MicMuteService.shared.toggle()
-                    } label: {
-                        Label(micMute.isMuted ? l10n.s.micUnmuteName : l10n.s.micMuteName,
-                              systemImage: micMute.isMuted ? "mic.slash.fill" : "mic")
                     }
                     if micMute.isMuted {
                         Label(l10n.s.micMutedHUD, systemImage: "mic.slash.fill")
@@ -128,11 +125,9 @@ struct QuickToolsSettings: View {
 
             if AppFeature.cameraPreview.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(FeatureStrings.cameraPreview(l10n.language).openButton,
+                                 icon: "web.camera", role: .secondary) {
                         CameraPreviewService.shared.show()
-                    } label: {
-                        Label(FeatureStrings.cameraPreview(l10n.language).openButton,
-                              systemImage: "web.camera")
                     }
                     Text(FeatureStrings.cameraPreview(l10n.language).panelCaption)
                         .font(.caption)
@@ -161,11 +156,9 @@ struct QuickToolsSettings: View {
 
             if AppFeature.scratchpad.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(FeatureStrings.scratchpad(l10n.language).openButton,
+                                 icon: "note.text", role: .secondary) {
                         ScratchpadService.shared.show()
-                    } label: {
-                        Label(FeatureStrings.scratchpad(l10n.language).openButton,
-                              systemImage: "note.text")
                     }
                     Text(FeatureStrings.scratchpad(l10n.language).panelCaption)
                         .font(.caption)
@@ -222,18 +215,17 @@ struct QuickToolsSettings: View {
 
             if AppFeature.cleaningMode.isAvailable {
                 Section {
-                    Button {
+                    PraxisButton(l10n.s.cleaningStartNow, icon: "bubbles.and.sparkles", role: .secondary) {
                         CleaningModeManager.shared.activate()
-                    } label: {
-                        Label(l10n.s.cleaningStartNow, systemImage: "bubbles.and.sparkles")
                     }
                     Text(l10n.s.cleaningPanelCaption)
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Toggle(l10n.s.cleaningKeepScreenVisibleToggle, isOn: $cleaningModeKeepScreenVisible)
-                    Text(l10n.s.cleaningKeepScreenVisibleCaption)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    PraxisSettingsToggle(
+                        label: l10n.s.cleaningKeepScreenVisibleToggle,
+                        note: l10n.s.cleaningKeepScreenVisibleCaption,
+                        isOn: $cleaningModeKeepScreenVisible
+                    )
                 } header: {
                     Text(l10n.s.cleaningMenuItem)
                 }
